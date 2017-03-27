@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright(C), Xplus Co., Ltd, 2016. All rights reserved. -->
+<project xmlns="http://maven.apache.org/DECORATION/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.1.0 http://maven.apache.org/xsd/decoration-1.1.0.xsd"
+  name="commons">
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.3.0</version>
+  </skin>
+  <bannerLeft>
+    <name><![CDATA[XX® QQ™ Commons]]></name>
+    <href>index.html</href>
+  </bannerLeft>
+  <publishDate format="yyyy-MM-dd HH:mm" />
+  <body>
+    <menu>
+      <item name="Welcome" href="index.html" />
+      <item name="WIKI" href="http://wiki.xplus.cn/" target="_blank" />
+    </menu>
+    <menu ref="reports" />
+    <menu ref="modules"/>
+  </body>
+</project>

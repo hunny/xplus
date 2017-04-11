@@ -1,40 +1,36 @@
-/**
- * 版权所有(C)，上海海鼎信息工程股份有限公司，2017，所有权利保留。
- * 
- * 项目名：	commons-mvn
- * 文件名：	JavaDirMaker.java
- * 模块说明：	
- * 修改历史：
- * 2017年3月27日 - huzexiong - 创建。
- */
 package com.xplus.commons.mvn.impl;
 
 import java.io.File;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.xplus.commons.mvn.api.DirMaker;
 
 /**
+ * 生成Java工程的文件目录结构
+ * 
  * @author huzexiong
  *
  */
+@Component
 public class JavaDirMaker implements DirMaker {
 
   private static final Logger logger = LoggerFactory.getLogger(JavaDirMaker.class);
 
-  private String srcFolderName = "src";
-  private String mainFolderName = "main";
-  private String testFolderName = "test";
-  private String javaFolderName = "java";
-  private String resourceFolderName = "resources";
+  public static final String SRC_FOLDER_NAME = "src";
+  public static final String MAIN_FOLDER_NAME = "main";
+  public static final String TEST_FOLDER_NAME = "test";
+  public static final String JAVA_FOLDER_NAME = "java";
+  public static final String RESOURCE_FOLDER_NAME = "resources";
+  public static final String META_INF = "META-INF";
 
-  private static void debug(String format, Object... arguments) {
-    if (logger.isDebugEnabled()) {
-      logger.debug(format, arguments);
-    }
-  }
+  private String srcFolderName = SRC_FOLDER_NAME;
+  private String mainFolderName = MAIN_FOLDER_NAME;
+  private String testFolderName = TEST_FOLDER_NAME;
+  private String javaFolderName = JAVA_FOLDER_NAME;
+  private String resourceFolderName = RESOURCE_FOLDER_NAME;
 
   @Override
   public void make(String path) {
@@ -51,15 +47,16 @@ public class JavaDirMaker implements DirMaker {
   }
 
   protected boolean makDirs(String path, String folder) {
-    String javaNamePath = String.format("%s%s%s%s%s%s%s", path, File.separator, getSrcFolderName(), File.separator, folder, File.separator,
-        getJavaFolderName());
-    debug("Making {} java dir: {}", folder, javaNamePath);
-    String resourceNamePath = String.format("%s%s%s%s%s%s%s", path, File.separator, getSrcFolderName(), File.separator, folder,
-        File.separator, getResourceFolderName());
-    debug("Making {} resource dir: {}", folder, resourceNamePath);
-    String metaInfPath = String.format("%s%s%s%s%s%s%s%s%s", path, File.separator, getSrcFolderName(), File.separator, folder, File.separator,
-        getResourceFolderName(), File.separator, "META-INF");
-    debug("Making {} resource meta dir: {}", folder, metaInfPath);
+    String javaNamePath = String.format("%s%s%s%s%s%s%s", path, File.separator, getSrcFolderName(),
+        File.separator, folder, File.separator, getJavaFolderName());
+    logger.debug("Making {} java dir: {}", folder, javaNamePath);
+    String resourceNamePath = String.format("%s%s%s%s%s%s%s", path, File.separator,
+        getSrcFolderName(), File.separator, folder, File.separator, getResourceFolderName());
+    logger.debug("Making {} resource dir: {}", folder, resourceNamePath);
+    String metaInfPath = String.format("%s%s%s%s%s%s%s%s%s", path, File.separator,
+        getSrcFolderName(), File.separator, folder, File.separator, getResourceFolderName(),
+        File.separator, META_INF);
+    logger.debug("Making {} resource meta dir: {}", folder, metaInfPath);
     return new File(javaNamePath).mkdirs() && new File(resourceNamePath).mkdirs()
         && new File(metaInfPath).mkdirs();
   }

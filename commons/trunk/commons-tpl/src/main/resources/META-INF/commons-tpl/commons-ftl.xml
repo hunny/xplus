@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean name="commons-tpl.freemarker.version" class="freemarker.template.Version">
+    <constructor-arg type="int" value="2" />
+    <constructor-arg type="int" value="3" />
+    <constructor-arg type="int" value="23" />
+  </bean>
+
+  <bean name="commons-tpl.freemarker.configuration" class="freemarker.template.Configuration">
+    <constructor-arg ref="commons-tpl.freemarker.version" />
+  </bean>
+
+  <bean name="commons-tpl.freemarker.classPathConfiguration"
+    class="com.xplus.commons.tpl.impl.ClassPathFreeMarkerConfiguration">
+    <constructor-arg index="0"
+      ref="commons-tpl.freemarker.version" />
+    <constructor-arg index="1"
+      value="${commons-tpl.freemarker.configuration.basePackagePath:/}" />
+  </bean>
+
+  <bean name="commons-tpl.freemarker.filePathConfiguration"
+    class="com.xplus.commons.tpl.impl.FilePathFreeMarkerConfiguration">
+    <constructor-arg index="0"
+      ref="commons-tpl.freemarker.version" />
+    <constructor-arg index="1"
+      value="${commons-tpl.freemarker.configuration.directoryForTemplateLoading:C:\}" />
+  </bean>
+
+  <bean name="commons-tpl.freeMarkerTemplateMaker" class="com.xplus.commons.tpl.impl.FreeMarkerTemplateMaker">
+    <property name="configuration"
+      ref="commons-tpl.freemarker.classPathConfiguration" />
+  </bean>
+
+</beans>

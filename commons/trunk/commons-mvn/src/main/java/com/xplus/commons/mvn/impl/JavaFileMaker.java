@@ -1,5 +1,6 @@
 package com.xplus.commons.mvn.impl;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -35,7 +36,12 @@ public class JavaFileMaker implements FileMaker {
   @Override
   public void make(Map<String, Object> object, String path) {
     logger.debug("Java File Maker Begin...");
-    makePom((Map<String, Object>) object.get("pom"), path);
+    Map<String, Object> pom = (Map<String, Object>) object.get("pom");
+    makePom(pom, path);
+    Map<String, Object> log4j = (Map<String, Object>) object.get("log4j");
+    makeLog4j(log4j, path);
+    makeMain(pom, path);
+    makeTest(pom, path);
   }
 
   protected void makePom(Map<String, Object> object, String path) {
@@ -55,7 +61,23 @@ public class JavaFileMaker implements FileMaker {
       return;
     }
     templateMaker.make(object, String.format("%s/%s", tplPath, "log4j.ftl"),
-        String.format("%s/%s", path, getSrcTestResources(), "log4j.properties"));
+        String.format("%s/%s/%s", path, getSrcTestResources(), "log4j.properties"));
+  }
+
+  protected void makeMain(Map<String, Object> object, String path) {
+    logger.debug("test folder File Maker Begin...");
+    if (null == object || object.isEmpty()) {
+      logger.debug("pom info not found, ignore test folder files.");
+      return;
+    }
+    String artifactId = (String) object.get("artifactId");
+    String xmlPath = String.format("%s/%s/%s/%s", path, getSrcMainResources(),
+        JavaDirMaker.META_INF, artifactId);
+    new File(xmlPath).mkdirs();
+    templateMaker.make(object, String.format("%s/%s", tplPath, "test.xml.ftl"),
+        String.format("%s/%s", xmlPath, String.format("%s-%s", artifactId, ".xml")));
+    templateMaker.make(object, String.format("%s/%s", tplPath, "properties.ftl"), String.format(
+        "%s/%s/%s", path, getSrcMainResources(), String.format("%s%s", artifactId, ".properties")));
   }
 
   protected void makeTest(Map<String, Object> object, String path) {
@@ -65,7 +87,7 @@ public class JavaFileMaker implements FileMaker {
       return;
     }
     String artifactId = (String) object.get("artifactId");
-    templateMaker.make(object, String.format("%s/%s/%s/%s", tplPath, "test.xml.ftl"), String.format(
+    templateMaker.make(object, String.format("%s/%s", tplPath, "test.xml.ftl"), String.format(
         "%s/%s/%s", path, getSrcTestResources(), String.format("%s-%s", artifactId, "test.xml")));
     templateMaker.make(object, String.format("%s/%s", tplPath, "properties.ftl"),
         String.format("%s/%s/%s", path, getSrcTestResources(),
@@ -103,9 +125,8 @@ public class JavaFileMaker implements FileMaker {
         artifactId);
     templateMaker.make(object, String.format("%s/%s", tplPath, "meta.xml.ftl"),
         String.format("%s/%s.xml", metaDir, artifactId));
-    templateMaker.make(object, String.format("%s/%s", tplPath, "properties.ftl"),
-        String.format("%s/%s/%s", path, getSrcMainResources(),
-            String.format("%s%s", artifactId, ".properties")));
+    templateMaker.make(object, String.format("%s/%s", tplPath, "properties.ftl"), String.format(
+        "%s/%s/%s", path, getSrcMainResources(), String.format("%s%s", artifactId, ".properties")));
   }
 
 }

@@ -25,7 +25,7 @@ public class Application {
   }
 
   public void run() {
-    // System.setProperty("commons-ftl.file.forceOverWrite", "true");
+     System.setProperty("commons-ftl.file.forceOverWrite", "true");
     ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(
         "classpath:applicationContext.xml");
     logger.info("Application get started...");

@@ -34,6 +34,7 @@ public class Application {
     Map<String, Object> object = new HashMap<String, Object>();
     object.put("pom", makeModulePom());
     object.put("log4j", makeModuleLog4j());
+    object.put("eclipse", makeEclipse());
 
     projectMaker.make(object, "D:/test/");
     applicationContext.close();
@@ -57,6 +58,14 @@ public class Application {
     object.put("log4jPath", "D:/test");
     object.put("log4jName", "commons-tpl");
     object.put("packageName", "com.xplus.commons.tpl");
+    return object;
+  }
+  
+  private Map<String, Object> makeEclipse() {
+    Map<String, Object> object = new HashMap<String, Object>();
+    object.put("j2seName", "JavaSE-1.7");
+    object.put("projectName", "commons-mvn");
+    object.put("projectNameDesc", "工程描述");
     return object;
   }
 

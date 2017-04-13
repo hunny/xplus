@@ -19,9 +19,11 @@ import com.xplus.commons.tpl.api.TemplateMaker;
  * @author huzexiong
  *
  */
-@Component
+@Component(JavaFileMaker.BEAN_ID)
 public class JavaFileMaker implements FileMaker {
 
+  public static final String BEAN_ID = "commons-mvn.javaFileMaker";
+  
   private final Logger logger = LoggerFactory.getLogger(JavaFileMaker.class);
 
   @Resource(name = "commons-tpl.freeMarkerTemplateMaker")

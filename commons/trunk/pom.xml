@@ -133,6 +133,7 @@
     <spring.version>4.3.7.RELEASE</spring.version>
     <spring-data-redis.version>1.7.8.RELEASE</spring-data-redis.version>
     <spring-security.version>4.2.2.RELEASE</spring-security.version>
+    <zookeeper.version>3.4.10</zookeeper.version>
   </properties>
 
   <dependencyManagement>
@@ -197,6 +198,12 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>${commons-lang3.version}</version>
+      </dependency>
+      <dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>${zookeeper.version}</version>
       </dependency>
       <dependency>
         <groupId>log4j</groupId>

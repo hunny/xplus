@@ -67,4 +67,9 @@ public class EclipseFileMaker implements FileMaker {
         String.format("%s/%s", path, ".project"));
   }
 
+  protected void makeGitignore(Map<String, Object> object, String path) {
+    logger.debug(".gitignore File Maker Begin...");
+    templateMaker.make(object, String.format("%s/%s", tplPath, "gitignore.ftl"),
+        String.format("%s/%s", path, ".gitignore"));
+  }
 }

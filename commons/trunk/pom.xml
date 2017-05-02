@@ -21,6 +21,16 @@
   </scm>
   <repositories>
     <repository>
+      <id>central-maven2</id>
+      <url>http://central.maven.org/maven2/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>central</id>
       <url>http://repo1.maven.org/maven2</url>
       <releases>
@@ -98,6 +108,7 @@
     <module>commons-mvn</module>
     <module>commons-spring</module>
     <module>commons-swing</module>
+    <module>commons-topease</module>
     <module>commons-tpl</module>
     <module>commons-zookeeper</module>
   </modules>
@@ -119,6 +130,7 @@
     <app_copyright><![CDATA[Copyright(C), Xplus Co., Ltd, 2016. All rights reserved.]]></app_copyright>
 
     <alibaba.otter.version>1.0.24</alibaba.otter.version>
+    <atlassian-look-and-feel.version>1.6</atlassian-look-and-feel.version>
     <commons-codec.version>1.9</commons-codec.version>
     <commons-io.version>2.5</commons-io.version>
     <commons-lang3.version>3.4</commons-lang3.version>
@@ -128,12 +140,17 @@
     <java-jwt.version>2.1.0</java-jwt.version>
     <javax.servlet.version>3.0.1</javax.servlet.version>
     <jedis.version>2.6.2</jedis.version>
+    <jtattoo.version>1.6.11</jtattoo.version>
     <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
+    <napkinlaf.version>1.2</napkinlaf.version>
+    <seaglasslookandfeel.version>0.2</seaglasslookandfeel.version>
     <slf4j.version>1.7.21</slf4j.version>
     <spring.version>4.3.7.RELEASE</spring.version>
     <spring-data-redis.version>1.7.8.RELEASE</spring-data-redis.version>
     <spring-security.version>4.2.2.RELEASE</spring-security.version>
+    <substance.version>6.0</substance.version>
+    <weblaf.version>1.28</weblaf.version>
     <zookeeper.version>3.4.10</zookeeper.version>
   </properties>
 
@@ -164,6 +181,12 @@
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/com.jtattoo/JTattoo -->
+      <dependency>
+        <groupId>com.jtattoo</groupId>
+        <artifactId>JTattoo</artifactId>
+        <version>${jtattoo.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.octo.captcha</groupId>
         <artifactId>jcaptcha</artifactId>
@@ -175,6 +198,12 @@
           </exclusion>
         </exclusions>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/com.seaglasslookandfeel/seaglasslookandfeel -->
+      <dependency>
+        <groupId>com.seaglasslookandfeel</groupId>
+        <artifactId>seaglasslookandfeel</artifactId>
+        <version>${seaglasslookandfeel.version}</version>
+      </dependency>
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
@@ -185,10 +214,11 @@
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/de.sciss/weblaf -->
       <dependency>
-        <groupId>org.freemarker</groupId>
-        <artifactId>freemarker</artifactId>
-        <version>${freemarker.version}</version>
+        <groupId>de.sciss</groupId>
+        <artifactId>weblaf</artifactId>
+        <version>${weblaf.version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -207,9 +237,27 @@
         <version>${zookeeper.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.freemarker</groupId>
+        <artifactId>freemarker</artifactId>
+        <version>${freemarker.version}</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.java.net.substance/substance -->
+      <dependency>
+        <groupId>org.java.net.substance</groupId>
+        <artifactId>substance</artifactId>
+        <version>${substance.version}</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
+      <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>${log4j.version}</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/net.sf.squirrel-sql.thirdparty-non-maven/napkinlaf -->
+      <dependency>
+        <groupId>net.sf.squirrel-sql.thirdparty-non-maven</groupId>
+        <artifactId>napkinlaf</artifactId>
+        <version>${napkinlaf.version}</version>
       </dependency>
       <dependency>
         <groupId>org.glassfish</groupId>

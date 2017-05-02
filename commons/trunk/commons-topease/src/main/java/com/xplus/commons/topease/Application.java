@@ -1,28 +1,36 @@
-package com.xplus.commons.swing.example;
+package com.xplus.commons.topease;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
-public class BorderLayoutDemo {
+/**
+ * 应用程序主入口
+ * 
+ * @author huzexiong
+ *
+ */
+public class Application {
+
   public static boolean RIGHT_TO_LEFT = false;
 
   public static void addComponentsToPane(Container contentPane) {
     // Use BorderLayout. Default empty constructor with no horizontal and
-    // vertical
-    // gaps
+    // vertical gaps
     contentPane.setLayout(new BorderLayout(5, 5));
     if (!(contentPane.getLayout() instanceof BorderLayout)) {
       contentPane.add(new JLabel("Container doesn't use BorderLayout!"));
       return;
-    }
-
-    if (RIGHT_TO_LEFT) {
-      contentPane.setComponentOrientation(java.awt.ComponentOrientation.RIGHT_TO_LEFT);
     }
 
     JButton jbnSampleButtons = new JButton("Button 1 (PAGE_START)");
@@ -40,6 +48,17 @@ public class BorderLayoutDemo {
 
     jbnSampleButtons = new JButton("5 (LINE_END)");
     contentPane.add(jbnSampleButtons, BorderLayout.LINE_END);
+    jbnSampleButtons.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
+        for (LookAndFeelInfo tmp : lafInfo) {
+          System.out.println(tmp);
+        }
+      }
+
+    });
   }
 
   private static void createAndShowGUI() {
@@ -47,7 +66,6 @@ public class BorderLayoutDemo {
 
     JFrame frame = new JFrame("BorderLayout Source Demo");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     // Set up the content pane and add swing components to it
     addComponentsToPane(frame.getContentPane());
 
@@ -55,11 +73,18 @@ public class BorderLayoutDemo {
     frame.setVisible(true);
   }
 
+  /**
+   * @param args
+   */
   public static void main(String[] args) {
-    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+    // 设置样式
+    JFrame.setDefaultLookAndFeelDecorated(true); // windows功能失效
+    JDialog.setDefaultLookAndFeelDecorated(true); // Dialog功能失效
+    SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         createAndShowGUI();
       }
     });
   }
+
 }

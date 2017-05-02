@@ -8,31 +8,15 @@
     <artifactId>commons</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>commons-swing</artifactId>
+  <artifactId>commons-topease</artifactId>
   <name>Maven Tools</name>
   <description>Maven Tools.</description>
 
   <dependencies>
     <dependency>
-      <groupId>com.seaglasslookandfeel</groupId>
-      <artifactId>seaglasslookandfeel</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.jtattoo</groupId>
-      <artifactId>JTattoo</artifactId>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-    <dependency>
-      <groupId>net.sf.squirrel-sql.thirdparty-non-maven</groupId>
-      <artifactId>napkinlaf</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.java.net.substance</groupId>
-      <artifactId>substance</artifactId>
-    </dependency>      
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>

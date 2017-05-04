@@ -1,4 +1,4 @@
-package com.xplus.commons.swing.lookandfeel;
+package com.xplus.commons.swing.springboot;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -27,7 +27,6 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicLookAndFeel;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,6 +34,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.stereotype.Component;
 
 import com.jtattoo.plaf.AbstractLookAndFeel;
 
@@ -42,7 +42,8 @@ import com.jtattoo.plaf.AbstractLookAndFeel;
  * @author huzexiong
  *
  */
-public class DynamicChangeLookAndFeel {
+@Component
+public class SwingApp {
 
   public static void changeLaf(JFrame frame, String className) {
     try {
@@ -61,8 +62,8 @@ public class DynamicChangeLookAndFeel {
     SwingUtilities.updateComponentTreeUI(frame);
     frame.pack();
   }
-
-  public static void main(String[] args) {
+  
+  public void run(String... args) throws Exception {
     JFrame.setDefaultLookAndFeelDecorated(true);
     JDialog.setDefaultLookAndFeelDecorated(true);
     SwingUtilities.invokeLater(new Runnable() {
@@ -131,27 +132,11 @@ public class DynamicChangeLookAndFeel {
           }
         });
         
-        lookAndFeelMenu(frame, menuLookAndFeel, btnGroup, "JTattoo", "com/jtattoo/plaf",
+        lookAndFeelMenu(frame, menuLookAndFeel, btnGroup, "JTattoo[bug]", "com/jtattoo/plaf",
             AbstractLookAndFeel.class, new NameHandler() {
           @Override
           public String handle(String name) {
             return name.replaceFirst("com.jtattoo.plaf.", "");
-          }
-        });
-        
-        lookAndFeelMenu(frame, menuLookAndFeel, btnGroup, "jgoodies", "com/jgoodies/looks",
-            BasicLookAndFeel.class, new NameHandler() {
-          @Override
-          public String handle(String name) {
-            return name.replaceFirst("com.jgoodies.looks.", "");
-          }
-        });
-        
-        lookAndFeelMenu(frame, menuLookAndFeel, btnGroup, "tonic", "com/digitprop",
-            MetalLookAndFeel.class, new NameHandler() {
-          @Override
-          public String handle(String name) {
-            return name.replaceFirst("com.digitprop.tonic.", "");
           }
         });
 
@@ -219,8 +204,8 @@ public class DynamicChangeLookAndFeel {
       private void lookAndFeelMenu(final JFrame frame, JMenu mainMenu, ButtonGroup btnGroup,
           String menuName, String basePackage, Class<?> targetType, NameHandler nameHandler) {
         JMenu menuItemSeaGlass = new JMenu(menuName);
-        List<Class<?>> glasses = getClasses(basePackage, targetType);
-        for (final Class tmp : glasses) {
+        List<Class<?>> seaGlasses = getClasses(basePackage, targetType);
+        for (final Class tmp : seaGlasses) {
           String name = nameHandler.handle(tmp.getName());
           JRadioButtonMenuItem radioButtonMenuItem = new JRadioButtonMenuItem(name);
           btnGroup.add(radioButtonMenuItem);
@@ -236,7 +221,7 @@ public class DynamicChangeLookAndFeel {
       }
     });
   }
-
+  
   interface NameHandler {
     String handle(String name);
   }

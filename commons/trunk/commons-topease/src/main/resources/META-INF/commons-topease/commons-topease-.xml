@@ -7,7 +7,7 @@
     http://www.springframework.org/schema/context/spring-context.xsd">
 
   <!-- make applicationContext to know placeholder -->
-  <context:property-placeholder location="classpath:commons-topease-test.properties"
+  <context:property-placeholder location="classpath:commons-topease.properties"
     file-encoding="utf-8" />
 
 </beans>

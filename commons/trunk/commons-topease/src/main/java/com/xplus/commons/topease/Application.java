@@ -62,8 +62,6 @@ public class Application {
   }
 
   private static void createAndShowGUI() {
-    JFrame.setDefaultLookAndFeelDecorated(true);
-
     JFrame frame = new JFrame("BorderLayout Source Demo");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // Set up the content pane and add swing components to it

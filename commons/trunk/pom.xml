@@ -140,6 +140,7 @@
     <java-jwt.version>2.1.0</java-jwt.version>
     <javax.servlet.version>3.0.1</javax.servlet.version>
     <jedis.version>2.6.2</jedis.version>
+    <jgoodies.version>2.2.2</jgoodies.version>
     <jtattoo.version>1.6.11</jtattoo.version>
     <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
@@ -147,9 +148,11 @@
     <seaglasslookandfeel.version>0.2</seaglasslookandfeel.version>
     <slf4j.version>1.7.21</slf4j.version>
     <spring.version>4.3.7.RELEASE</spring.version>
+    <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
     <spring-data-redis.version>1.7.8.RELEASE</spring-data-redis.version>
     <spring-security.version>4.2.2.RELEASE</spring-security.version>
     <substance.version>6.0</substance.version>
+    <toniclf.version>1.0.5</toniclf.version>
     <weblaf.version>1.28</weblaf.version>
     <zookeeper.version>3.4.10</zookeeper.version>
   </properties>
@@ -175,6 +178,11 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
         <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.jgoodies</groupId>
+        <artifactId>looks</artifactId>
+        <version>${jgoodies.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -260,6 +268,11 @@
         <version>${napkinlaf.version}</version>
       </dependency>
       <dependency>
+        <groupId>net.sf.squirrel-sql.thirdparty-non-maven</groupId>
+        <artifactId>toniclf</artifactId>
+        <version>${toniclf.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>javax.servlet</artifactId>
         <version>${javax.servlet.version}</version>
@@ -283,6 +296,16 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-beans</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-autoconfigure</artifactId>
+        <version>${spring-boot.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>

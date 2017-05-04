@@ -18,6 +18,10 @@
       <artifactId>seaglasslookandfeel</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.jgoodies</groupId>
+      <artifactId>looks</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.jtattoo</groupId>
       <artifactId>JTattoo</artifactId>
     </dependency>
@@ -28,6 +32,10 @@
     <dependency>
       <groupId>net.sf.squirrel-sql.thirdparty-non-maven</groupId>
       <artifactId>napkinlaf</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.squirrel-sql.thirdparty-non-maven</groupId>
+      <artifactId>toniclf</artifactId>
     </dependency>
     <dependency>
       <groupId>org.java.net.substance</groupId>
@@ -44,6 +52,14 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>

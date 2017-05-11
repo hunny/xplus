@@ -1,7 +1,11 @@
 package com.xplus.commons.topease;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -22,12 +26,18 @@ public class MainFrame extends JFrame {
     JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
-  private JMenuBar mBar = new JMenuBar();
+  private JMenuBar menuBar = new JMenuBar();
+  private List<JMenu> menus = new ArrayList<JMenu>();
 
   public MainFrame() {
     this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    this.setLocationByPlatform(true);
-    this.setJMenuBar(mBar);
+    this.setLocationByPlatform(false);
+    if (!menus.isEmpty()) {
+    	this.setJMenuBar(menuBar);
+    	for (JMenu menu : menus) {
+    		menuBar.add(menu);
+    	}
+    }
   }
 
   public static void changeLookAndFeel(JFrame frame) {

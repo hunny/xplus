@@ -3,7 +3,6 @@ package com.xplus.commons.topease;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
-import javax.annotation.Resource;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,19 +10,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @author huzexiong
  *
  */
-@Component(SwingAppRunnable.BEAN_ID)
 public class SwingAppRunnable implements Runnable {
   
-  public static final String BEAN_ID = "commons-topease.swing.runnable.SwingAppRunnable";
-  
-  @Resource(name = MainFrame.BEAN_ID)
   private JFrame frame;
+
+  public JFrame getFrame() {
+    return frame;
+  }
+
+  public void setFrame(JFrame frame) {
+    this.frame = frame;
+  }
 
   @Override
   public void run() {

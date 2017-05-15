@@ -12,12 +12,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.springframework.stereotype.Component;
-
-@Component(MainFrame.BEAN_ID)
 public class MainFrame extends JFrame {
-
-  public static final String BEAN_ID = "commons-topease.swing.frame.MainFrame";
 
   private static final long serialVersionUID = 3976209541974109976L;
 

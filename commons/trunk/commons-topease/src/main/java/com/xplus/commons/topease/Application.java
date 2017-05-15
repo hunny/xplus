@@ -1,10 +1,7 @@
 package com.xplus.commons.topease;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * 应用程序主入口
@@ -12,14 +9,13 @@ import org.springframework.context.annotation.Configuration;
  * @author huzexiong
  *
  */
-@Configuration
-@ComponentScan
-@EnableAutoConfiguration
 public class Application {
   
   public static void main(String[] args) throws Exception {
-    ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class)
-        .headless(false).run(args);
+    System.setProperty("java.awt.headless", "false");
+//    ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class)
+//        .headless(false).run(args);
+    ConfigurableApplicationContext context = SpringApplication.run(new Object[] {"classpath:/META-INF/commons-topease/commons-topease.xml"}, args);
     SwingApp appFrame = context.getBean(SwingApp.class);
     appFrame.run(args);
   }

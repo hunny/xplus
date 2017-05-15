@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <context:annotation-config />
+
+  <!-- make applicationContext to know placeholder -->
+  <context:property-placeholder location="classpath:commons-topease.properties, classpath:log4j.properties"
+    file-encoding="utf-8" />
+
+  <bean id="commons-topease.swing.frame.MainFrame" class="com.xplus.commons.topease.MainFrame" />
+  
+  <bean id="commons-topease.swing.runnable.SwingAppRunnable" class="com.xplus.commons.topease.SwingAppRunnable" >
+    <property name="frame" ref="commons-topease.swing.frame.MainFrame" />
+  </bean>
+  
+  <bean id="commons-topease.swing.swingApp" class="com.xplus.commons.topease.SwingApp" >
+    <property name="runnable" ref="commons-topease.swing.runnable.SwingAppRunnable" />
+  </bean>
+
+</beans>

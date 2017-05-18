@@ -77,7 +77,7 @@ public class JavaFileMaker implements FileMaker {
         JavaDirMaker.META_INF, artifactId);
     new File(xmlPath).mkdirs();
     templateMaker.make(object, String.format("%s/%s", tplPath, "test.xml.ftl"),
-        String.format("%s/%s", xmlPath, String.format("%s-%s", artifactId, ".xml")));
+        String.format("%s/%s", xmlPath, String.format("%s%s", artifactId, ".xml")));
     templateMaker.make(object, String.format("%s/%s", tplPath, "properties.ftl"), String.format(
         "%s/%s/%s", path, getSrcMainResources(), String.format("%s%s", artifactId, ".properties")));
   }

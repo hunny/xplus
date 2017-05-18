@@ -110,6 +110,7 @@
     <module>commons-swing</module>
     <module>commons-topease</module>
     <module>commons-tpl</module>
+    <module>commons-util</module>
     <module>commons-zookeeper</module>
   </modules>
 

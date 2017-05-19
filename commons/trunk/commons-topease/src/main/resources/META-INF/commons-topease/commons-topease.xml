@@ -9,17 +9,39 @@
   <context:annotation-config />
 
   <!-- make applicationContext to know placeholder -->
-  <context:property-placeholder location="classpath:commons-topease.properties, classpath:log4j.properties"
+  <context:property-placeholder
+    location="classpath:commons-topease.properties, classpath:log4j.properties"
     file-encoding="utf-8" />
 
-  <bean id="commons-topease.swing.frame.MainFrame" class="com.xplus.commons.topease.MainFrame" />
-  
-  <bean id="commons-topease.swing.runnable.SwingAppRunnable" class="com.xplus.commons.topease.SwingAppRunnable" >
-    <property name="frame" ref="commons-topease.swing.frame.MainFrame" />
+  <bean id="commons-topease.swing.frame.MainFrame" class="com.xplus.commons.topease.MainFrame"
+    init-method="init">
+    <property name="menus">
+      <list>
+        <ref bean="commons-topease.swing.menu.TopeaseMenu" />
+        <ref bean="commons-topease.swing.menu.ExcelMenu" />
+      </list>
+    </property>
   </bean>
   
-  <bean id="commons-topease.swing.swingApp" class="com.xplus.commons.topease.SwingApp" >
-    <property name="runnable" ref="commons-topease.swing.runnable.SwingAppRunnable" />
+  <bean id="commons-topease.swing.menu.TopeaseMenu" class="com.xplus.commons.topease.TopeaseMenu"
+    init-method="init">
+    <property name="frame" ref="commons-topease.swing.frame.MainFrame" />
+    <property name="text" value="Topease"/>
+  </bean>
+  
+  <bean id="commons-topease.swing.menu.ExcelMenu" class="com.xplus.commons.topease.ExcelMenu"
+    init-method="init">
+    <property name="frame" ref="commons-topease.swing.frame.MainFrame" />
+    <property name="text" value="Excel"/>
+  </bean>
+
+  <bean id="commons-topease.swing.runnable.SwingAppRunnable" class="com.xplus.commons.topease.SwingAppRunnable">
+    <property name="frame" ref="commons-topease.swing.frame.MainFrame" />
+  </bean>
+
+  <bean id="commons-topease.swing.swingApp" class="com.xplus.commons.topease.SwingApp">
+    <property name="runnable"
+      ref="commons-topease.swing.runnable.SwingAppRunnable" />
   </bean>
 
 </beans>

@@ -7,12 +7,12 @@ import javax.swing.JMenu;
  * @author huzexiong
  *
  */
-public class TopeaseMenu extends JMenu {
+public class ExcelMenu extends JMenu {
 
-  private static final long serialVersionUID = 655099742116411600L;
+  private static final long serialVersionUID = 7985693349048318909L;
   
   private JFrame frame;
-  
+
   public JFrame getFrame() {
     return frame;
   }
@@ -21,9 +21,7 @@ public class TopeaseMenu extends JMenu {
     this.frame = frame;
   }
 
-
   public void init() {
-    
   }
-
+  
 }

@@ -24,14 +24,22 @@ public class MainFrame extends JFrame {
   private JMenuBar menuBar = new JMenuBar();
   private List<JMenu> menus = new ArrayList<JMenu>();
 
-  public MainFrame() {
+  public List<JMenu> getMenus() {
+    return menus;
+  }
+
+  public void setMenus(List<JMenu> menus) {
+    this.menus = menus;
+  }
+  
+  public void init() {
     this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     this.setLocationByPlatform(false);
     if (!menus.isEmpty()) {
-    	this.setJMenuBar(menuBar);
-    	for (JMenu menu : menus) {
-    		menuBar.add(menu);
-    	}
+        this.setJMenuBar(menuBar);
+        for (JMenu menu : menus) {
+            menuBar.add(menu);
+        }
     }
   }
 

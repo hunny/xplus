@@ -39,6 +39,9 @@
 
   <modules>
     <module>xplus-api</module>
+    <module>xplus-service</module>
+    <module>xplus-setup</module>
+    <module>xplus-web</module>
   </modules>
 
   <properties>
@@ -58,6 +61,7 @@
     <java-jwt.version>2.1.0</java-jwt.version>
     <javax.servlet.version>3.0.1</javax.servlet.version>
     <jedis.version>2.6.2</jedis.version>
+    <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.21</slf4j.version>
     <spring.version>3.2.17.RELEASE</spring.version>
@@ -107,6 +111,11 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -163,6 +172,11 @@
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-core</artifactId>
         <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${spring.version}</version>
       </dependency>
       <dependency>
         <groupId>redis.clients</groupId>

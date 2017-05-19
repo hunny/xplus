@@ -38,7 +38,7 @@ public class FreeMarkerTemplateMaker implements TemplateMaker {
   }
 
   @Override
-  public void make(Map<String, Object> values, String src, String dest) {
+  public void make(Object model, String src, String dest) {
     Writer fileWriter = null;
     try {
       Template template = configuration.getTemplate(src);
@@ -48,7 +48,7 @@ public class FreeMarkerTemplateMaker implements TemplateMaker {
             file.getName(), file.getAbsolutePath()));
       }
       fileWriter = new FileWriter(file);
-      template.process(values, fileWriter);
+      template.process(model, fileWriter);
     } catch (Exception e) {
       logger.error(e.getMessage());
       throw new RuntimeException(e);

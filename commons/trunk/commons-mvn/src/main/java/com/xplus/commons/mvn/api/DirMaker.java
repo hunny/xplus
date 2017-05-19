@@ -6,8 +6,8 @@ package com.xplus.commons.mvn.api;
  * @author huzexiong
  *
  */
-public interface DirMaker {
+public interface DirMaker<T extends Maker> {
   
-  void make(String path);
+  void make(T t);
 
 }

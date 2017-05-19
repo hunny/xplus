@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>${projectName}</name>
-	<comment>${projectNameDesc}</comment>
+	<name>${name}</name>
+	<comment>${description}</comment>
 	<projects>
 	</projects>
 	<buildSpec>

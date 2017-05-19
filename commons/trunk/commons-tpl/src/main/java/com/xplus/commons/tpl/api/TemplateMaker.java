@@ -1,7 +1,5 @@
 package com.xplus.commons.tpl.api;
 
-import java.util.Map;
-
 /**
  * 使用模板生成
  * 
@@ -17,6 +15,6 @@ public interface TemplateMaker {
    * @param src
    * @param dest
    */
-  void make(Map<String, Object> t, String src, String dest);
+  void make(Object model, String src, String dest);
 
 }

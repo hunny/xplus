@@ -72,6 +72,17 @@
       </snapshots>
     </repository>
     <repository>
+      <id>nexus-aliyun</id>
+      <name>Nexus aliyun</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>sonatype-release</id>
       <name>sonatype-release</name>
       <url>https://oss.sonatype.org/service/local/repositories/releases/content</url>

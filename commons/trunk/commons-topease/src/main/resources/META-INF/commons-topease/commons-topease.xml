@@ -13,8 +13,13 @@
     location="classpath:commons-topease.properties, classpath:log4j.properties"
     file-encoding="utf-8" />
 
+  <bean id="commons-topease.swing.desktopPane.DesktopPane" class="com.xplus.commons.topease.DesktopPan"
+    init-method="init">
+  </bean>
+  
   <bean id="commons-topease.swing.frame.MainFrame" class="com.xplus.commons.topease.MainFrame"
     init-method="init">
+    <property name="desktopPane" ref="commons-topease.swing.desktopPane.DesktopPane" />
     <property name="menus">
       <list>
         <ref bean="commons-topease.swing.menu.TopeaseMenu" />
@@ -22,17 +27,25 @@
       </list>
     </property>
   </bean>
-  
+
   <bean id="commons-topease.swing.menu.TopeaseMenu" class="com.xplus.commons.topease.TopeaseMenu"
     init-method="init">
-    <property name="frame" ref="commons-topease.swing.frame.MainFrame" />
-    <property name="text" value="Topease"/>
+    <property name="text" value="Topease" />
+    <property name="menuItems">
+      <list>
+        <ref bean="commons-topease.swing.menuItem.CodeMenuItem" />
+      </list>
+    </property>
   </bean>
-  
+
+  <bean id="commons-topease.swing.menuItem.CodeMenuItem" class="com.xplus.commons.topease.CodeMenuItem"
+    init-method="init">
+    <property name="text" value="Code" />
+  </bean>
+
   <bean id="commons-topease.swing.menu.ExcelMenu" class="com.xplus.commons.topease.ExcelMenu"
     init-method="init">
-    <property name="frame" ref="commons-topease.swing.frame.MainFrame" />
-    <property name="text" value="Excel"/>
+    <property name="text" value="Excel" />
   </bean>
 
   <bean id="commons-topease.swing.runnable.SwingAppRunnable" class="com.xplus.commons.topease.SwingAppRunnable">

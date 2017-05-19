@@ -1,8 +1,12 @@
 package com.xplus.commons.topease;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -21,8 +25,19 @@ public class MainFrame extends JFrame {
     JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
+  private int width = 800;
+  private int height = 600;
   private JMenuBar menuBar = new JMenuBar();
   private List<JMenu> menus = new ArrayList<JMenu>();
+  private JDesktopPane desktopPane = null;
+
+  public JDesktopPane getDesktopPane() {
+    return desktopPane;
+  }
+
+  public void setDesktopPane(JDesktopPane desktopPane) {
+    this.desktopPane = desktopPane;
+  }
 
   public List<JMenu> getMenus() {
     return menus;
@@ -40,6 +55,13 @@ public class MainFrame extends JFrame {
         for (JMenu menu : menus) {
             menuBar.add(menu);
         }
+    }
+    this.setPreferredSize(new Dimension(width, height));
+    if (null != desktopPane) {
+      //TODO 
+      Container contentPane = getContentPane();
+      contentPane.add(desktopPane, BorderLayout.CENTER);
+      this.setContentPane(desktopPane);
     }
   }
 

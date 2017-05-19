@@ -29,13 +29,13 @@ public class SwingAppRunnable implements Runnable {
   @Override
   public void run() {
     MainFrame.changeLookAndFeel(frame);
-    JPanel panel = new JPanel(new GridLayout(3, 5));
-    panel.setBorder(BorderFactory.createEmptyBorder(10, // top
-        10, // left
-        10, // bottom
-        10) // right
-    );
-
+//    JPanel panel = new JPanel(new GridLayout(3, 5));
+//    panel.setBorder(BorderFactory.createEmptyBorder(10, // top
+//        10, // left
+//        10, // bottom
+//        10) // right
+//    );
+//
     DefaultTableModel model = new DefaultTableModel(new Object[][] {}, new String[] {
         "First", "Second" });
     model.addRow(new Object[] {
@@ -47,7 +47,7 @@ public class SwingAppRunnable implements Runnable {
     model.addRow(new Object[] {
         "Some text 4", "Another text 4" });
     JTable table = new JTable(model);
-    frame.add(panel, BorderLayout.NORTH);
+//    frame.add(panel, BorderLayout.NORTH);
     JScrollPane scrollPane = new JScrollPane(table);
     scrollPane.setBorder(BorderFactory.createEtchedBorder());
     frame.add(scrollPane, BorderLayout.CENTER);

@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import com.xplus.commons.mvn.api.FileMaker;
+import com.xplus.commons.mvn.impl.entity.BClassPath;
 import com.xplus.commons.mvn.impl.entity.BEclipse;
+import com.xplus.commons.mvn.impl.entity.BGitIgnore;
+import com.xplus.commons.mvn.impl.entity.BProject;
 
 /**
  * 创建eclipse的classpath和project文件
@@ -24,13 +27,13 @@ public class EclipseFileMakerImpl implements FileMaker<BEclipse> {
   private final Logger logger = LoggerFactory.getLogger(EclipseFileMakerImpl.class);
 
   @Resource(name = ClassPathFileMakerImpl.BEAN_ID)
-  private FileMaker classPathMaker;
+  private FileMaker<BClassPath> classPathMaker;
 
   @Resource(name = ProjectFileMakerImpl.BEAN_ID)
-  private FileMaker projectMaker;
+  private FileMaker<BProject> projectMaker;
 
   @Resource(name = GitIgnoreFileMakerImpl.BEAN_ID)
-  private FileMaker gitIgnoreMaker;
+  private FileMaker<BGitIgnore> gitIgnoreMaker;
 
   @Override
   public void make(BEclipse eclipse) {

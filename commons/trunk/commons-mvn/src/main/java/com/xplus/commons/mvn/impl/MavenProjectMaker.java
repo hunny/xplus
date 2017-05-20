@@ -26,22 +26,22 @@ import com.xplus.commons.mvn.impl.entity.BPropXml;
 public class MavenProjectMaker {
 
   @Resource(name = JavaDirMakerImpl.BEAN_ID)
-  private DirMaker javaDirMaker;
+  private DirMaker<BJavaDir> javaDirMaker;
   
   @Resource(name = JavaTestDirMakerImpl.BEAN_ID)
-  private DirMaker javaTestDirMaker;
+  private DirMaker<BJavaTestDir> javaTestDirMaker;
   
   @Resource(name = PomFileMakerImpl.BEAN_ID)
-  private FileMaker pomFileMaker;
+  private FileMaker<BPom> pomFileMaker;
   
   @Resource(name = PropXmlFileMakerImpl.BEAN_ID)
-  private FileMaker propXmlFileMaker;
+  private FileMaker<BPropXml> propXmlFileMaker;
   
   @Resource(name = Log4jFileMakerImpl.BEAN_ID)
-  private FileMaker log4jFileMaker;
+  private FileMaker<BLog4j> log4jFileMaker;
   
   @Resource(name = EclipseFileMakerImpl.BEAN_ID)
-  private FileMaker eclipseFileMaker;
+  private FileMaker<BEclipse> eclipseFileMaker;
   
   public void make(BPom pom) {
     BJavaDir javaDir = new BJavaDir();

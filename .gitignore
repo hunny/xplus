@@ -57,3 +57,6 @@ local.properties
 */target/*
 *.settings
 */.settings/*
+xplus
+*/target/**
+**/target/

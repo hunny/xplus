@@ -40,6 +40,11 @@
 	<bean id="commons-topease.swing.menu.AboutMenu" class="com.xplus.commons.topease.impl.ui.menu.DefaultMenu"
 		init-method="init">
 		<property name="text" value="About" />
+		<property name="menuItems">
+			<list>
+				<ref bean="commons-topease.swing.menuItem.AboutMenuItem" />
+			</list>
+		</property>
 	</bean>
 
 </beans>

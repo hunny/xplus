@@ -24,4 +24,10 @@
 		<property name="title" value="Code." />
 	</bean>
 
+	<bean id="commons-topease.swing.intrnalFrame.AboutInternalFrame"
+		class="com.xplus.commons.topease.impl.ui.internalframe.AboutInternalFrame"
+		init-method="init">
+		<property name="title" value="关于本程序" />
+	</bean>
+
 </beans>

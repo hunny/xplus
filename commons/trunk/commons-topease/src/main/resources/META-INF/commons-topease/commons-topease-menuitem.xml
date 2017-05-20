@@ -34,7 +34,8 @@
 		<property name="text" value="ExportExcel" />
 		<property name="actions">
 			<list>
-				<ref bean="commons-topease.swing.action.menuItem.ExportExcelMenuItemAction" />
+				<ref
+					bean="commons-topease.swing.action.menuItem.ExportExcelMenuItemAction" />
 			</list>
 		</property>
 	</bean>
@@ -47,6 +48,17 @@
 			<list>
 				<ref
 					bean="commons-topease.swing.action.menuItem.CleanMavenMenuItemAction" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="commons-topease.swing.menuItem.AboutMenuItem"
+		class="com.xplus.commons.topease.impl.ui.menuitem.DefaultInternalFrameMenuItem"
+		init-method="init">
+		<property name="text" value="About" />
+		<property name="actions">
+			<list>
+				<ref bean="commons-topease.swing.action.menuItem.AboutMenuItemAction" />
 			</list>
 		</property>
 	</bean>

@@ -45,7 +45,6 @@ public class DefaultInternalFrame extends JInternalFrame implements MethodInitab
 	}
 	
 	public JPanel getPanel() {
-		setMessage("覆盖这个方法写UI.");
 		return new JPanel();
 	}
 	

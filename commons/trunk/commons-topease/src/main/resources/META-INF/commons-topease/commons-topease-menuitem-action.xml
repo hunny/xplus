@@ -11,7 +11,7 @@
 		<property name="internalFrame"
 			ref="commons-topease.swing.intrnalFrame.CleanMavenInternalFrame" />
 	</bean>
-	
+
 	<bean id="commons-topease.swing.action.menuItem.ExportExcelMenuItemAction"
 		class="com.xplus.commons.topease.impl.action.menuitem.DefaultInternalFrameMenuItemAction">
 		<property name="internalFrame"
@@ -22,6 +22,12 @@
 		class="com.xplus.commons.topease.impl.action.menuitem.DefaultInternalFrameMenuItemAction">
 		<property name="internalFrame"
 			ref="commons-topease.swing.intrnalFrame.CodeInternalFrame" />
+	</bean>
+
+	<bean id="commons-topease.swing.action.menuItem.AboutMenuItemAction"
+		class="com.xplus.commons.topease.impl.action.menuitem.DefaultInternalFrameMenuItemAction">
+		<property name="internalFrame"
+			ref="commons-topease.swing.intrnalFrame.AboutInternalFrame" />
 	</bean>
 
 </beans>

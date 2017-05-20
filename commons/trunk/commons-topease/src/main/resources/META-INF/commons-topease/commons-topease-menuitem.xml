@@ -10,6 +10,11 @@
 		class="com.xplus.commons.topease.impl.ui.menuitem.DefaultInternalFrameMenuItem"
 		init-method="init">
 		<property name="text" value="Code" />
+		<property name="actions">
+			<list>
+				<ref bean="commons-topease.swing.action.menuItem.CodeMenuItemAction"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="commons-topease.swing.menuItem.ExitMenuItem"

@@ -10,5 +10,10 @@
 		class="com.xplus.commons.topease.impl.ui.internalframe.CleanMavenInternalFrame" init-method="init">
 		<property name="title" value="Clean Maven Folder Files." />
 	</bean>
+	
+		<bean id="commons-topease.swing.intrnalFrame.CodeInternalFrame"
+		class="com.xplus.commons.topease.impl.ui.internalframe.DefaultInternalFrame" init-method="init">
+		<property name="title" value="Code." />
+	</bean>
 
 </beans>

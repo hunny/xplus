@@ -1,7 +1,5 @@
 package com.xplus.commons.topease.impl.ui.internalframe;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,7 +16,6 @@ import java.util.concurrent.Future;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,34 +27,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CleanMavenInternalFrame extends JInternalFrame {
+public class CleanMavenInternalFrame extends DefaultInternalFrame {
 
 	private static final long serialVersionUID = -8980360742741568325L;
 	private static final Logger logger = LoggerFactory.getLogger(CleanMavenInternalFrame.class);
 
-	private int width = 400;
-	private int height = 300;
 	private JTextField txtPath = new JTextField();
 	private JButton btnOk = new JButton("确定");
 	private JButton btnSelector = new JButton("选择...");
-	private JLabel message = new JLabel();
 
 	public void init() {
-		this.setResizable(true);
-		this.setMaximizable(true);
-		this.setClosable(true);
-		this.setIconifiable(true);
-		Container container = this.getContentPane();
-		container.setLayout(new BorderLayout());
-		container.add(mainPanel(), BorderLayout.CENTER);
-		container.add(message, BorderLayout.SOUTH);
-		this.setBounds(0, 0, width, height);
-		this.setPreferredSize(new Dimension(width, height));
+		super.init();
 		txtPath.setPreferredSize(new Dimension(120, 30));
 		btnSelector.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				message.setText("选择目录");
+				setMessage("选择目录");
 				select();
 			}
 		});
@@ -65,7 +50,7 @@ public class CleanMavenInternalFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!StringUtils.isEmpty(txtPath.getText())) {
-					message.setText(String.format("准备清理目录[%s]", txtPath.getText()));
+					setMessage(String.format("准备清理目录[%s]", txtPath.getText()));
 					SwingUtilities.invokeLater(new Runnable() {
 			      public void run() {
 							execute(new File(txtPath.getText()));
@@ -76,10 +61,6 @@ public class CleanMavenInternalFrame extends JInternalFrame {
 				}
 			}
 		});
-	}
-
-	public JInternalFrame current() {
-		return this;
 	}
 
 	private void select() {
@@ -97,12 +78,12 @@ public class CleanMavenInternalFrame extends JInternalFrame {
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			if (fileChooser.getSelectedFile().isDirectory()) {
 				txtPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
-				message.setText(txtPath.getText());
+				setMessage(txtPath.getText());
 			}
 		}
 	}
 
-	private JPanel mainPanel() {
+	public JPanel getPanel() {
 		JPanel pane = new JPanel();
 		pane.setBorder(BorderFactory.createEtchedBorder());
 		pane.setLayout(new GridBagLayout());
@@ -188,7 +169,7 @@ public class CleanMavenInternalFrame extends JInternalFrame {
 			e.printStackTrace();
 		}
 		logger.info("执行完毕。");
-		message.setText("执行完毕。");
+		setMessage("执行完毕。");
 		// shut down the executor service now
 		executorService.shutdown();
 	}

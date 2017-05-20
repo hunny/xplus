@@ -7,6 +7,8 @@
     http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:annotation-config />
+	
+	<context:component-scan base-package="com.xplus.commons.topease"/>
 
 	<!-- make applicationContext to know placeholder -->
 	<context:property-placeholder

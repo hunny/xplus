@@ -7,11 +7,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,19 +21,25 @@ import javax.swing.filechooser.FileSystemView;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.xplus.commons.topease.impl.service.CleanMavenServiceImpl;
 
 public class CleanMavenInternalFrame extends DefaultInternalFrame {
 
 	private static final long serialVersionUID = -8980360742741568325L;
 	private static final Logger logger = LoggerFactory.getLogger(CleanMavenInternalFrame.class);
 
+	@Autowired
+	private CleanMavenServiceImpl cleanMavenServiceImpl;
+	
 	private JTextField txtPath = new JTextField();
 	private JButton btnOk = new JButton("确定");
-	private JButton btnSelector = new JButton("选择...");
+	private JButton btnSelector = new JButton("...");
 
 	public void init() {
 		super.init();
-		txtPath.setPreferredSize(new Dimension(120, 30));
+		txtPath.setPreferredSize(new Dimension(180, 30));
 		btnSelector.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -53,7 +54,9 @@ public class CleanMavenInternalFrame extends DefaultInternalFrame {
 					setMessage(String.format("准备清理目录[%s]", txtPath.getText()));
 					SwingUtilities.invokeLater(new Runnable() {
 			      public void run() {
-							execute(new File(txtPath.getText()));
+			      	cleanMavenServiceImpl.execute(new File(txtPath.getText()));
+							logger.info("执行完毕。");
+							setMessage("执行完毕。");
 			      }
 			    });
 				} else {
@@ -121,57 +124,9 @@ public class CleanMavenInternalFrame extends DefaultInternalFrame {
 		// c.gridwidth = 2; // 2 columns wide
 		// c.gridy = 2; // third row
 		// pane.add(btnOk, c);
-		return pane;
-	}
-
-	public static void check(File file) {
-		if (file.isDirectory()) {
-			File[] files = file.listFiles();
-			for (File tmp : files) {
-				check(tmp);
-			}
-		} else {
-			if (file.getName().endsWith("lastUpdated") || file.getName().endsWith("-lastUpdated.properties")) {
-				logger.info(file.getAbsolutePath());
-				file.delete();
-				File fileParent = new File(file.getParent());
-				File[] files = fileParent.listFiles();
-				boolean hasJarFile = false;
-				for (File f : files) {
-					if (!f.isDirectory() && f.getName().endsWith(".jar")) {
-						hasJarFile = true;
-						break;
-					}
-				}
-				if (!hasJarFile) {
-					logger.info("delete : " + fileParent.getAbsolutePath() + " ");
-					fileParent.deleteOnExit();
-				}
-			}
-		}
-	}
-
-	private void execute(final File path) {
-		ExecutorService executorService = Executors.newSingleThreadExecutor();
-		Future<Void> future = executorService.submit(new Callable<Void>() {
-			@Override
-			public Void call() throws Exception {
-				Thread.sleep(5000);
-				check(path);
-				return null;
-			}
-		});
-		try {
-			// print the return value of Future, notice the output delay in console
-			// because Future.get() waits for task to get completed
-			future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
-		logger.info("执行完毕。");
-		setMessage("执行完毕。");
-		// shut down the executor service now
-		executorService.shutdown();
+		JPanel parent = super.getPanel();
+		parent.add(pane);
+		return parent;
 	}
 
 }

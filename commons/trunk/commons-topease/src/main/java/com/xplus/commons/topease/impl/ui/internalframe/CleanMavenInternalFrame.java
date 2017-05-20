@@ -1,4 +1,4 @@
-package com.xplus.commons.topease;
+package com.xplus.commons.topease.impl.ui.internalframe;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -113,7 +113,10 @@ public class CleanMavenInternalFrame extends JInternalFrame {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 0.1;
-		pane.add(new JLabel("maven路径"), c);
+		JLabel label = new JLabel("maven路径");
+		label.setBorder(BorderFactory.createEtchedBorder());
+		label.setPreferredSize(new Dimension(80, 30));
+		pane.add(label, c);
 		c.gridx = 1;
 		c.weightx = 0.8;
 		pane.add(txtPath, c);

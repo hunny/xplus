@@ -1,4 +1,4 @@
-package com.xplus.commons.topease;
+package com.xplus.commons.topease.impl.action.menuitem;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,17 +6,16 @@ import java.awt.event.ActionListener;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JMenuItem;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CleanMavenMenuItem extends JMenuItem {
+import com.xplus.commons.topease.impl.ui.main.MainFrame;
 
-	private static final long serialVersionUID = 684495393643486898L;
-	
-	private static final Logger logger = LoggerFactory.getLogger(CleanMavenMenuItem.class);
+public class DefaultInternalFrameMenuItemAction implements ActionListener {
+
+	private static final Logger logger = LoggerFactory.getLogger(DefaultInternalFrameMenuItemAction.class);
 	
 	@Autowired
 	private JFrame frame = null;
@@ -31,17 +30,13 @@ public class CleanMavenMenuItem extends JMenuItem {
 	public void setInternalFrame(JInternalFrame internalFrame) {
 		this.internalFrame = internalFrame;
 	}
-
-	public void init() {
-		this.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        logger.info("点击菜单。");
-        desktopPane.add(getInternalFrame());
-        getInternalFrame().setVisible(true);
-        MainFrame.changeLookAndFeel(frame);
-      }
-    });
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		logger.info("点击菜单。");
+    desktopPane.add(getInternalFrame());
+    getInternalFrame().setVisible(true);
+    MainFrame.changeLookAndFeel(frame);
 	}
 
 }

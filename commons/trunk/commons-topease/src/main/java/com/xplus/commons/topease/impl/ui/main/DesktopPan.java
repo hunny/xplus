@@ -1,4 +1,4 @@
-package com.xplus.commons.topease;
+package com.xplus.commons.topease.impl.ui.main;
 
 import java.awt.Dimension;
 

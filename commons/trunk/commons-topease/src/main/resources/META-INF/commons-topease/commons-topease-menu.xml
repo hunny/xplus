@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="commons-topease.swing.menu.TopeaseMenu" class="com.xplus.commons.topease.impl.ui.menu.DefaultMenu"
+		init-method="init">
+		<property name="text" value="Topease" />
+		<property name="menuItems">
+			<list>
+				<ref bean="commons-topease.swing.menuItem.CodeMenuItem" />
+				<ref bean="commons-topease.swing.menuItem.ExitMenuItem" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="commons-topease.swing.menu.ExcelMenu" class="com.xplus.commons.topease.impl.ui.menu.DefaultMenu"
+		init-method="init">
+		<property name="text" value="Excel" />
+	</bean>
+
+	<bean id="commons-topease.swing.menu.ToolMenu" class="com.xplus.commons.topease.impl.ui.menu.DefaultMenu"
+		init-method="init">
+		<property name="text" value="Tool" />
+		<property name="menuItems">
+			<list>
+				<ref bean="commons-topease.swing.menuItem.CleanMavenMenuItem" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="commons-topease.swing.menu.AboutMenu" class="com.xplus.commons.topease.impl.ui.menu.DefaultMenu"
+		init-method="init">
+		<property name="text" value="About" />
+	</bean>
+
+</beans>

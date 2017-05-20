@@ -13,11 +13,16 @@
 		location="classpath:commons-topease.properties, classpath:log4j.properties"
 		file-encoding="utf-8" />
 
-	<bean id="commons-topease.swing.desktopPane.DesktopPane" class="com.xplus.commons.topease.DesktopPan"
+	<import resource="classpath:/META-INF/commons-topease/commons-topease-menu.xml" />
+	<import resource="classpath:/META-INF/commons-topease/commons-topease-menuitem.xml" />
+	<import resource="classpath:/META-INF/commons-topease/commons-topease-action.xml" />
+	<import resource="classpath:/META-INF/commons-topease/commons-topease-internalframe.xml" />
+
+	<bean id="commons-topease.swing.desktopPane.DesktopPane" class="com.xplus.commons.topease.impl.ui.main.DesktopPan"
 		init-method="init">
 	</bean>
 
-	<bean id="commons-topease.swing.frame.MainFrame" class="com.xplus.commons.topease.MainFrame"
+	<bean id="commons-topease.swing.frame.MainFrame" class="com.xplus.commons.topease.impl.ui.main.MainFrame"
 		init-method="init">
 		<property name="desktopPane"
 			ref="commons-topease.swing.desktopPane.DesktopPane" />
@@ -26,50 +31,9 @@
 				<ref bean="commons-topease.swing.menu.TopeaseMenu" />
 				<ref bean="commons-topease.swing.menu.ExcelMenu" />
 				<ref bean="commons-topease.swing.menu.ToolMenu" />
+				<ref bean="commons-topease.swing.menu.AboutMenu" />
 			</list>
 		</property>
-	</bean>
-
-	<bean id="commons-topease.swing.menu.TopeaseMenu" class="com.xplus.commons.topease.TopeaseMenu"
-		init-method="init">
-		<property name="text" value="Topease" />
-		<property name="menuItems">
-			<list>
-				<ref bean="commons-topease.swing.menuItem.CodeMenuItem" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="commons-topease.swing.menuItem.CodeMenuItem" class="com.xplus.commons.topease.CodeMenuItem"
-		init-method="init">
-		<property name="text" value="Code" />
-	</bean>
-
-	<bean id="commons-topease.swing.menu.ExcelMenu" class="com.xplus.commons.topease.ExcelMenu"
-		init-method="init">
-		<property name="text" value="Excel" />
-	</bean>
-
-	<bean id="commons-topease.swing.menu.ToolMenu" class="com.xplus.commons.topease.ToolMenu"
-		init-method="init">
-		<property name="text" value="Tool" />
-		<property name="menuItems">
-			<list>
-				<ref bean="commons-topease.swing.menuItem.CleanMavenMenuItem" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="commons-topease.swing.menuItem.CleanMavenMenuItem"
-		class="com.xplus.commons.topease.CleanMavenMenuItem" init-method="init">
-		<property name="text" value="Clean Maven" />
-		<property name="internalFrame"
-			ref="commons-topease.swing.intrnalFrame.CleanMavenInternalFrame" />
-	</bean>
-
-	<bean id="commons-topease.swing.intrnalFrame.CleanMavenInternalFrame"
-		class="com.xplus.commons.topease.CleanMavenInternalFrame" init-method="init">
-		<property name="title" value="Clean Maven Folder Files." />
 	</bean>
 
 	<bean id="commons-topease.swing.runnable.SwingAppRunnable" class="com.xplus.commons.topease.SwingAppRunnable">

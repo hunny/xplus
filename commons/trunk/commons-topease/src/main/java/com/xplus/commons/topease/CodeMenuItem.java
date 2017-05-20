@@ -10,10 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CodeMenuItem extends JMenuItem {
-
-  private final Logger logger = LoggerFactory.getLogger(CodeMenuItem.class);
   
   private static final long serialVersionUID = 8167427837164187922L;
+  
+  private final Logger logger = LoggerFactory.getLogger(CodeMenuItem.class);
 
   private JFrame frame = null;
   

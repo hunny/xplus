@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileSystemView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,9 +65,14 @@ public class CleanMavenInternalFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!StringUtils.isEmpty(txtPath.getText())) {
-					execute(new File(txtPath.getText()));
+					message.setText(String.format("准备清理目录[%s]", txtPath.getText()));
+					SwingUtilities.invokeLater(new Runnable() {
+			      public void run() {
+							execute(new File(txtPath.getText()));
+			      }
+			    });
 				} else {
-					JOptionPane.showConfirmDialog(current(), "请选择目录。");
+					JOptionPane.showMessageDialog(current(), "请选择目录。");
 				}
 			}
 		});
@@ -162,10 +168,11 @@ public class CleanMavenInternalFrame extends JInternalFrame {
 	}
 
 	private void execute(final File path) {
-		ExecutorService executorService = Executors.newFixedThreadPool(10);
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		Future<Void> future = executorService.submit(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
+				Thread.sleep(5000);
 				check(path);
 				return null;
 			}
@@ -177,6 +184,7 @@ public class CleanMavenInternalFrame extends JInternalFrame {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
+		logger.info("执行完毕。");
 		message.setText("执行完毕。");
 		// shut down the executor service now
 		executorService.shutdown();

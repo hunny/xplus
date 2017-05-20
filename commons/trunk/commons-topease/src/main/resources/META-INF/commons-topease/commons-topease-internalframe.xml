@@ -7,12 +7,20 @@
     http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<bean id="commons-topease.swing.intrnalFrame.CleanMavenInternalFrame"
-		class="com.xplus.commons.topease.impl.ui.internalframe.CleanMavenInternalFrame" init-method="init">
+		class="com.xplus.commons.topease.impl.ui.internalframe.CleanMavenInternalFrame"
+		init-method="init">
 		<property name="title" value="Clean Maven Folder Files." />
 	</bean>
-	
-		<bean id="commons-topease.swing.intrnalFrame.CodeInternalFrame"
-		class="com.xplus.commons.topease.impl.ui.internalframe.DefaultInternalFrame" init-method="init">
+
+	<bean id="commons-topease.swing.intrnalFrame.ExportExcelInternalFrame"
+		class="com.xplus.commons.topease.impl.ui.internalframe.ExportExcelInternalFrame"
+		init-method="init">
+		<property name="title" value="Export Excel." />
+	</bean>
+
+	<bean id="commons-topease.swing.intrnalFrame.CodeInternalFrame"
+		class="com.xplus.commons.topease.impl.ui.internalframe.DefaultInternalFrame"
+		init-method="init">
 		<property name="title" value="Code." />
 	</bean>
 

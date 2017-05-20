@@ -20,6 +20,11 @@
 	<bean id="commons-topease.swing.menu.ExcelMenu" class="com.xplus.commons.topease.impl.ui.menu.DefaultMenu"
 		init-method="init">
 		<property name="text" value="Excel" />
+		<property name="menuItems">
+			<list>
+				<ref bean="commons-topease.swing.menuItem.ExportExcelMenuItem"/>
+			</list>
+		</property>
 	</bean>
 
 	<bean id="commons-topease.swing.menu.ToolMenu" class="com.xplus.commons.topease.impl.ui.menu.DefaultMenu"

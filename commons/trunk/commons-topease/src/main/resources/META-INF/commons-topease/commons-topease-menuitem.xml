@@ -12,19 +12,29 @@
 		<property name="text" value="Code" />
 		<property name="actions">
 			<list>
-				<ref bean="commons-topease.swing.action.menuItem.CodeMenuItemAction"/>
+				<ref bean="commons-topease.swing.action.menuItem.CodeMenuItemAction" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="commons-topease.swing.menuItem.ExitMenuItem"
 		class="com.xplus.commons.topease.impl.ui.menuitem.DefaultInternalFrameMenuItem"
 		init-method="init">
 		<property name="text" value="Exit" />
 		<property name="actions">
 			<list>
-				<ref
-					bean="commons-topease.swing.action.ExitAction" />
+				<ref bean="commons-topease.swing.action.ExitAction" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="commons-topease.swing.menuItem.ExportExcelMenuItem"
+		class="com.xplus.commons.topease.impl.ui.menuitem.DefaultInternalFrameMenuItem"
+		init-method="init">
+		<property name="text" value="ExportExcel" />
+		<property name="actions">
+			<list>
+				<ref bean="commons-topease.swing.action.menuItem.ExportExcelMenuItemAction" />
 			</list>
 		</property>
 	</bean>

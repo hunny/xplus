@@ -8,6 +8,8 @@
 
 	<context:annotation-config />
 	
+	<import resource="classpath:META-INF/commons-tpl/commons-ftl.xml" />
+	
 	<context:component-scan base-package="com.xplus.commons.topease"/>
 
 	<!-- make applicationContext to know placeholder -->

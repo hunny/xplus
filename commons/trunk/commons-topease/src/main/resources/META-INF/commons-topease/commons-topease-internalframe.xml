@@ -11,6 +11,12 @@
 		init-method="init">
 		<property name="title" value="Clean Maven Folder Files." />
 	</bean>
+	
+		<bean id="commons-topease.swing.intrnalFrame.ScreenCaptureInternalFrame"
+		class="com.xplus.commons.topease.impl.ui.internalframe.ScreenCaptureInternalFrame"
+		init-method="init">
+		<property name="title" value="Screen Capture." />
+	</bean>
 
 	<bean id="commons-topease.swing.intrnalFrame.ExportExcelInternalFrame"
 		class="com.xplus.commons.topease.impl.ui.internalframe.ExportExcelInternalFrame"

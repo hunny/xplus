@@ -3,7 +3,6 @@ package com.xplus.commons.tpl.impl;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,15 @@ public class FreeMarkerTemplateMaker implements TemplateMaker {
   @Value("${commons-ftl.file.forceOverWrite:false}")
   private boolean forceOverWrite = false;
 
-  private Configuration configuration = null;
+  public boolean isForceOverWrite() {
+		return forceOverWrite;
+	}
+
+	public void setForceOverWrite(boolean forceOverWrite) {
+		this.forceOverWrite = forceOverWrite;
+	}
+
+	private Configuration configuration = null;
 
   public Configuration getConfiguration() {
     return configuration;

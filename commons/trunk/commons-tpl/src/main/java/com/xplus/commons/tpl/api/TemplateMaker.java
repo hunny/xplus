@@ -8,6 +8,12 @@ package com.xplus.commons.tpl.api;
  */
 public interface TemplateMaker {
   
+	/**
+	 * 是否覆盖已经存在的文件
+	 * @param forceOverWrite
+	 */
+	public void setForceOverWrite(boolean forceOverWrite);
+	
   /**
    * 把对象T的值使用src的模板生成到dest文件中。
    * 

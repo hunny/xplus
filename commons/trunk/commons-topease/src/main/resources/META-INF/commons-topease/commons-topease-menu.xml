@@ -33,6 +33,7 @@
 		<property name="menuItems">
 			<list>
 				<ref bean="commons-topease.swing.menuItem.CleanMavenMenuItem" />
+				<ref bean="commons-topease.swing.menuItem.ScreenCaptureMenuItem" />
 			</list>
 		</property>
 	</bean>

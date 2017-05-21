@@ -27,7 +27,7 @@
     <constructor-arg index="0"
       ref="commons-tpl.freemarker.version" />
     <constructor-arg index="1"
-      value="${commons-tpl.freemarker.configuration.directoryForTemplateLoading:C:\}" />
+      value="${commons-tpl.freemarker.configuration.directoryForTemplateLoading:.}" />
   </bean>
 
   <bean name="commons-tpl.freeMarkerTemplateMaker" class="com.xplus.commons.tpl.impl.FreeMarkerTemplateMaker">

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.xplus.commons.tpl.api.TemplateMaker;
+import com.xplus.commons.util.operatorsystem.OSUtil;
 
 @Service
 public class PhantomjsServiceImpl {
@@ -47,10 +48,17 @@ public class PhantomjsServiceImpl {
 		String exec = MessageFormat.format("{0} {1}", phantomjs, out.getAbsolutePath());
 		runtime.exec(exec);
 	}
+	
+	public String getPhantomjs() {
+	  if (OSUtil.isWindowsLike()) {
+	    return "phantomjs.exe";
+	  }
+	  return "phantomjs";
+	}
 
 	public void screenCapture(String url, File dest) throws Exception {
 		URL uRL = PhantomjsServiceImpl.class.getResource("/");
-		File phantomjs = new File(String.format("%s%s/%s", uRL.getFile(), phantomjsPath, "phantomjs"));
+		File phantomjs = new File(String.format("%s%s/%s", uRL.getFile(), phantomjsPath, getPhantomjs()));
 		phantomjs.setExecutable(true);
 		File js = new File(String.format("%s/%s/%s", uRL.getFile(), phantomjsPath, "capture.js"));
 		Runtime runtime = Runtime.getRuntime();

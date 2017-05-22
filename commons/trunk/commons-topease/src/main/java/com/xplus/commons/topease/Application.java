@@ -12,21 +12,23 @@ import org.springframework.context.ConfigurableApplicationContext;
  */
 public class Application {
 
-	public static void main(String[] args) throws Exception {
-		loadFromXml(args);
-	}
+  public static void main(String[] args) throws Exception {
+    loadFromXml(args);
+  }
 
-	public static void loadFromXml(String[] args) throws Exception {
-		System.setProperty("java.awt.headless", "false");
-		ConfigurableApplicationContext context = SpringApplication
-				.run(new Object[] { "classpath:/META-INF/commons-topease/commons-topease.xml" }, args);
-		SwingApp appFrame = context.getBean(SwingApp.class);
-		appFrame.run(args);
-	}
+  public static void loadFromXml(String[] args) throws Exception {
+    System.setProperty("java.awt.headless", "false");
+    ConfigurableApplicationContext context = SpringApplication.run(new Object[] {
+        "classpath:/META-INF/commons-topease/commons-topease.xml" }, args);
+    SwingApp appFrame = context.getBean(SwingApp.class);
+    appFrame.run(args);
+  }
 
-	public static void loadFromBuilder(String[] args) throws Exception {
-		ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class).headless(false).run(args);
-		SwingApp appFrame = context.getBean(SwingApp.class);
-		appFrame.run(args);	}
+  public static void loadFromBuilder(String[] args) throws Exception {
+    ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class)
+        .headless(false).run(args);
+    SwingApp appFrame = context.getBean(SwingApp.class);
+    appFrame.run(args);
+  }
 
 }

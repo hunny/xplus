@@ -10,6 +10,8 @@ public class Cookies implements Serializable {
   private String value;
   private String domain;
   private String path;
+  private boolean session = false;
+  private boolean hostonly = true;
   private boolean httponly = true;
   private boolean secure = false;
   private long expires;
@@ -44,6 +46,22 @@ public class Cookies implements Serializable {
 
   public void setPath(String path) {
     this.path = path;
+  }
+
+  public boolean isSession() {
+    return session;
+  }
+
+  public void setSession(boolean session) {
+    this.session = session;
+  }
+
+  public boolean isHostonly() {
+    return hostonly;
+  }
+
+  public void setHostonly(boolean hostonly) {
+    this.hostonly = hostonly;
   }
 
   public boolean isHttponly() {

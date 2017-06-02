@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -204,9 +205,7 @@ public class ScreenCaptureInternalFrame extends DefaultInternalFrame {
 			cookie.setValue("string");
 			cookie.setName("string");
 			cookie.setDomain("string");
-			cookie.setExpires(0L);
-			cookie.setHttponly(false);
-			cookie.setSecure(false);
+			cookie.setExpires(new Date().getTime() + 1000 * 60 * 60);
 			cookie.setPath("string");
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);

@@ -64,7 +64,6 @@ public class PhantomjsServiceImpl {
 				dest.getAbsolutePath(), //
 				cookies //
 				};
-		logger.info(objectMapper.writeValueAsString(exec));
 		logger.info(phantomjsExecutor.run(exec));
 	}
 

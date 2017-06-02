@@ -20,21 +20,15 @@ page.viewportSize = {
 };
 if (undefined !== cookie) {
 	try {
+		console.log('cookie:');
+		console.log(cookie);
 		var cookieArray = eval(cookie);
 		for (var i = 0; i < cookieArray.length; i++) {
 			var c = cookieArray[i];
-			phantom.addCookie({
-				'name'     : c.name, 
-				'value'    : c.value, 
-				'domain'   : c.domain,
-				'path'     : c.path, 
-				'httponly' : c.httponly,
-				'secure'   : c.secure,
-				'expires'  : c.expires
-			});
+			phantom.addCookie(c);
 		}
 	} catch (e) {
-		console.log(e.message);
+		console.log('解析错误：' + e.message);
 	}
 }
 page.open(address, function(status) {

@@ -9,6 +9,7 @@
 	<bean id="commons-topease.swing.menu.TopeaseMenu" class="com.xplus.commons.topease.impl.ui.menu.DefaultMenu"
 		init-method="init">
 		<property name="text" value="Topease" />
+		<property name="mnemonicKey" value="T" />
 		<property name="menuItems">
 			<list>
 				<ref bean="commons-topease.swing.menuItem.CodeMenuItem" />

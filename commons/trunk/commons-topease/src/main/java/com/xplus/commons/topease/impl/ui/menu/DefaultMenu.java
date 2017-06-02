@@ -6,6 +6,8 @@ import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.xplus.commons.topease.api.MethodInitable;
 
 public class DefaultMenu extends JMenu implements MethodInitable {
@@ -16,6 +18,12 @@ public class DefaultMenu extends JMenu implements MethodInitable {
 
   public List<JMenuItem> getMenuItems() {
     return menuItems;
+  }
+  
+  public void setMnemonicKey(String c) {
+  	if (StringUtils.isNotBlank(c)) {
+  		super.setMnemonic(c.charAt(0));
+  	}
   }
 
   public void setMenuItems(List<JMenuItem> menuItems) {

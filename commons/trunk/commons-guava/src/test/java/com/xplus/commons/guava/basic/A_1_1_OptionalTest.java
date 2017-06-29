@@ -3,6 +3,7 @@ package com.xplus.commons.guava.basic;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 
 /**
@@ -22,11 +23,10 @@ public class A_1_1_OptionalTest {
     Assert.assertEquals("相同", true, 5 == possible.or(3));
     Assert.assertEquals("相同", true, possible.asSet().size() == 1);
     Optional<Integer[]> possibles = Optional.of(new Integer[] {
-        1, 2, 3
-    });
+        1, 2, 3 });
     Assert.assertEquals("相同", true, possibles.asSet().size() == 1);
   }
-  
+
   @Test
   public void test2() {
     Optional<Integer> possible = Optional.absent();
@@ -35,7 +35,7 @@ public class A_1_1_OptionalTest {
     Assert.assertEquals("相同", true, 3 == possible.or(3));
     Assert.assertEquals("相同", true, Optional.absent().equals(Optional.fromNullable(null)));
   }
-  
+
   @Test
   public void test3() {
     Optional<Integer> possible = Optional.of(8);
@@ -44,5 +44,15 @@ public class A_1_1_OptionalTest {
     Assert.assertEquals("相同", true, 8 == possible.or(3));
     Assert.assertEquals("相同", true, Optional.absent().equals(Optional.fromNullable(null)));
   }
-  
+
+  @Test
+  public void test4() {
+    Assert.assertEquals("相同", true, 5 == MoreObjects.firstNonNull(null, 5));
+    System.out.println(
+        MoreObjects.toStringHelper(this) //
+        .omitNullValues() //
+        .add("x", 1).add("y", "foo") //
+        .toString());
+  }
+
 }

@@ -18,7 +18,7 @@ import com.google.common.base.Preconditions;
  * checkArgument(i >= 0, "Argument was %s but expected nonnegative", i); 
  * checkArgument(i < j, "Expected i < j, but %s > %s", i, j);
  * </code>
- * 
+ * 参考地址{@link http://ifeve.com/google-guava-preconditions/}。
  * @author huzexiong
  *
  */

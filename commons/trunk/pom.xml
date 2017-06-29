@@ -115,6 +115,7 @@
 
   <modules>
     <module>commons-canal</module>
+    <module>commons-guava</module>
     <module>commons-http</module>
     <module>commons-mvn</module>
     <module>commons-spring</module>

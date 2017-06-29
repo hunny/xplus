@@ -9,7 +9,7 @@ import com.google.common.base.Optional;
 /**
  * 使用和避免null：null是模棱两可的，会引起令人困惑的错误，有些时候它让人很不舒服。<br>
  * 很多Guava工具类用快速失败拒绝null值，而不是盲目地接受。
- * 
+ * 参考地址{@link http://ifeve.com/google-guava-using-and-avoiding-null/}。
  * @author huzexiong
  *
  */

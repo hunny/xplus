@@ -115,6 +115,7 @@
 
   <modules>
     <module>commons-canal</module>
+    <module>commons-cmdb</module>
     <module>commons-guava</module>
     <module>commons-http</module>
     <module>commons-mvn</module>
@@ -149,7 +150,7 @@
     <commons-lang3.version>3.4</commons-lang3.version>
     <freemarker.version>2.3.23</freemarker.version>
     <guava.version>19.0</guava.version>
-    <jackson.version>2.1.4</jackson.version>
+    <jackson.version>2.8.8</jackson.version>
     <java-jwt.version>2.1.0</java-jwt.version>
     <javax.servlet.version>3.0.1</javax.servlet.version>
     <jedis.version>2.6.2</jedis.version>
@@ -161,7 +162,7 @@
     <seaglasslookandfeel.version>0.2</seaglasslookandfeel.version>
     <slf4j.version>1.7.21</slf4j.version>
     <spring.version>4.3.7.RELEASE</spring.version>
-    <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+    <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
     <spring-data-redis.version>1.7.8.RELEASE</spring-data-redis.version>
     <spring-security.version>4.2.2.RELEASE</spring-security.version>
     <substance.version>6.0</substance.version>

@@ -121,6 +121,7 @@
     <module>commons-mvn</module>
     <module>commons-spring</module>
     <module>commons-swing</module>
+    <module>commons-swingboot</module>
     <module>commons-topease</module>
     <module>commons-tpl</module>
     <module>commons-util</module>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xplus.commons.pattern.creational.simple.factory;
+package com.xplus.commons.pattern.creational.simplefactory;
 
 /**
  * @author hunnyhu

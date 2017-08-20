@@ -18,19 +18,22 @@ public class Client {
 	 */
 	public static void main(String[] args) {
 		Factory factory = null;
-		Product product = null;
 		factory = new ConcreteFactoryA();
-		product = factory.factoryMethod();
-		product.productMethod();
+		produce(factory);
 		
 		factory = new ConcreteFactoryB();
-		product = factory.factoryMethod();
-		product.productMethod();
+		produce(factory);
 		
 		System.out.println("从配置文件中读取类配置：");
 		File xml = new File(Client.class.getResource("").getPath() + "/config.xml");
 		
 		factory = XmlLoadFactory.getBean(xml);
+		produce(factory);
+	}
+	
+	public static void produce(Factory factory) {
+		System.out.println("工厂准备生产产品======");
+		Product product = null;
 		product = factory.factoryMethod();
 		product.productMethod();
 	}

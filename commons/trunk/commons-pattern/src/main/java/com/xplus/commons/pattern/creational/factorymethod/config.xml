@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config>
+  <className>com.xplus.commons.pattern.creational.factorymethod.ConcreteFactoryA</className>
+</config>

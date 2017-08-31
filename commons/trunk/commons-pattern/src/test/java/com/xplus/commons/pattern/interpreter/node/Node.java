@@ -1,4 +1,4 @@
-package com.xplus.commons.pattern.node;
+package com.xplus.commons.pattern.interpreter.node;
 
 public interface Node {
 

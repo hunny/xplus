@@ -1,4 +1,4 @@
-package com.xplus.commons.pattern.commandnode;
+package com.xplus.commons.pattern.interpreter.commandnode;
 
 public class Client {
 

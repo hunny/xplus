@@ -1,4 +1,4 @@
-package com.xplus.commons.pattern.node;
+package com.xplus.commons.pattern.interpreter.node;
 
 //距离解释：终结符表达式
 public class DistanceNode implements Node {

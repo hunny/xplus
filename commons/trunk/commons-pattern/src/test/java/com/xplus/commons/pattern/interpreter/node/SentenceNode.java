@@ -1,4 +1,4 @@
-package com.xplus.commons.pattern.node;
+package com.xplus.commons.pattern.interpreter.node;
 
 // 简单句子解释：非终结符表达式
 public class SentenceNode implements Node {

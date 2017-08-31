@@ -1,4 +1,4 @@
-package com.xplus.commons.pattern.node;
+package com.xplus.commons.pattern.interpreter.node;
 
 // 方向解释：终结符表达式
 public class DirectionNode implements Node {

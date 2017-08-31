@@ -1,4 +1,4 @@
-package com.xplus.commons.pattern.commandnode;
+package com.xplus.commons.pattern.interpreter.commandnode;
 
 //抽象节点类：抽象表达式 
 public interface Node {

@@ -1,4 +1,4 @@
-package com.xplus.commons.pattern.commandnode;
+package com.xplus.commons.pattern.interpreter.commandnode;
 
 //循环命令节点类：非终结符表达式
 public class LoopCommandNode implements Node {

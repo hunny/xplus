@@ -1,4 +1,4 @@
-package com.xplus.commons.pattern.commandnode;
+package com.xplus.commons.pattern.interpreter.commandnode;
 
 //基本命令节点类：终结符表达式
 public class PrimitiveCommandNode implements Node {

@@ -6,11 +6,11 @@ public class Client {
 
     Adaptee adaptee = new Adaptee();
     
-    Target target = new AdapterObject(adaptee);
+    Target target = new AdapterObject(adaptee);// 对象适配模式
     
     target.request();
     
-    target = new AdapterClass();
+    target = new AdapterClass();// 类适配模式
     
     target.request();
     

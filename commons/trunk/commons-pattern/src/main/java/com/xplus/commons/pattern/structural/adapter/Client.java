@@ -6,7 +6,11 @@ public class Client {
 
     Adaptee adaptee = new Adaptee();
     
-    Target target = new Adapter(adaptee);
+    Target target = new AdapterObject(adaptee);
+    
+    target.request();
+    
+    target = new AdapterClass();
     
     target.request();
     

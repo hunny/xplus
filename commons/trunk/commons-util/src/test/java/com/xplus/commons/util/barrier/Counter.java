@@ -78,7 +78,7 @@ public class Counter {
     });
   }
 
-  public static void run(Increment increment) {
+  public static void run(final Increment increment) {
     final CountDownLatch latch = new CountDownLatch(1000);
     // 同时启动1000个线程，去进行i++计算，看看实际结果
     for (int i = 0; i < 1000; i++) {

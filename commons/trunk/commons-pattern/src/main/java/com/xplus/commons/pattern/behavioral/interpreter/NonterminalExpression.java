@@ -2,12 +2,7 @@ package com.xplus.commons.pattern.behavioral.interpreter;
 
 public class NonterminalExpression implements Expression {
 
-	private Expression left;
-	private Expression right;
-
-	public NonterminalExpression(Expression left, Expression right) {
-		this.left = left;
-		this.right = right;
+	public NonterminalExpression(Expression...expressions) {
 	}
 
 	@Override

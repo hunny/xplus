@@ -137,4 +137,24 @@ public class MockTest {
 		Assert.assertEquals(2, argument.getValue().size());
 		Assert.assertEquals(list, argument.getValue());
 	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Test
+	public void argumentCaptorTest() {
+		List mock = Mockito.mock(List.class);
+		List mock2 = Mockito.mock(List.class);
+		mock.add("John");
+		mock2.add("Brian");
+		mock2.add("Jim");
+
+		ArgumentCaptor argument = ArgumentCaptor.forClass(String.class);
+
+		Mockito.verify(mock).add(argument.capture());
+		Assert.assertEquals("John", argument.getValue());
+
+		Mockito.verify(mock2, Mockito.times(2)).add(argument.capture());
+
+		Assert.assertEquals("Jim", argument.getValue());
+		Assert.assertArrayEquals(new Object[] {"John", "Brian", "Jim" }, argument.getAllValues().toArray());
+	}
 }

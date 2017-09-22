@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @Configuration
-//@EnableBatchProcessor
+// @EnableBatchProcessor
 public class BatchConfig {
 
 }

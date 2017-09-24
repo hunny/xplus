@@ -1,4 +1,4 @@
-package com.xplus.commons.batch.spring;
+package com.xplus.commons.batch.spring.single;
 
 import org.springframework.batch.item.validator.ValidatingItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;

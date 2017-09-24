@@ -1,4 +1,4 @@
-package com.xplus.commons.batch.spring;
+package com.xplus.commons.batch.spring.single;
 
 import javax.sql.DataSource;
 
@@ -42,7 +42,7 @@ public class CsvBatchConfig {
 	@Bean
 	public ItemReader<Person> read() {
 		FlatFileItemReader<Person> reader = new FlatFileItemReader<Person>();
-		reader.setResource(new ClassPathResource("batch/person.csv"));
+		reader.setResource(new ClassPathResource("batch/single/person.csv"));
 
 		DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer();
 		delimitedLineTokenizer.setNames(new String[] { //
@@ -59,9 +59,8 @@ public class CsvBatchConfig {
 		BeanWrapperFieldSetMapper<Person> beanWrapperFieldSetMapper = //
 				new BeanWrapperFieldSetMapper<Person>();
 		beanWrapperFieldSetMapper.setTargetType(Person.class);
-
 		defaultLineMapper.setFieldSetMapper(beanWrapperFieldSetMapper);
-
+		
 		reader.setLineMapper(defaultLineMapper);
 		return reader;
 	}

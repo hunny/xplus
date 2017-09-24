@@ -1,4 +1,4 @@
-package com.xplus.commons.batch.spring;
+package com.xplus.commons.batch.spring.single;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

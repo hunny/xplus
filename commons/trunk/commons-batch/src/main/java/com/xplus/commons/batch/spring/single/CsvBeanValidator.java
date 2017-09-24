@@ -1,4 +1,4 @@
-package com.xplus.commons.batch.spring;
+package com.xplus.commons.batch.spring.single;
 
 import java.util.Set;
 

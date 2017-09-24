@@ -41,6 +41,16 @@
       </snapshots>
     </repository>
     <repository>
+      <id>spring-milestone</id>
+      <url>http://repo.spring.io/milestone/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>java.net</id>
       <url>http://download.java.net/maven/2/</url>
       <releases>
@@ -133,6 +143,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.8</java.version>
     <!--maven properties -->
     <maven.test.skip>true</maven.test.skip>
     <downloadSources>true</downloadSources>
@@ -172,6 +184,7 @@
     <slf4j.version>1.7.21</slf4j.version>
     <spring.version>4.3.7.RELEASE</spring.version>
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
+    <spring-batch.version>3.0.8.RELEASE</spring-batch.version>
     <spring-data-redis.version>1.7.8.RELEASE</spring-data-redis.version>
     <spring-security.version>4.2.2.RELEASE</spring-security.version>
     <substance.version>6.0</substance.version>
@@ -345,6 +358,12 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-aop</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.springframework.batch/spring-batch-core -->
+      <dependency>
+        <groupId>org.springframework.batch</groupId>
+        <artifactId>spring-batch-core</artifactId>
+        <version>${spring-batch.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>

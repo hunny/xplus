@@ -8,9 +8,10 @@
     <artifactId>commons</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>commons-springboot</artifactId>
+  <artifactId>commons-batch</artifactId>
   <name>Maven Tools</name>
   <description>Maven Tools.</description>
+
 
   <dependencies>
     <dependency>

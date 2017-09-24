@@ -5,4 +5,4 @@
  * @author hunnyhu
  *
  */
-package com.xplus.commons.spring.batch;
+package com.xplus.commons.batch.spring;

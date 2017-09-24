@@ -114,6 +114,7 @@
   </distributionManagement>
 
   <modules>
+    <module>commons-batch</module>
     <module>commons-canal</module>
     <module>commons-cmdb</module>
     <module>commons-guava</module>
@@ -159,10 +160,13 @@
     <jedis.version>2.6.2</jedis.version>
     <jgoodies.version>2.2.2</jgoodies.version>
     <jtattoo.version>1.6.11</jtattoo.version>
+    <validation-api.version>2.0.0.Final</validation-api.version>
     <junit.version>4.12</junit.version>
+    <hibernate-validator.version>6.0.2.Final</hibernate-validator.version>
     <log4j.version>1.2.17</log4j.version>
     <mockito.version>1.10.19</mockito.version>
     <mockito.version>2.0.2-beta</mockito.version>
+    <mysql.version>5.1.24</mysql.version>
     <napkinlaf.version>1.2</napkinlaf.version>
     <seaglasslookandfeel.version>0.2</seaglasslookandfeel.version>
     <slf4j.version>1.7.21</slf4j.version>
@@ -254,6 +258,12 @@
         <artifactId>weblaf</artifactId>
         <version>${weblaf.version}</version>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>${validation-api.version}</version>
+      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
@@ -275,6 +285,12 @@
         <artifactId>freemarker</artifactId>
         <version>${freemarker.version}</version>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${hibernate-validator.version}</version>
+      </dependency>
       <!-- https://mvnrepository.com/artifact/org.java.net.substance/substance -->
       <dependency>
         <groupId>org.java.net.substance</groupId>
@@ -293,6 +309,11 @@
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.version}</version>
       </dependency>
       <!-- https://mvnrepository.com/artifact/net.sf.squirrel-sql.thirdparty-non-maven/napkinlaf -->
       <dependency>

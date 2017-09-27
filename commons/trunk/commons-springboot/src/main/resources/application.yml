@@ -1,0 +1,13 @@
+server:
+  port: 8080
+  context-path: /quick
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:4306/batch?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    password: root
+    username: mysqlpasswd
+    driver-class-name: com.mysql.jdbc.Driver
+  profiles:
+    active: prod
+about:
+  version: 0.1-SNAPSHOT

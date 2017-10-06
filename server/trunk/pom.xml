@@ -125,6 +125,7 @@
     <module>xplus-web</module>
     <module>eureka-server</module>
     <module>eureka-client</module>
+    <module>balancer-ribbon</module>
   </modules>
 
   <properties>

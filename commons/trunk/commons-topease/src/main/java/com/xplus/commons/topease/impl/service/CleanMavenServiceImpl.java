@@ -23,7 +23,9 @@ public class CleanMavenServiceImpl {
 				check(tmp);
 			}
 		} else {
-			if (file.getName().endsWith("lastUpdated") || file.getName().endsWith("-lastUpdated.properties")) {
+			if (file.getName().endsWith("lastUpdated") //
+					|| file.getName().endsWith("-lastUpdated.properties") //
+					|| file.getName().endsWith("-not-available")) {
 				logger.info(file.getAbsolutePath());
 				file.delete();
 				File fileParent = new File(file.getParent());

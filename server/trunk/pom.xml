@@ -124,6 +124,7 @@
     <module>xplus-setup</module>
     <module>xplus-web</module>
     <module>eureka-server</module>
+    <module>eureka-client</module>
   </modules>
 
   <properties>

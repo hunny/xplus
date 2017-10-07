@@ -128,6 +128,7 @@
     <module>balancer-ribbon</module>
     <module>service-feign</module>
     <module>service-hystrix</module>
+    <module>service-zuul</module>
   </modules>
 
   <properties>

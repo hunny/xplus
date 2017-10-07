@@ -126,6 +126,7 @@
     <module>eureka-server</module>
     <module>eureka-client</module>
     <module>balancer-ribbon</module>
+    <module>service-feign</module>
   </modules>
 
   <properties>

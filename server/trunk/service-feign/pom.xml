@@ -8,9 +8,9 @@
     <artifactId>xplus-server</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.xplus.server.eureka</groupId>
-  <artifactId>eureka-client</artifactId>
-  <name>eureka-client</name>
+  <groupId>com.xplus.server.service</groupId>
+  <artifactId>service-feign</artifactId>
+  <name>service-feign</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -38,14 +38,16 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <scope>runtime</scope>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-eureka-server</artifactId>
     </dependency>
-    <!--eureka server -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-eureka</artifactId>
+      <artifactId>spring-cloud-starter-feign</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
       <scope>runtime</scope>
     </dependency>
     <!-- spring boot test -->

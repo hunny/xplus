@@ -127,6 +127,7 @@
     <module>eureka-client</module>
     <module>balancer-ribbon</module>
     <module>service-feign</module>
+    <module>service-hystrix</module>
   </modules>
 
   <properties>

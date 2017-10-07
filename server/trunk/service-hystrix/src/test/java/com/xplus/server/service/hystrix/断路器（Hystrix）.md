@@ -189,7 +189,11 @@ public class Application {
 }
 ```
 
-打开浏览器：访问http://localhost:8766/hystrix
+打开浏览器：访问http://localhost:8766/hystrix:
+
+在第一个地址中输入 http://localhost:8766/hystrix.stream
+
+在第二个地址的Title中输入标题：Test
 
 
 

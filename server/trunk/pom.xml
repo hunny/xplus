@@ -135,6 +135,7 @@
     <module>sleuth-zipkin</module>
     <module>sleuth-svrhi</module>
     <module>sleuth-svrhello</module>
+    <module>eureka-cloud</module>
   </modules>
 
   <properties>

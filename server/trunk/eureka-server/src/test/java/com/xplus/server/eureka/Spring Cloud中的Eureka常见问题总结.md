@@ -292,6 +292,8 @@ Spring boot的热交换 springloaded 。
 - [Spring Cloud Config基本步骤](http://blog.csdn.net/w_x_z_/article/details/69214763)
 - [Spring Cloud构建微服务架构（七）消息总线](http://blog.csdn.net/sosfnima/article/details/53178326)
 - [开始Spring Cloud Config](http://blog.csdn.net/wh_ouyangshuang/article/details/48031063)
+- [用 Docker 构建、运行、发布一个 Spring Boot 应用](https://yq.aliyun.com/articles/47344)
+- [Docker 教程](http://www.runoob.com/docker/docker-tutorial.html)
 
 
 

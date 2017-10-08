@@ -15,6 +15,21 @@ Spring Cloud 专注于提供良好开箱即用的典型方案和可扩展方式�
 - 领导选取和集群状态监控
 - 分布式消息
 
+- 项目主页为：http://projects.spring.io/spring-cloud/
+
+目前主要包括但不限于以下功能：
+	+ 配置管理（configuration management）
+	+ 服务发现（service discovery，也就是服务注册中心）
+	+ 断路器（circuit breakers，也叫熔断器）
+	+ 智能路由（intelligent routing，通常用来做 API-Gateway 实现）
+	+ 控制总线（control bus）
+	+ 微代理（micro-proxy）
+	+ 全局锁（global locks）
+	+ 领导选举（leadership election）
+	+ 一次性令牌（one-time tokens）
+	+ 分布式会话（distributed sessions）
+	+ 集群状态管理（cluster state）
+
 ## 指定Eureka的Environment
 
 ```
@@ -232,6 +247,35 @@ eureka.client.serviceUrl.defaultZone=http://localhost:1111/eureka/,http://localh
 AB一致： 
 CD一致：
 
+## SpringCloudBus在应用启动的时候抛异常：
+
+```
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder ‘jdbc.driver’ in value “${jdbc.driver}”
+```
+
+原因是:
+
+Spring Cloud应用程序通过创建“引导”上下文来运行，上下文是主应用程序的父上下文。 开箱即用，负责从外部源加载配置属性，还解密本地外部配置文件中的属性。 这两个上下文共享一个环境，它是任何Spring应用程序的外部属性的源。 Bootstrap属性的优先级高，因此默认情况下不能被本地配置覆盖。
+
+引导上下文使用与主应用程序上下文不同的定位方式来定位外部配置，因此您可以使用bootstrap.yml代替application.yml（或.properties），保持引导和主上下文的外部配置分开。
+
+## Spring Boot热启动
+
+Spring boot的热交换 springloaded 。
+```
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>springloaded</artifactId>
+            <version>1.2.8.RELEASE</version>
+        </dependency>
+    </dependencies>
+</plugin>
+```
+
 ## 参考资料
 
 - [Spring Boot基础教程](http://blog.didispace.com/Spring-Boot%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/)
@@ -242,6 +286,12 @@ CD一致：
 - [程序猿DD / SpringCloud-Learning](https://gitee.com/didispace/SpringCloud-Learning)
 - [程序猿DD / spring-boot-starter-swagger](https://gitee.com/didispace/spring-boot-starter-swagger)
 - [《Spring Boot参考指南》](http://blog.didispace.com/books/spring-boot-reference/)
+- [SpringCloud系列](http://jadyer.cn/2017/01/09/springcloud-intro/)
+- [springcloud(七)：配置中心svn示例和refresh](http://www.cnblogs.com/ityouknow/p/6906917.html)
+- [Maven入门及常用插件](http://jadyer.cn/2012/06/13/maven-demo-plugin/)
+- [Spring Cloud Config基本步骤](http://blog.csdn.net/w_x_z_/article/details/69214763)
+- [Spring Cloud构建微服务架构（七）消息总线](http://blog.csdn.net/sosfnima/article/details/53178326)
+- [开始Spring Cloud Config](http://blog.csdn.net/wh_ouyangshuang/article/details/48031063)
 
 
 

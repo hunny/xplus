@@ -132,6 +132,9 @@
     <module>config-server</module>
     <module>config-client</module>
     <module>cloud-bus</module>
+    <module>sleuth-zipkin</module>
+    <module>sleuth-svrhi</module>
+    <module>sleuth-svrhello</module>
   </modules>
 
   <properties>

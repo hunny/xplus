@@ -294,6 +294,12 @@ Spring boot的热交换 springloaded 。
 - [开始Spring Cloud Config](http://blog.csdn.net/wh_ouyangshuang/article/details/48031063)
 - [用 Docker 构建、运行、发布一个 Spring Boot 应用](https://yq.aliyun.com/articles/47344)
 - [Docker 教程](http://www.runoob.com/docker/docker-tutorial.html)
+- [如何用Redlock实现分布式锁](http://blog.csdn.net/forezp/article/details/70305336)
+- [Spring Cloud Sleuth进阶实战](http://blog.csdn.net/forezp/article/details/76795269)
+- [spring cloud-整合Swagger2构建RESTful服务的APIs](http://blog.csdn.net/liuchuanhong1/article/details/58594045)
+- [spring cloud-Swagger2整合Eureka，实现Eureka页面自动跳转到Swagger2UI界面查看服务接口信息](http://blog.csdn.net/liuchuanhong1/article/details/59064794)
+- [Spring Boot构建RESTful API与单元测试](http://blog.didispace.com/springbootrestfulapi/)
+- [Spring Boot中使用Swagger2构建强大的RESTful API文档](http://www.jianshu.com/p/8033ef83a8ed)
 
 
 

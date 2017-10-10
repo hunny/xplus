@@ -25,7 +25,7 @@
 	- 服务消费者：eureka-client，端口为8762，向服务注册中心注册，用于向有断路器的消费者service-hystrix反馈数据。
 	- 有断路器的服务消费者：service-hystrix，端口8766，向服务注册中心注册，获取来自eureka-client的数据，当消费者eureka-client不可用时，service-hystrix中的断路器会被触发。
 
-* [五、路由网关、服务过滤和安全验证等(zuul)](../..service-zuul/src/test/java/com/xplus/server/service/zuul/路由网关(zuul).md)
+* [五、路由网关、服务过滤和安全验证等(zuul)](../../service-zuul/src/test/java/com/xplus/server/service/zuul/路由网关(zuul).md)
 	- Zuul是Netflix出品的一个基于JVM路由和服务端的负载均衡器，主要功能是路由转发和服务过滤，它默认和Ribbon结合实现了负载均衡的功能，zuul有以下功能：
 		+ Authentication（认证）
 		+ Insights（洞悉）

@@ -25,3 +25,21 @@
 	- 服务消费者：eureka-client，端口为8762，向服务注册中心注册，用于向有断路器的消费者service-hystrix反馈数据。
 	- 有断路器的服务消费者：service-hystrix，端口8766，向服务注册中心注册，获取来自eureka-client的数据，当消费者eureka-client不可用时，service-hystrix中的断路器会被触发。
 
+* [五、路由网关、服务过滤和安全验证等(zuul)](../../service-hystrix/src/test/java/com/xplus/server/service/hystrix/断路器（Hystrix）.md)
+	- Zuul的主要功能是路由转发和过滤器，它默认和Ribbon结合实现了负载均衡的功能，zuul有以下功能：
+		+ Authentication
+		+ Insights
+		+ Stress Testing
+		+ Canary Testing
+		+ Dynamic Routing
+		+ Service Migration
+		+ Load Shedding
+		+ Security
+		+ Static Response handling
+		+ Active/Active traffic management
+	- 服务注册中心：eureka-server，端口为8761。
+	- 路由网关消费者：service-zuul，端口为8769，向服务注册中心注册，根据路由网关配置，可转发请求到balancer-ribbon和service-feign服务中。
+	- 服务消费者：eureka-client，端口为8762，向服务注册中心注册，用于向服务消费者balancer-ribbon和service-feign提供响应数据。
+	- 服务消费者：balancer-ribbon，端口为8764，向服务注册中心注册，从服务消费者eureka-client获取数据。
+	- 服务消费者：service-feign，端口为8765，向服务注册中心注册，从服务消费者eureka-client获取数据。
+

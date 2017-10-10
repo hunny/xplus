@@ -44,3 +44,6 @@
 	- 服务消费者：balancer-ribbon，端口为8764，向服务注册中心注册，从服务消费者eureka-client获取数据。
 	- 服务消费者：service-feign，端口为8765，向服务注册中心注册，从服务消费者eureka-client获取数据。
 
+* [六、分布式配置中心(Spring Cloud Config)](../../config-server/src/test/java/com/xplus/server/config/server/分布式配置中心(Spring Cloud Config).md)
+	- 配置服务端: config-server，端口8888，提供配置获取服务。
+	- 配置客户端: config-client，端口8881，需要从配置服务端获取配置信息。

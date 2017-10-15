@@ -2,13 +2,17 @@
 
 ## HelloWorld系列
 
+* [Spring Cloud中文网](https://springcloud.cc/)
+
+* [Spring Cloud Dalston版本中文网](https://springcloud.cc/spring-cloud-dalston.html)
+
 * [一、服务的注册与发现（Eureka）](../../eureka-server/src/test/java/com/xplus/server/eureka/服务的注册与发现（Eureka）.md)
-	- Eureka是一个服务注册和发现模块。
+	- Eureka是一个服务注册和云端服务发现模块，一个基于 REST 的服务，用于定位服务，以实现云端中间层服务发现和故障转移。。
 	- 服务注册中心：eureka-server，端口为8761。
 	- 服务提供者：eureka-client，端口为8762，向服务注册中心注册。
 
 * [二、负载均衡客户端（Ribbon）和服务消费者（rest）](../../balancer-ribbon/src/test/java/com/xplus/server/balancer/ribbon/服务消费者（rest+ribbon）.md)
-	- Ribbon是一个负载均衡客户端，能很好地控制HTTP和TCP的行为。
+	- Ribbon是一个负载均衡客户端，能很好地控制HTTP和TCP的行为，提供云端负载均衡，有多种负载均衡策略可供选择，可配合服务发现和断路器使用。
 	- 服务注册中心：eureka-server，端口为8761。
 	- 服务消费者：eureka-client运行两个实例，端口分别为8762和8763，分别向服务注册中心注册，用于向消费者balancer-ribbon反馈数据。
 	- 负载均衡客户端：balancer-ribbon，端口为8764，向服务注册中心注册，获取来自eureka-client的数据。
@@ -26,7 +30,7 @@
 	- 有断路器的服务消费者：service-hystrix，端口8766，向服务注册中心注册，获取来自eureka-client的数据，当消费者eureka-client不可用时，service-hystrix中的断路器会被触发。
 
 * [五、路由网关、服务过滤和安全验证等(zuul)](../../service-zuul/src/test/java/com/xplus/server/service/zuul/路由网关(zuul).md)
-	- Zuul是Netflix出品的一个基于JVM路由和服务端的负载均衡器，主要功能是路由转发和服务过滤，它默认和Ribbon结合实现了负载均衡的功能，zuul有以下功能：
+	- Zuul是Netflix出品的一个基于JVM路由和服务端的负载均衡器，主要功能是路由转发和服务过滤，它默认和Ribbon结合实现了负载均衡的功能，Zuul 是在云平台上提供动态路由,监控,弹性,安全等边缘服务的框架。Zuul 相当于是设备和 Netflix 流应用的 Web 网站后端所有请求的前门。zuul有以下功能：
 		+ Authentication（认证）
 		+ Insights（洞悉）
 		+ Stress Testing（压力测试）
@@ -45,6 +49,7 @@
 	- 服务消费者：service-feign，端口为8765，向服务注册中心注册，从服务消费者eureka-client获取数据。
 
 * [六、分布式配置中心(Spring Cloud Config)](../../config-server/src/test/java/com/xplus/server/config/server/分布式配置中心(SpringCloudConfig).md)
+	- 配置管理工具包，可以把配置放到远程服务器，集中化管理集群配置，目前支持本地存储、Git以及Subversion。
 	- 分布式配置中心服务端: config-server，端口8888，提供配置获取服务。
 	- 分布式配置中心客户端: config-client，端口8881，需要从配置服务端获取配置信息。
 
@@ -53,5 +58,13 @@
 	- 服务注册中心：eureka-server，端口为8761。
 	- 分布式配置中心服务端: config-server，端口8888，向服务注册中心注册，提供配置获取服务。
 	- 分布式配置中心客户端: config-client，端口8881，向服务注册中心注册，需要从配置服务端获取配置信息。
+
+* [八、消息总线(SpringCloudBus)](../../cloud-bus/src/test/java/com/xplus/server/cloud/bus/消息总线(SpringCloudBus).md)
+	- Spring Cloud Bus（Spring事件、消息总线）将分布式的节点用轻量的消息代理连接起来，用于在集群（例如，配置变化事件）中传播状态变化，可与Spring Cloud Config联合实现热部署。
+	- 服务注册中心：eureka-server，端口为8761。
+	- 分布式配置中心服务端: config-server，端口8888，向服务注册中心注册，提供配置获取服务。
+	- 带消息总线的分布式配置中心客户端: cloud-bus，端口8881，向服务注册中心注册，需要至少运行两个实例，需要从配置服务端获取配置信息。
+	- [配置中心svn示例](../../cloud-bus/src/test/java/com/xplus/server/cloud/bus/配置中心svn示例和refresh.md)。
+	- [安装RabbitMQ](/cloud-bus/src/test/java/com/xplus/server/cloud/bus/InstallRabbitMQ.md)。
 
 

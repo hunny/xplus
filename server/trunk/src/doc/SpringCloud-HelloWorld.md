@@ -73,5 +73,9 @@
 	- 被追踪服务端：sleuth-svrhi，端口8988，与sleuth-svrhello相互调用，产生追踪信息。
 	- 被追踪服务端：sleuth-svrhello，端口8989，与sleuth-svrhi相互调用，产生追踪信息。
 
+* [十、高可用的服务注册中心](../../eureka-cloud/src/test/java/com/xplus/server/eureka/cloud/高可用的服务注册中心.md)
+    - 主要进行集群化Eureka Server。
+	- 服务注册中心：eureka-cloud，通过spring.profiles.active启动两个服务，并相互注册。
+	- 服务提供者：eureka-client，端口为8762，向服务注册中心注册。
 
 

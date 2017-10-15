@@ -142,11 +142,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <!--maven properties -->
     <maven.test.skip>true</maven.test.skip>
     <downloadSources>true</downloadSources>
-    <!-- compiler settings properties -->
-    <java_source_version>1.6</java_source_version>
+    <java_source_version>1.8</java_source_version>
     <java_target_version>1.6</java_target_version>
     <file_encoding>UTF-8</file_encoding>
     <app_name><![CDATA[XPLUS® QQ™ Server]]></app_name>
@@ -156,30 +154,14 @@
     <app_site>http://www.xplus.com</app_site>
     <app_copyright><![CDATA[Copyright(C), Xplus Co., Ltd, 2016. All rights reserved.]]></app_copyright>
 
-    <commons-codec.version>1.9</commons-codec.version>
-    <commons-io.version>2.5</commons-io.version>
-    <commons-lang3.version>3.4</commons-lang3.version>
-    <freemarker.version>2.3.23</freemarker.version>
-    <guava.version>19.0</guava.version>
-    <jackson.version>2.8.8</jackson.version>
-    <java-jwt.version>2.1.0</java-jwt.version>
-    <javax.servlet.version>3.0.1</javax.servlet.version>
-    <jedis.version>2.6.2</jedis.version>
-    <validation-api.version>2.0.0.Final</validation-api.version>
     <junit.version>4.12</junit.version>
-    <hibernate-validator.version>6.0.2.Final</hibernate-validator.version>
     <log4j.version>1.2.17</log4j.version>
     <mockito.version>1.10.19</mockito.version>
     <mockito.version>2.0.2-beta</mockito.version>
     <mysql.version>5.1.24</mysql.version>
     <slf4j.version>1.7.21</slf4j.version>
-    <spring.version>4.3.7.RELEASE</spring.version>
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
-    <spring-cloud.version>Dalston.RC1</spring-cloud.version>
-    <spring-batch.version>3.0.8.RELEASE</spring-batch.version>
-    <spring-data-redis.version>1.7.8.RELEASE</spring-data-redis.version>
-    <spring-security.version>4.2.2.RELEASE</spring-security.version>
-    <substance.version>6.0</substance.version>
+    <spring-cloud.version>Dalston.SR4</spring-cloud.version>
   </properties>
 
   <dependencyManagement>
@@ -199,78 +181,9 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>com.auth0</groupId>
-        <artifactId>java-jwt</artifactId>
-        <version>${java-jwt.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>${guava.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.octo.captcha</groupId>
-        <artifactId>jcaptcha</artifactId>
-        <version>${jcaptcha.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>spring</artifactId>
-            <groupId>org.springframework</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
-        <version>${commons-codec.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>${commons-io.version}</version>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
-      <dependency>
-        <groupId>javax.validation</groupId>
-        <artifactId>validation-api</artifactId>
-        <version>${validation-api.version}</version>
-      </dependency>
-      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>${commons-lang3.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.freemarker</groupId>
-        <artifactId>freemarker</artifactId>
-        <version>${freemarker.version}</version>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>${hibernate-validator.version}</version>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/org.java.net.substance/substance -->
-      <dependency>
-        <groupId>org.java.net.substance</groupId>
-        <artifactId>substance</artifactId>
-        <version>${substance.version}</version>
       </dependency>
       <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
       <dependency>
@@ -291,11 +204,6 @@
         <version>${mysql.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.glassfish</groupId>
-        <artifactId>javax.servlet</artifactId>
-        <version>${javax.servlet.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
@@ -305,104 +213,23 @@
         <artifactId>slf4j-log4j12</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aop</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/org.springframework.batch/spring-batch-core -->
-      <dependency>
-        <groupId>org.springframework.batch</groupId>
-        <artifactId>spring-batch-core</artifactId>
-        <version>${spring-batch.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-beans</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context-support</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-jdbc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-orm</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-tx</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.data</groupId>
-        <artifactId>spring-data-redis</artifactId>
-        <version>${spring-data-redis.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-core</artifactId>
-        <version>${spring-security.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-config</artifactId>
-        <version>${spring-security.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-web</artifactId>
-        <version>${spring-security.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>redis.clients</groupId>
-        <artifactId>jedis</artifactId>
-        <version>${jedis.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>springloaded</artifactId>
+              <version>1.2.8.RELEASE</version>
+            </dependency>
+          </dependencies>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>

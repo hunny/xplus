@@ -24,8 +24,6 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <!--spring boot -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -61,13 +59,25 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>springloaded</artifactId>
-            <version>1.2.8.RELEASE</version>
-          </dependency>
-        </dependencies>
+        <version>${docker-maven-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+          <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+          <labels>
+            <label>VERSION=${project.version}</label>
+          </labels>
+          <resources>
+            <resource>
+              <targetPath>/</targetPath>
+              <directory>${project.build.directory}</directory>
+              <include>${project.build.finalName}.jar</include>
+            </resource>
+          </resources>
+        </configuration>
       </plugin>
     </plugins>
   </build>

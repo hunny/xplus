@@ -80,4 +80,4 @@
 	- 服务注册中心：eureka-cloud，通过spring.profiles.active启动两个服务，并相互注册。
 	- 服务提供者：eureka-client，端口为8762，向服务注册中心注册。
 
-
+* [十一、Docker部署SpringCloud项目](../../eureka-server/src/test/java/com/xplus/server/eureka/Docker部署SpringCloud项目.md)

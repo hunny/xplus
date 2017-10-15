@@ -300,6 +300,9 @@ Spring boot的热交换 springloaded 。
 - [spring cloud-Swagger2整合Eureka，实现Eureka页面自动跳转到Swagger2UI界面查看服务接口信息](http://blog.csdn.net/liuchuanhong1/article/details/59064794)
 - [Spring Boot构建RESTful API与单元测试](http://blog.didispace.com/springbootrestfulapi/)
 - [Spring Boot中使用Swagger2构建强大的RESTful API文档](http://www.jianshu.com/p/8033ef83a8ed)
+- [Docker入门与实践](https://hujb2000.gitbooks.io/docker-flow-evolution/content/cn/index.html)
+- [Dockerfile配置文件说明文档详解](http://www.simapple.com/docker-dockerfile)
+- [Dockerfile指令详解（Docker系列）](http://www.zslin.com/web/article/detail/59)
 
 
 

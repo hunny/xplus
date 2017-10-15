@@ -47,3 +47,11 @@
 * [六、分布式配置中心(Spring Cloud Config)](../../config-server/src/test/java/com/xplus/server/config/server/分布式配置中心(SpringCloudConfig).md)
 	- 分布式配置中心服务端: config-server，端口8888，提供配置获取服务。
 	- 分布式配置中心客户端: config-client，端口8881，需要从配置服务端获取配置信息。
+
+* [七、高可用的分布式配置中心(Spring Cloud Config)](../../config-server/src/test/java/com/xplus/server/config/server/高可用的分布式配置中心(SpringCloudConfig).md)
+	- 构建微服务集群化高可用分布式配置中心。
+	- 服务注册中心：eureka-server，端口为8761。
+	- 分布式配置中心服务端: config-server，端口8888，向服务注册中心注册，提供配置获取服务。
+	- 分布式配置中心客户端: config-client，端口8881，向服务注册中心注册，需要从配置服务端获取配置信息。
+
+

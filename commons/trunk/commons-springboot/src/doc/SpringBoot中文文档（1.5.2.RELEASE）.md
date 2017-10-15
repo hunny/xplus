@@ -2080,8 +2080,8 @@ Spring Boot包括大量的Logback扩展，可以帮助您进行高级配置。 �
 扩展名不能与Logback的[配置扫描](http://logback.qos.ch/manual/configuration.html#autoScan)一起使用。 如果您尝试这样做，对配置文件进行更改将导致类似于以下记录之一的错误：
 
 ```
-ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action for [springProperty], current ElementPath is [[configuration][springProperty]]
-ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action for [springProfile], current ElementPath is [[configuration][springProfile]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action for (springProperty), current ElementPath is ((configuration)(springProperty))
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action for (springProfile), current ElementPath is ((configuration)(springProfile))
 ```
 ##### 26.6.1 指定配置文件配置
 

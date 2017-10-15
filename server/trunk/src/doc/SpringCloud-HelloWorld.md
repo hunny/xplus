@@ -6,6 +6,8 @@
 
 * [Spring Cloud Dalston版本中文网](https://springcloud.cc/spring-cloud-dalston.html)
 
+* [Spring Cloud中Eureka常见问题总结](../../eureka-server/src/test/java/com/xplus/server/eureka/SpringCloud中的Eureka常见问题总结.md)
+
 * [一、服务的注册与发现（Eureka）](../../eureka-server/src/test/java/com/xplus/server/eureka/服务的注册与发现（Eureka）.md)
 	- Eureka是一个服务注册和云端服务发现模块，一个基于 REST 的服务，用于定位服务，以实现云端中间层服务发现和故障转移。。
 	- 服务注册中心：eureka-server，端口为8761。

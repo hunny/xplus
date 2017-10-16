@@ -134,7 +134,7 @@
     <module>commons-pattern</module>
     <module>commons-spring</module>
     <module>commons-swing</module>
-    <module>commons-swingboot</module>
+    <module>commons-springboot</module>
     <module>commons-topease</module>
     <module>commons-tpl</module>
     <module>commons-util</module>
@@ -237,17 +237,6 @@
         <groupId>com.jtattoo</groupId>
         <artifactId>JTattoo</artifactId>
         <version>${jtattoo.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.octo.captcha</groupId>
-        <artifactId>jcaptcha</artifactId>
-        <version>${jcaptcha.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>spring</artifactId>
-            <groupId>org.springframework</groupId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <!-- https://mvnrepository.com/artifact/com.seaglasslookandfeel/seaglasslookandfeel -->
       <dependency>
@@ -353,98 +342,6 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
         <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aop</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/org.springframework.batch/spring-batch-core -->
-      <dependency>
-        <groupId>org.springframework.batch</groupId>
-        <artifactId>spring-batch-core</artifactId>
-        <version>${spring-batch.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-beans</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context-support</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-jdbc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-orm</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-tx</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.data</groupId>
-        <artifactId>spring-data-redis</artifactId>
-        <version>${spring-data-redis.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-core</artifactId>
-        <version>${spring-security.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-config</artifactId>
-        <version>${spring-security.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-web</artifactId>
-        <version>${spring-security.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>redis.clients</groupId>
-        <artifactId>jedis</artifactId>
-        <version>${jedis.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

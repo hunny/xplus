@@ -26,11 +26,15 @@ public class CmdbController {
   @Value("${cmdb.prepay.url:}")
   private String prepayUrl;
   
+  @Value("${cmdb.points.url:}")
+  private String pointsUrl;
+  
   @PostConstruct
   public void init() {
     URLS.put("dpos", dposUrl);
     URLS.put("mbr", mbrUrl);
     URLS.put("prepay", mbrUrl);
+    URLS.put("points", pointsUrl);
   }
   
   @RequestMapping(value = "/get/{app}/{requestid}", method = RequestMethod.GET)

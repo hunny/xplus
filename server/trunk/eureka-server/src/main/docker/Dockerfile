@@ -1,4 +1,4 @@
-FROM hunny/starter:ok
+FROM kurron/docker-oracle-jdk-8
 
 LABEL PROJECT="eureka-server" \
       AUTHOR="hunnyhu" \
@@ -6,10 +6,8 @@ LABEL PROJECT="eureka-server" \
 
 VOLUME /tmp
 
-ADD eureka-server-0.0.1-SNAPSHOT.jar app.jar
+COPY eureka-server-0.1-SNAPSHOT.jar /app.jar
 
-#RUN bash -c 'touch /app.jar'
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 
 EXPOSE 8761

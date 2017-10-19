@@ -160,3 +160,66 @@ docker run -p 8761:8761 -t hunny/eureka-server
 docker run -p 8763:8763 -t hunny/eureka-client
 ```
 访问localhost:8761，可以查看eureka-client注册到eureka-server中。
+
+## 使用docker-compose启动镜像
+
+Compose 是一个用于定义和运行多容器的Docker应用的工具，参见[Compose](https://github.com/docker/compose)。使用Compose，你可以在一个配置文件（yml格式）中配置你应用的服务，然后使用一个命令，即可创建并启动配置中引用的所有服务，具体可使用命令查看```docker-compose```。
+
+- 使用docker-compose的方式编排镜像，启动镜像
+  + 添加docker-compose.yml文件：
+  ```
+  version: '3'
+  services:
+    eureka-server:
+      image: hunnyhu/eureka-server
+      restart: always
+      ports:
+        - 8761:8761
+
+    eureka-client:
+      image: hunnyhu/service-hi
+      restart: always
+      ports:
+        - 8763:8763
+  ```
+  + 在这个文件目录下，使用命令启动镜像：2个镜像按照指定的顺序启动，[参考地址](https://github.com/forezp/SpringCloudLearning/tree/master/chapter11)
+  ```
+  docker-compose up
+  ```
+
+## 使用docker-compose编排并启动镜像
+
+docker-compose可以构建镜像
+
+- 现在以eureka-server为例
+  + 将Dockerfile移到eureka-server的主目录。
+  + 改写docker COPY的相对路径：
+  ```
+  FROM kurron/docker-oracle-jdk-8
+  VOLUME /tmp
+  COPY ./target/eureka-server-0.1-SNAPSHOT.jar /app.jar
+  ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar", "--spring.config.name=application-docker"]
+  EXPOSE 8761
+  ```
+  + 同理修改eureka-client目录；
+  + 编写构建镜像docker-compose-dev文件docker-compose-dev.yml：
+  ```
+  version: '3'
+  services:
+    eureka-server:
+      build: eureka-server
+      ports:
+        - 8761:8761
+
+    eureka-client:
+      build: eureka-client
+      ports:
+        - 8763:8763
+  ```
+  + 文件docker-compose.yml和文件docker-compose-dev.yml，都在eureka-server和eureka-client的上级目录
+  + 命令构建镜像并启动：
+  ```
+  docker-compose -f docker-compose.yml -f docker-compose-dev.yml up
+  ```
+
+

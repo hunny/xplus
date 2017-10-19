@@ -58,6 +58,14 @@ Docker是一个开源的引擎，可以轻松的为任何应用创建一个轻�
   + EXPOSE
   为Docker容器设置对外的端口号。在启动时，可以使用-p选项或者-P选项。
 
+- docker常用命令：
+  + 删除所有未运行Docker容器：```sudo docker rm $(docker ps -a -q)```
+  + 删除所有未打tag的镜像: ```docker rmi $(docker images -q | awk '/^<none>/ { print $3 }')```
+  + 删除所有镜像：```docker rmi $(docker images -q)```
+  + 根据格式删除所有镜像：```docker rm $(docker ps -qf status=exited)```
+  + 查看所有镜像：```docker images -a```
+  + 查看所有容器：```docker ps -a```
+
 - 改造eureka-server工程步骤：
 
   + 在pom文件加上docker插件：
@@ -100,14 +108,13 @@ Docker是一个开源的引擎，可以轻松的为任何应用创建一个轻�
 
   + 编写dockerfile文件：
     ```
-    FROM frolvlad/alpine-oraclejdk8:slim
+    FROM kurron/docker-oracle-jdk-8
     VOLUME /tmp
-    ADD eureka-server-0.0.1-SNAPSHOT.jar app.jar
-    #RUN bash -c 'touch /app.jar'
-    ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+    COPY eureka-server-0.1-SNAPSHOT.jar /app.jar
+    ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar", "--spring.config.name=application-docker"]
     EXPOSE 8761
     ```
-  + 构建镜像
+  + 构建镜像:mvn clean package docker:build
   执行构建docker镜像maven命令：
   ```
   mvn clean
@@ -134,23 +141,22 @@ Docker是一个开源的引擎，可以轻松的为任何应用创建一个轻�
       application:
         name: eureka-client
     ```
-    __在这里说下：defaultZone发现服务的host改为镜像名。__
+    __在这里说下：defaultZone发现服务的host改为镜像名。其中，eureka-server要配置映射为eureka-server的主机IP地址__
   + 编写dockerfile文件：
     ```
-    FROM hunnyhu/alpine-oraclejdk8:ok
+    FROM kurron/docker-oracle-jdk-8
     VOLUME /tmp
-    ADD eureka-client-0.0.1-SNAPSHOT.jar app.jar
-    #RUN bash -c 'touch /app.jar'
-    ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
-    EXPOSE 8761
+    COPY eureka-client-0.1-SNAPSHOT.jar /app.jar
+    ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar", "--spring.config.name=application-docker"]
+    EXPOSE 8763
     ```
-  + 构建镜像
+  + 构建镜像：mvn clean package docker:build
   执行构建docker镜像maven命令，构建eureka-client镜像成功。
 
 这时我们运行docke的eureka-server 和eureka-client镜像：
 
 ```
-docker run -p 8761: 8761 -t hunny/eureka-server
-docker run -p 8763: 8763 -t hunny/eureka-client
+docker run -p 8761:8761 -t hunny/eureka-server
+docker run -p 8763:8763 -t hunny/eureka-client
 ```
 访问localhost:8761

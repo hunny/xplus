@@ -81,3 +81,7 @@
 	- 服务提供者：eureka-client，端口为8762，向服务注册中心注册。
 
 * [十一、Docker部署SpringCloud项目](../../eureka-server/src/test/java/com/xplus/server/eureka/Docker部署SpringCloud项目.md)
+    - 制作docker镜像。
+    - 服务注册中心：eureka-server，使用--spring.config.name=application-docker参数在docker容器中运行。
+	- 服务提供者：eureka-client，使用--spring.config.name=application-docker参数在docker容器中运行。
+	- 配置eureka-server映射的主机地址，使eureka-client通过ip映射地址向eureka-server注册。

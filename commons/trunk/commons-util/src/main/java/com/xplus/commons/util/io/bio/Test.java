@@ -14,7 +14,8 @@ public class Test {
       @Override
       public void run() {
         try {
-          ServerNormal.start();
+//          ServerNormal.start();// 原始算法
+          ServerBetter.start();// 改进算法
         } catch (IOException e) {
           e.printStackTrace();
         }

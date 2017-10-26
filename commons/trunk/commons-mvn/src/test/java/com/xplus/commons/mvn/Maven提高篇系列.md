@@ -535,3 +535,259 @@ Maven会正确处理模块之间的依赖关系，即在webapp模块上执行Mav
 如果core和webapp分别处理两个不同的领域，但是它们又共享了很多，比如依赖等，那么我们可以将core和webapp分别继承自同一个父pom工程，而不必属于同一个工程下的子模块。
 更多解析请参考[这里](http://maven.apache.org/guides/introduction/introduction-to-the-pom.html)。
 
+## 配置Plugin到某个phase
+
+持续交付要“自动化所有东西”，对于集成测试也是一样。集成测试和单元测试相比需要更多的环境准备工作，包括测试数据的准备和启动服务器等。在本篇中我们设想以下一种场景：
+
+* 开发了一个web应用，集成测试使用了Selenium，你希望通过一个Maven命令跑完所有的测试，包括集成测试。
+
+Maven的plugin包含了一个或多个goal，每一个goal表示plugin的一个操作单位，在plugin开发中，一个goal通常对应于Java类的一个方法(Mojo的execute方法)。一个goal可以默认绑定到Mavan的某个phase，比如Jar plugin的jar这个goal便默认绑定在了package这个phase上。当Maven执行到package时，Jar的jar goal将自动执行。当然，在默认情况下plugin的goal也可以不绑定在任何一个phase上，此时Maven将不做任何操作。但是，我们可以显式地手动将某个plugin的某个goal绑定在一个phase中。
+
+对于上面的场景，我们的解决方案是：在集成测试之前（对应Maven的phase为pre-integration-test），我们使用jetty-maven-plugin启动web应用，在集成测试时通过Selenium访问网站进行验证，集成测试完毕之后（对应Maven的phase为post-integration-test），同样使用jetty-maven-plugin关闭web应用。
+
+### 1 修改demo-parent中的文件
+
+* 修改pom.xml文件：
+
+修改demo-parent依赖，发挥parent作用，把`<dependencies>`放到`<dependencyManagement>`中，并且为了使用Selenium，我们需要将Selenium依赖加入pom.xml文件中：
+
+```
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>3.6.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+```
+
+### 2 修改demo-web中的文件
+
+* 修改pom.xml中`<dependencies>`依赖，追加Selenium依赖：
+
+```
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.example.parent.core</groupId>
+      <artifactId>demo-core</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+    </dependency>
+  </dependencies>
+```
+
+* 修改pom.xml中`<build>`内容：
+
+```
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>  
+        <artifactId>jetty-maven-plugin</artifactId>  
+        <version>9.4.7.v20170914</version>  
+        <configuration>
+          <scanintervalseconds>0</scanintervalseconds>
+          <stopKey>stop</stopKey>
+          <stopPort>9999</stopPort>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <scanintervalseconds>0</scanintervalseconds>
+              <daemon>true</daemon>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/unit/*Test.java</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>surefire-it</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>**/*IntegrationTest.java</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <finalName>demo-web</finalName>
+  </build>
+```
+
+* 增加helloworld.html文件
+
+在`src/main/webapp/`目录下新建`helloworld.html`文件，内容如下：
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>Hello World!</h2>
+</body>
+</html>
+```
+
+* 使用`mvn jetty:run`在浏览器上查看结果：
+
+```
+Hello World!
+```
+
+* 添加Selelium Webdriver集成测试如下：
+
+```
+package com.example.parent.web;
+
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class HelloWorldIntegrationTest {
+  @Test
+  public void testHelloWorldIndexPage() {
+
+    WebDriver driver = new ChromeDriver();
+
+    // WebDriver driver = new SafariDriver();//use safari
+    // WebDriver driver = new InternetExplorerDriver();//use IE
+    // WebDriver driver = new FirefoxDriver();//use fireforx
+
+    driver.get("http://localhost:8080/helloworld.html");
+    System.out.println(driver.getPageSource());
+    WebElement element = driver.findElement(By.tagName("h2"));
+    MatcherAssert.assertThat("", element.getText(),
+        CoreMatchers.is(CoreMatchers.equalTo("Hello World!")));
+  }
+}
+```
+
+* 配置jetty-maven-plugin：
+
+```
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>  
+        <artifactId>jetty-maven-plugin</artifactId>  
+        <version>9.4.7.v20170914</version>  
+        <configuration>
+          <scanintervalseconds>0</scanintervalseconds>
+          <stopKey>stop</stopKey>
+          <stopPort>9999</stopPort>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <scanintervalseconds>0</scanintervalseconds>
+              <daemon>true</daemon>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <finalName>demo-web</finalName>
+  </build>
+```
+
+在pre-integration-test阶段，我们调用了jetty-maven-plugin的run，此时web服务器启动，在post-integration-test阶段，我们调用了jetty-maven-plugin的stop来关闭web服务器。
+
+但是这里有个问题，在运行mvn clean install时，Maven会先运行单元测试，再运行集成测试，并且在默认情况下这两种测试都会运行以*Test.java结尾的测试类，结果在单元测试阶段也会运行上面的HelloWorldIntegrationTest，结果还没有执行到集成测试阶段就挂了。
+
+此时，我们需要将单元测试和集成测试分开，Maven使用maven-surefire-plugin执行测试，我们可以先将HelloWorldIntegrationTest排除在测试之外，这样单元测试将不会运行该测试，然后在集成测试中，再将HelloWorldIntegrationTest包含进来，此时我们需要修改maven-surefire-plugin的配置。
+
+* 在单元测试排除集成测试配置
+
+```
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/unit/*Test.java</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>surefire-it</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>**/*IntegrationTest.java</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+```
+
+
+
+

@@ -24,9 +24,9 @@ public class Test {
     // 避免客户端先于服务器启动前执行代码
     Thread.sleep(100);
     // 运行客户端
-    char operators[] = {
+    final char operators[] = {
         '+', '-', '*', '/' };
-    Random random = new Random(System.currentTimeMillis());
+    final Random random = new Random(System.currentTimeMillis());
     new Thread(new Runnable() {
       @SuppressWarnings("static-access")
       @Override

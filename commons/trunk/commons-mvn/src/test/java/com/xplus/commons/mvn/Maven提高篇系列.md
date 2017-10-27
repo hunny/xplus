@@ -12,6 +12,10 @@
 	- 处理依赖冲突
 	- 编写自己的Plugin
 
+* 参考
+	- [Maven提高篇系列](http://www.cnblogs.com/davenkin/p/advanced-maven-multi-module-vs-inheritance.html)
+	- [Jetty开发指导：Maven和Jetty](http://blog.csdn.net/tomato__/article/details/37927813)
+
 ## 一、Maven简介
 
 Maven是一个用于项目构建的工具，通过它便捷的管理项目的生命周期。即项目的jar包依赖，开发，测试，发布打包。
@@ -563,7 +567,7 @@ Maven的plugin包含了一个或多个goal，每一个goal表示plugin的一个�
       <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>selenium-java</artifactId>
-        <version>3.6.0</version>
+        <version>2.52.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -689,14 +693,15 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 public class HelloWorldIntegrationTest {
   @Test
   public void testHelloWorldIndexPage() {
 
-    WebDriver driver = new ChromeDriver();
-
+    WebDriver driver = new HtmlUnitDriver();
+    
+    // WebDriver driver = new ChromeDriver(chromeOptions);// use Chrome
     // WebDriver driver = new SafariDriver();//use safari
     // WebDriver driver = new InternetExplorerDriver();//use IE
     // WebDriver driver = new FirefoxDriver();//use fireforx
@@ -787,6 +792,8 @@ public class HelloWorldIntegrationTest {
     </plugins>
   </build>
 ```
+
+
 
 
 

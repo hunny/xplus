@@ -326,7 +326,7 @@ maven可以让我们方便地管理jar包依赖，具体做法如下：
 
 Maven会先在本地Repository中查找依赖，如果依赖存在，则使用该依赖，如果不存在，则通过pom.xml中的Repository配置从远程下载依赖到本地Repository中。默认情况下，Maven将使用[Maven Central Repository](http://search.maven.org/)作为远端Repository。在pom.xml中为什么没有看到这样的配置信息? 原因在于，任何一个Maven工程都默认地继承自一个[Super POM](http://books.sonatype.com/mvnref-book/reference/pom-relationships-sect-pom.html#pom-relationships-sect-super-pom)，Repository的配置信息便包含在其中。
 
-## 二、多模块VS继承
+## 三、多模块VS继承
 
 通常来说，在Maven的多模块工程中，都存在一个pom类型的工程作为根模块，该工程只包含一个pom.xml文件，在该文件中以模块（module）的形式声明它所包含的子模块，即多模块工程。在子模块的pom.xml文件中，又以parent的形式声明其所属的父模块，即继承。然而，这两种声明并不必同时存在，我们将在下文中讲到这其中的区别。
 
@@ -541,7 +541,7 @@ Maven会正确处理模块之间的依赖关系，即在webapp模块上执行Mav
 如果core和webapp分别处理两个不同的领域，但是它们又共享了很多，比如依赖等，那么我们可以将core和webapp分别继承自同一个父pom工程，而不必属于同一个工程下的子模块。
 更多解析请参考[这里](http://maven.apache.org/guides/introduction/introduction-to-the-pom.html)。
 
-## 配置Plugin到某个phase
+## 四、配置Plugin到某个phase
 
 持续交付要“自动化所有东西”，对于集成测试也是一样。集成测试和单元测试相比需要更多的环境准备工作，包括测试数据的准备和启动服务器等。在本篇中我们设想以下一种场景：
 
@@ -819,7 +819,7 @@ WebDriver driver = new InternetExplorerDriver();//打开IE浏览器
 
 此时再运行mvn clean install，在浏览器窗口打开访问即可。
 
-## 使用自己的repository—Nexus
+## 五、使用自己的repository—Nexus
 
 创建一个专属的Repository（Internal Repository），所有项目都只使用这个专属的Repository下载依赖，部署等。
 
@@ -939,7 +939,7 @@ admin和admin123都是Nexus默认的，特别需要注意的是，这里的<id>�
 mvn clean deploy
 ```
 
-## 使用Profile
+## 六、使用Profile
 
 * 在开发项目时，设想有以下场景：
 	- Maven项目存放在一个远程代码库中，该项目需要访问数据库，两台电脑，一台是Linux，一台是Mac OS X，希望在两台电脑上都能做项目开发。但是，安装Linux的电脑上安装的是MySQL数据库，而Mac OS X的电脑安装的是PostgreSQL数据库。此时需要一种简单的方法在两种数据库连接中进行切换。
@@ -1079,7 +1079,7 @@ Maven的Profile机制最大的好处在于它的自动激活性，因为如果�
 
 请注意，以上两个Profile在默认情况下都没有被激活，Maven在运行时会检查操作系统，如果操作系统为Mac OS X，那么Maven将自动激活id为mac的Profile，此时将使用PostgreSQL的数据库链接，如果操作系统为Linux或Unix，那么将使用MySQL数据库连接。更多的Profile自动激活条件，请参考[此文档](http://docs.codehaus.org/display/MAVENUSER/Profiles)。
 
-## 处理依赖冲突
+## 七、处理依赖冲突
 
 在使用Maven时是否遇到过诸如`NoSuchMethodError`或`ClassNotFoundException`之类的问题，甚至发生这些问题的Java类没都没有听说过。要搞清楚这里面的缘由，我们得学习Maven对依赖冲突的处理机制。
 
@@ -1148,3 +1148,203 @@ Maven采用“最近获胜策略（nearest wins strategy）”的方式处理依
 
 另外，我们还可以在project-A中将对project-common的依赖声明为optional，optional即表示非transitive，此时当在resolve-web中引用project-A时，Maven并不会将project-common作为transitive依赖自动加入，除非有别的项目（比如project-B）声明了对project-common的transitive依赖或者我们在resolve-web中显式声明对project-common的依赖（方法一）。
 
+## 八、编写自己的Plugin
+
+Maven就其本身来说只是提供一个执行环境，它并不知道需要在项目上完成什么操作，真正操作项目的是插件（plugin），比如编译Java有Compiler插件，打包有Jar插件等。所以要让Maven完成各种各样的任务，需要配置不同的插件，甚至自己编写插件。
+
+Maven在默认情况下已经配置了一些常用的插件，上面的Compiler和Jar便在这些插件之列。要查看Maven的默认插件，需要找到Super Pom，Super Pom位于`M2_HOME/lib/maven-2.2.1-uber.jar`文件中，文件名为`pom-4.0.0.xml`，里面包含了Maven所有的默认插件：
+
+```
+<pluginManagement>       
+   <plugins>       
+     <plugin>       
+       <artifactId>maven-antrun-plugin</artifactId>       
+       <version>1.3</version>       
+     </plugin>              
+     <plugin>       
+       <artifactId>maven-assembly-plugin</artifactId>       
+       <version>2.2-beta-2</version>       
+     </plugin>                
+     <plugin>       
+       <artifactId>maven-clean-plugin</artifactId>       
+       <version>2.2</version>       
+     </plugin>       
+     <plugin>       
+       <artifactId>maven-compiler-plugin</artifactId>       
+       <version>2.0.2</version>       
+     </plugin>  
+      ......  
+   </plugins>  
+</pluginManagement>  
+```
+
+任何Maven工程默认都继承自这个Super Pom，也可以在自己的项目中执行: 
+
+```
+mvn help:effective-pom
+```
+
+来查看包括继承内容的整个pom文件，其中便包含了从Super Pom继承下来的内容。
+
+和其他Maven项目一样，Maven的插件也是一种packaging类型（类型为maven-plugin），也拥有groupId，artifactId和version。简单地讲，一个Maven插件包含了一些列的goal，每一个goal对应于一个Mojo类（Maven Old Java Object，命名来自于Pojo），每个Mojo都需要实现org.apache.maven.plugin.Mojo接口，该接口定义了一个execute方法，在开发插件时，你的任务就是实现这个execute方法。
+
+### 1 创建自己的插件
+
+先通过archetype创建一个Maven插件工程:
+
+```
+mvn archetype:generate -DgroupId=com.example.plugin -DartifactId=demo-maven-plugin -DarchetypeArtifactId=maven-archetype-mojo -DarchetypeGroupId=org.apache.maven.archetype -DinteractiveMode=false
+```
+
+此时打开工程中的pom.xml文件，你可以看到该工程的packaging类型：
+
+```
+<packaging>maven-plugin</packaging>
+```
+
+向工程中添加一个Mojo类：
+
+```
+/** 
+ * @goal buildinfo 
+ * @phase  pre-integration-test 
+ */  
+public class BuildInfoMojo extends AbstractMojo {  
+   
+   /** 
+    * @parameter expression="${project}" 
+    * @readonly 
+    */  
+   private MavenProject project;  
+   
+   /** 
+    * @parameter expression="${buildinfo.prefix}" 
+    * default-value="+++" 
+    */  
+   private String prefix;  
+   
+   public void execute() throws MojoExecutionException {  
+       Build build = project.getBuild();  
+       String outputDirectory = build.getOutputDirectory();  
+       String sourceDirectory = build.getSourceDirectory();  
+       String testOutputDirectory = build.getTestOutputDirectory();  
+       String testSourceDirectory = build.getTestSourceDirectory();  
+       getLog().info("\n==========================\nProject build info:");  
+       String[] info = {outputDirectory, sourceDirectory, testOutputDirectory, testSourceDirectory};  
+       for (String item : info) {  
+           getLog().info("\t" + prefix + "   " + item);  
+       }  
+       getLog().info("=======================");  
+   }  
+} 
+```
+
+在上面的代码中，`@goal buildinfo`表示该Mojo对应的goal的名字为buildinfo（在调用该goal时需要给出它的名字），“@phase   pre-integration-test”表示该Mojo默认被绑定在了pre-integration-test阶段。之后的：
+
+```
+/**  
+ * @parameter expression="${project}"  
+ * @readonly  
+ */  
+ private MavenProject project;  
+```
+
+表示该插件持有一个到MavenProject的引用，当客户方在执行该插件时，这里的project字段便表示客户工程。这里我们并没有对project进行初始化，但是“@parameter expression="${project}"”中的${project}即表示当前的客户工程，Maven在运行时会通过依赖注入自动将客户工程对象赋给project字段（请参考Maven自己的IoC容器[Plexus](http://plexus.codehaus.org/)）。此外，我们还声明了一个prefix字段，该字段表示对输出的各行加上prefix前缀字符串，默认为“+++”（加入prefix字段主要用于演示对插件参数的配置，这里的project和prefix都表示插件参数，我们可以在客户方重新配置这些参数）。
+
+由于上面的代码用到了MavenProject类，我们还需要在该插件工程的pom.xml中加入以下依赖：
+
+```
+<dependency>  
+   <groupId>org.apache.maven</groupId>  
+   <artifactId>maven-project</artifactId>  
+   <version>2.2.1</version>  
+ </dependency> 
+```
+
+在执行了“mvn clean install“之后，我们便可以通过一下命令调用该Mojo：
+
+```
+mvn com.example.plugin:demo-maven-plugin:1.0-SNAPSHOT:buildinfo
+```
+
+在当前的插件工程中执行该命令输出结果如下：
+
+```
+......
+==========================
+Project build info:
+[INFO] +++   /home/user/Desktop/demo-maven-plugin/demo-maven-pugin/target/classes
+[INFO] +++   /home/user/Desktop/demo-maven-plugin/demo-maven-pugin/src/main/java
+[INFO] +++   /home/user/Desktop/demo-maven-plugin/demo-maven-pugin/target/test-classes
+[INFO] +++   /home/user/Desktop/demo-maven-plugin/demo-maven-pugin/src/test/java
+[INFO] =======================
+......
+```
+
+以上的”+++“便表示prefix的默认属性值，后跟各个build目录。我们也可以通过"-D"参数为prefix重新赋值：
+
+```
+mvn com.example.plugin:demo-maven-plugin:1.0-SNAPSHOT:buildinfo -Dbuildinfo.prefix=---
+```
+
+以上我们用"---"代替了默认的"+++"。
+
+你可能注意到，为了调用该插件的buildinfo这个goal，我们需要给出该插件的所有坐标信息，包括groupId，artifactId和version号。你可能之前已经执行过`mvn eclipase:eclipase`或`mvn idea:idea`这样简洁的命令，让我们也来将自己的插件调用变简单一点。
+
+要通过简单别名的方式调用Maven插件，我们需要做到以下两点：
+* 插件的artifactId应该遵循`***-maven-plugin`或`maven-***-plugin`命名规则，对于本文中的插件，我们已经遵循了。（当然不遵循也是可以的，此时你需要使用Maven Plugin Plugin来设置goalPrefix，此时就不见得为“demo”了）
+* 需要将插件的groupId放在Maven默认的插件搜寻范围之内，默认情况下Maven只会在org.apache.maven.plugins和org.codehaus.mojo两个groupId下搜索插件，要让Maven同时搜索我们自己的groupId，我们需要在`~/.m2/settings.xml`中加入：
+
+```
+<pluginGroups>  
+    <pluginGroup>com.example.plugin</pluginGroup>  
+</pluginGroups>
+```
+
+在达到以上两点之后，我们便可以通过以下命令来调用自己的插件了：
+
+```
+mvn demo:buildinfo
+```
+
+### 2 在别的项目使用插件
+
+要在别的项目中应用插件也是简单的，我们只需要在该项目的pom.xml文件中声明该插件的即可：
+
+```
+<plugin>  
+  <groupId>com.example.plugin</groupId>  
+  <artifactId>demo-maven-plugin</artifactId>  
+  <version>1.0-SNAPSHOT</version>  
+  <configuration>  
+     <prefix>---</prefix>  
+  </configuration>  
+  <executions>  
+	  <execution>  
+	     <id>buildinfo</id>  
+	     <phase>process-sources</phase>  
+	     <goals>  
+	        <goal>buildinfo</goal>  
+	     </goals>  
+	  </execution>  
+  </executions>  
+</plugin>  
+```
+
+在上面的配置中，我们将demo-maven-plugin插件的buildinfo绑定在了process-sources阶段，并将prefix参数该为了"---"，这样在执行"mvn clean install" 时，该插件的输出内容将显示在终端。另外，我们可以通过设置属性的方式为demo-maven-plugin的prefix参数赋值，在pom.xml中加入一下property：
+
+```
+<properties>  
+   <buildinfo.prefix>---</buildinfo.prefix>  
+</properties> 
+```
+
+此时，去掉plugin配置中的：
+
+```
+<configuration>  
+   <prefix>---</prefix>  
+</configuration>  
+```
+
+运行`mvn clean install`，输出效果和之前一样。

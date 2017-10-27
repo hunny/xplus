@@ -604,9 +604,9 @@ Maven的plugin包含了一个或多个goal，每一个goal表示plugin的一个�
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>  
-        <artifactId>jetty-maven-plugin</artifactId>  
-        <version>9.4.7.v20170914</version>  
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>8.1.12.v20130726</version>
         <configuration>
           <scanintervalseconds>0</scanintervalseconds>
           <stopKey>stop</stopKey>
@@ -723,9 +723,9 @@ public class HelloWorldIntegrationTest {
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>  
-        <artifactId>jetty-maven-plugin</artifactId>  
-        <version>9.4.7.v20170914</version>  
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>8.1.12.v20130726</version>
         <configuration>
           <scanintervalseconds>0</scanintervalseconds>
           <stopKey>stop</stopKey>
@@ -938,4 +938,145 @@ admin和admin123都是Nexus默认的，特别需要注意的是，这里的<id>�
 ```
 mvn clean deploy
 ```
+
+## 使用Profile
+
+* 在开发项目时，设想有以下场景：
+	- Maven项目存放在一个远程代码库中，该项目需要访问数据库，两台电脑，一台是Linux，一台是Mac OS X，希望在两台电脑上都能做项目开发。但是，安装Linux的电脑上安装的是MySQL数据库，而Mac OS X的电脑安装的是PostgreSQL数据库。此时需要一种简单的方法在两种数据库连接中进行切换。
+	- 项目需要部署。为了调试，在开发时在Java编译结果中加入了调试信息（Java默认）。而在部署时希望Java编译结果中不出现调试信息。
+
+Maven的Profile用于在不同的环境下应用不同的配置。一套配置即称为一个Profile。这里的“环境”可以是操作系统版本，JDK版本或某些文件是否存在这样的物理环境，也可以是自己定义的一套逻辑环境。比如上面所说的Linux和Mac OS X便是一种物理环境，而开发环境和部署环境则为逻辑环境。Maven提供了Activation机制来激活某个Profile，它既允许自动激活（即在某些条件满足时自动使某个Profile生效），也可以手动激活。
+
+一个Profile几乎可以包含所有能够出现在pom.xml中的配置项，比如`<artifactId>`，`<outputDirectory>`等。相当于在Profile中定义的配置信息会覆盖原有pom.xml中的相应配置项。
+
+### 1 定义Profile
+
+通常情况将Profile的定义放在pom.xml文件的最后：
+
+```
+<profiles>
+   <profile>
+       <id>apple</id>
+       <activation>
+           <activeByDefault>true</activeByDefault>
+       </activation>
+       <properties>
+           <fruit>APPLE</fruit>
+       </properties>
+   </profile>
+   <profile>
+       <id>banana</id>
+       <properties>
+           <fruit>BANANA</fruit>
+       </properties>
+   </profile>
+</profiles>
+```
+
+在上面的配置中，定义了两个Profile，一个id为apple，该Profile将fruit属性设置为APPLE，另一个id为banana，它将fruit属性设置为BANANA。此外，第一个Profile还配置了`<activeByDefault>true</activeByDefault>`，表明该Profile默认即是生效的。
+
+为了打印出fruit这个属性，再向pom.xml中添加一个maven-antrun-plugin插件，可以通过该插件的echo任务来打印属性信息。将该打印配置在Maven的initialize阶段（任何阶段都可以）：
+```
+<plugin>
+   <artifactId>maven-antrun-plugin</artifactId>
+   <executions>
+       <execution>
+           <phase>initialize</phase>
+           <goals>
+               <goal>run</goal>
+           </goals>
+           <configuration>
+               <tasks>
+                   <echo>Fruit:${fruit}</echo>
+               </tasks>
+           </configuration>
+       </execution>
+   </executions>
+</plugin>
+```
+
+配置完成之后，执行：`mvn initialize`，由于id为apple的Profile默认生效，此时将在终端输出“APPLE”字样：
+
+```
+......
+[INFO] Executing tasks
+    [echo] Fruit:APPLE
+[INFO] Executed tasks
+......
+```
+
+如果要使用id为banana的Profile，我们可以显式地指定使用该Profile：`mvn initialize -Pbanana`：
+
+```
+......
+[INFO] Executing tasks
+    [echo] Fruit:BANANA
+[INFO] Executed tasks
+......
+```
+
+### 2 手动激活Profile
+
+在上面的例子中，在显示“BANANA”时便使用了手动激活Profile的方式。手动激活Profile要求在运行mvn命令时通过`-PprofileId`的方式指定使用某个Profile。对于上文提到的第二点，可以通过一下配置完成：
+
+```
+<profile>
+	<id>production</id>
+	<build>
+	   <plugins>
+	       <plugin>
+	           <groupId>org.apache.maven.plugins</groupId>
+	           <artifactId>maven-compiler-plugin</artifactId>
+	           <configuration>
+	               <debug>false</debug>
+	           </configuration>
+	       </plugin>
+	   </plugins>
+	</build>
+</profile>
+```
+
+在开发时，我们使用`mvn clean install`，此时名为production的Profile并没有被激活，所以还是采用Java编译默认的配置（即在结果中包含了调试信息）。当需要为生产部署环境编译时，便可以使用`mvn clean install -Pproduction`。
+
+Maven的Profile机制最大的好处在于它的自动激活性，因为如果手动激活，在运行mvn命令时依然需要告诉Maven一些信息（即这里的`-PprofileId`）来完成配置，完全可以通过另外的方法来达到相同的目的。比如，可以定义一个父pom和两个子pom（比如pom.xml和pomB.xml），在父pom中我们存放两个子pom共享的配置（比如上面的maven-antrun-plugin），而在两个子pom中分别配置不同的信息以代表不同的环境，比如在pom.xml中（默认执行的pom），我们将fruit属性设置成APPLE，而在pomB.xml中，将fruit属性设置成BANANA。此时，pom.xml和pomB.xml都继承自父pom。虽然在默认情况下Maven会将名为“pom.xml”的文件作为输入文件，但是我们通过“-f”参数来指定其他pom文件。比如，如果要显示“APPLE”，我们可以直接执行`mvn initialize`，如果要显示“BANANA”，则可以执行`mvn initialize -f pomB.xml`。
+
+### 3 自动激活Profile
+
+在自动激活Profile中，需要为某个Profile预先定义一些前提条件（比如操作系统版本），当这些前提条件满足时，该Profile将被自动激活。比如，对于上文中的第一点，可以为Mac OS X和Linux(Unix)分别定义一套数据库连接：
+
+```
+<profile>
+   <id>mac</id>
+   <activation>
+       <activeByDefault>false</activeByDefault>
+       <os>
+           <family>mac</family>
+       </os>
+   </activation>
+   <properties>
+       <database.driverClassName>org.postgresql.Driver</database.driverClassName>
+       <database.url>jdbc:postgresql://localhost/database</database.url>
+       <database.user>username</database.user>
+       <database.password>password</database.password>
+   </properties>
+</profile>
+<profile>
+   <id>unix</id>
+   <activation>
+       <activeByDefault>false</activeByDefault>
+       <os>
+           <family>unix</family>
+       </os>
+   </activation>
+   <properties>
+       <database.driverClassName>com.mysql.jdbc.Driver</database.driverClassName>
+       <database.url>jdbc:mysql://localhost:3306/database</database.url>
+       <database.user>username</database.user>
+       <database.password>password</database.password>
+   </properties>
+</profile>
+```
+
+请注意，以上两个Profile在默认情况下都没有被激活，Maven在运行时会检查操作系统，如果操作系统为Mac OS X，那么Maven将自动激活id为mac的Profile，此时将使用PostgreSQL的数据库链接，如果操作系统为Linux或Unix，那么将使用MySQL数据库连接。更多的Profile自动激活条件，请参考[此文档](http://docs.codehaus.org/display/MAVENUSER/Profiles)。
+
 

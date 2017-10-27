@@ -15,6 +15,7 @@
 * 参考
 	- [Maven提高篇系列](http://www.cnblogs.com/davenkin/p/advanced-maven-multi-module-vs-inheritance.html)
 	- [Jetty开发指导：Maven和Jetty](http://blog.csdn.net/tomato__/article/details/37927813)
+	- [selenium之 chromedriver与chrome版本映射表](http://blog.csdn.net/huilan_same/article/details/51896672)
 
 ## 一、Maven简介
 
@@ -130,6 +131,7 @@ mvn install:install-file -DgroupId=com -DartifactId=client -Dversion=0.1.0 -Dpac
 
 * `-DskipTests`，不执行测试用例，但编译测试用例类生成相应的class文件至target/test-classes下。
 * `-Dmaven.test.skip=true`，不执行测试用例，也不编译测试用例类。
+* `-Dmaven.javadoc.skip=true`，忽略javadoc的生成。
 
 ## 二、Maven单工程
 
@@ -793,8 +795,147 @@ public class HelloWorldIntegrationTest {
   </build>
 ```
 
+现在运行mvn clean install，成功。在上面的例子中，先将只有在unit目录下的以`*Test.java`结尾的类看做测试类，此时不包含HelloWorldIntegrationTest，而在itegration-test阶段，我们将运行以*IntegrationTest.java结尾的测试类。
 
+请注意，此时运行`mvn clean test`不会执行集成测试。
 
+如果要看到了实际的页面，可以将HelloWorldIntegrationTest中的：
 
+```
+WebDriver driver = new HtmlUnitDriver();//使用HtmlUnit
+```
 
+修改为：
+
+```
+ WebDriver driver = new SafariDriver();//打开Safari浏览器
+```
+
+或者：
+
+```
+WebDriver driver = new InternetExplorerDriver();//打开IE浏览器
+```
+
+此时再运行mvn clean install，在浏览器窗口打开访问即可。
+
+## 使用自己的repository—Nexus
+
+创建一个专属的Repository（Internal Repository），所有项目都只使用这个专属的Repository下载依赖，部署等。
+
+- 专属Repository有以下优点：
+  + 代理外部Repository（比如Maven Central Repository），可以对外部Repository做各种各样的过滤操作，例如可以限制只使用Spring的某个版本。
+  + 通过代理，专属Repository还可以起到缓存的作用，这样每个开发者只需要从局域网的专属Repository下载依赖，而不用消耗对外网络资源。
+  + 发布自己的项目，如果开发的项目需要被其他团队使用，而又不能发布到外部的Repository中，那么专属Repository是最好的选择。
+  + 发布一些购买的第三方软件产品以供公司所有人使用，比如Oracle的数据库Driver。
+
+有多种专属Repository，比如[Nexus](http://www.sonatype.org/nexus/)和[Artifactory](http://www.jfrog.com/home/v_artifactory_opensource_overview)等，你甚至可以用一个[FTP服务器作为一个专属Repository](http://stuartsierra.com/2009/09/08/run-your-own-maven-repository)。本文将以开源的Nexus为例，演示如何将开发的项目部署到Nexus Repository中。
+
+### 1 下载并安装Nexus
+
+[下载](https://www.sonatype.com/download-oss-sonatype)Nexus的war包（本文使用的是nexus-2.5.war），将该war包放在tomcat服务器的webapps目录下，启动tomcat。打开http://localhost:8080/nexus-2.5/，你将看到nexus页面：
+
+点击右上角的“Log In”，输入用户名admin，密码admin123（这是Nexus默认的），此后点击右侧的“Repositories”，显示当前Nexus所管理的Repository，默认情况下Nexus为我们创建了以下主要的Repository：
+	* Public Repositories，这是一个Repository Group，它所对应的URL为http://localhost:8080/nexus-2.5/content/groups/public/，该Repository  Group包含了多个Repository，其中包含了Releases、Snapshots、Third Party和Central。Repository Group的作用是我们只需要在自己的项目中配置该Repository Group就行了，它将自动从其所包含的Repository中下载依赖，比如如果我们声明对Spring的依赖，那么根据Repository Group中各个Repository的顺序（可以配置），Nexus将首先从Releases中下载Spring，发现没有，再从Snapshots中下载（极大可能也没有，因为它是个Snapshots的Repository），依次查找，最后可能在Central Repository中找到。在配置项目的Repository时，我们应该首先考虑Public Repositories。
+	* 3rd party，该Repository即是存放你公司所购买的第三方软件库的地方，它是一个由Nexus自己维护的一个Repository。
+	* Apache Snapshots，这是一个代理Repository，即最终的依赖还是得在Apache官网上去下载，然后缓存在Nexus中。
+	* Central，这就是代理Maven Central Repository的Repository。
+	* Releases，自己的项目要发布时，就应该发布在这个Repository，它也是Nexus自己维护的Repository，而不是代理。
+	* Snapshots，自己项目Snapshot的Repository。
+
+### 2 用Nexus Repository取代Maven Central Repository
+
+在上一步，只是创建了一个专属的Nexus Repository，项目默认还是使用Maven Central Repository，所以这时需要将Maven Central Repository换成自己创建的Nexus Repository，可以通过修改`~/.m2/settings.xml`。在该settings.xml文件中（没有的话可以创建一个），加入以下配置：
+
+```
+ <mirrors>
+   <mirror>
+     <!--This sends everything else to /public -->
+     <id>nexus</id>
+     <mirrorOf>*</mirrorOf>
+     <url>http://localhost:8080/nexus-2.5/content/groups/public</url>
+   </mirror>
+ </mirrors>
+ <profiles>
+   <profile>
+     <id>nexus</id>
+     <!--Enable snapshots for the built in central repo to direct -->
+     <!--all requests to nexus via the mirror -->
+     <repositories>
+       <repository>
+         <id>central</id>
+         <url>http://central</url>
+         <releases><enabled>true</enabled></releases>
+         <snapshots><enabled>true</enabled></snapshots>
+       </repository>
+     </repositories>
+    <pluginRepositories>
+       <pluginRepository>
+         <id>central</id>
+         <url>http://central</url>
+         <releases><enabled>true</enabled></releases>
+         <snapshots><enabled>true</enabled></snapshots>
+       </pluginRepository>
+     </pluginRepositories>
+   </profile>
+ </profiles>
+ <activeProfiles>
+   <!--make the profile active all the time -->
+   <activeProfile>nexus</activeProfile>
+ </activeProfiles>
+```
+
+以上配置通过mirror和profile的方式将central Repository全部转向到我们自己的Public Repositories，包括release版本和snapshot版本（Maven默认允许从Maven Central Repository下载release版本，这是合理的。这样一来，项目中的所有依赖都从Nexus的Public Repositories下载，由于其中包含了对Maven Central Repository的代理，所以此时Maven Central Repository中的类库也是可以间接下载到的。此时可以将`~/.m2/repository/`中所有的内容删除掉，再在项目中执行“mvn clean install”，Maven开始从Nexus 的Public Repositories中下载依赖了。
+
+请注意，此时项目本身不需要做任何修改。只是创建了另一个Repository和修改了Maven的默认配置（学习完本文后，应该需要将`~/.m2/settings.xml`还原，不然如果下次在构建之前的Nexus服务器没有启动，构建将失败。）。
+
+### 3 在项目中配置Nexus Repository的信息
+
+分两步：
+* 在项目中指明部署目的Repository的URL。
+* 提供用户名和密码。
+
+一个Maven项目而言，如果项目版本号中有“SNAPSHOT”字样，则表示此时的项目是snapshot版本，即处于开发中。否则，Maven则认为这是一个release版本。所以在部署时，需要分别配置这两种发布版本所对应的Repository。在项目的pom.xml文件中配置需要发布的目标Repository：
+
+```
+<distributionManagement>
+   <repository>
+	   <id>releases</id>
+	   <name>Nexus Release Repository</name>
+	   <url>http://localhost:8080/nexus-2.5/content/repositories/releases/</url>
+   </repository>
+   <snapshotRepository>
+       <id>snapshots</id>
+       <name>Nexus Snapshot Repository</name>
+       <url>http://localhost:8080/nexus-2.5/content/repositories/snapshots/</url>
+   </snapshotRepository>
+</distributionManagement>
+```
+
+用户名和密码，这些信息当然不能放在项目中，Maven将这些信息的存放在`~/.m2/settings.xml`文件中，每台机器都可以有不同的`settings.xml`文件。在该文件中加入以下配置：
+
+```
+<servers>  
+  <server>  
+    <id>releases</id>  
+    <username>admin</username>  
+    <password>admin123</password>  
+  </server>  
+  <server>  
+    <id>snapshots</id>  
+    <username>admin</username>  
+    <password>admin123</password>  
+  </server>  
+</servers>
+```
+
+admin和admin123都是Nexus默认的，特别需要注意的是，这里的<id>需要和上面项目pom.xml文件中配置Repostory的<id>对应起来。
+
+### 4 发布到Nexus Repository
+
+执行命令：
+
+```
+mvn clean deploy
+```
 

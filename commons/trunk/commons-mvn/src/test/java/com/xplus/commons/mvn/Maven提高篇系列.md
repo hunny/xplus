@@ -1079,4 +1079,72 @@ Maven的Profile机制最大的好处在于它的自动激活性，因为如果�
 
 请注意，以上两个Profile在默认情况下都没有被激活，Maven在运行时会检查操作系统，如果操作系统为Mac OS X，那么Maven将自动激活id为mac的Profile，此时将使用PostgreSQL的数据库链接，如果操作系统为Linux或Unix，那么将使用MySQL数据库连接。更多的Profile自动激活条件，请参考[此文档](http://docs.codehaus.org/display/MAVENUSER/Profiles)。
 
+## 处理依赖冲突
+
+在使用Maven时是否遇到过诸如`NoSuchMethodError`或`ClassNotFoundException`之类的问题，甚至发生这些问题的Java类没都没有听说过。要搞清楚这里面的缘由，我们得学习Maven对依赖冲突的处理机制。
+
+Maven采用“最近获胜策略（nearest wins strategy）”的方式处理依赖冲突，即如果一个项目最终依赖于相同artifact的多个版本，在依赖树中离项目最近的那个版本将被使用。让我们来看看一个实际的例子。
+
+有一个web应用resolve-web，该工程依赖于project-A和project-B，project-A依赖于project-common的1.0版本并调用其中的sayHello()方法。project-B依赖于project-C，而project-C又进一步依赖于project-common的2.0版本并调用其中的sayGoodBye()方法。project-common的1.0和2.0版本是不同的，1.0中之包含sayHello()方法，而2.0中包含了sayHello()和sayGoodBye()两个方法。
+根据Maven的transitive依赖机制，resolve-web将同时依赖于project-common的1.0和2.0版本，这就造成了依赖冲突。而根据最近获胜策略，Maven将选择project-common的1.0版本作为最终的依赖。
+由于proejct-common的1.0版本比2.0版本在依赖树中离resolve-web更近，故1.0版本获胜。在resolve-web中执行"mvn dependency:tree -Dverbose"可以看到resolve-web的依赖关系：
+
+```
+[INFO] resolve-web:resolve-web:war:1.0-SNAPSHOT
+[INFO] +- junit:junit:jar:3.8.1:test
+[INFO] +- project-B:project-B:jar:1.0:compile
+[INFO] |  \- project-C:project-C:jar:1.0:compile
+[INFO] |     \- (project-common:project-commmon:jar:2.0:compile - omitted for conflict with 1.0)
+[INFO] +- project-A:project-A:jar:1.0:compile
+[INFO] |  \- project-common:project-commmon:jar:1.0:compile
+[INFO] \- javax.servlet:servlet-api:jar:2.4:provided
+```
+
+由上可知，project-common:project-commmon:jar:2.0被忽略掉了。此时在resolve-web的war包中将只包含project-common的1.0版本，于是问题来了。由于project-common的1.0版本中不包含sayGoodBye()方法，而该方法正是project-C所需要的，所以运行时将出现“NoSuchMethodError”。
+
+对于这种有依赖冲突所导致的问题，有两种解决方法：
+
+* 方法1：显式加入对project-common 2.0版本的依赖。
+	先前的2.0版本不是离resolve-web远了点吗，那我们就直接将它作为resolve-web的依赖，这不就比1.0版本离resolve-web还近吗？在resove-web的pom.xml文件中直接加上对project-common 2.0 的依赖：
+
+	```
+	<dependency>       
+	   <groupId>project-common</groupId>      
+	   <artifactId>project-commmon</artifactId>  
+	   <version>2.0</version>   
+	</dependency>  
+	```
+
+* 方法2：resolve-web对project-A的dependency声明中，将project-common排除掉。
+	在resolve-web的pom.xml文件中修改对project-A的dependency声明：
+	```
+	<dependency>  
+      <groupId>project-A</groupId>  
+      <artifactId>project-A</artifactId>  
+      <version>1.0</version>  
+      <exclusions>  
+	      <exclusion>  
+	          <groupId>project-common</groupId>  
+	          <artifactId>project-commmon</artifactId>  
+	      </exclusion>  
+      </exclusions>  
+	</dependency>  
+	```
+此时再在resolve-web中执行"mvn dependency:tree -Dverbose"，结果如下：
+
+```
+......
+[INFO] resolve-web:resolve-web:war:1.0-SNAPSHOT
+[INFO] +- junit:junit:jar:3.8.1:test
+[INFO] +- project-B:project-B:jar:1.0:compile
+[INFO] |  \- project-C:project-C:jar:1.0:compile
+[INFO] |     \- project-common:project-commmon:jar:2.0:compile
+[INFO] +- project-A:project-A:jar:1.0:compile
+[INFO] \- javax.servlet:servlet-api:jar:2.4:provided
+......
+```
+
+此时的依赖树中已经不包含project-common的1.0版本了。
+
+另外，我们还可以在project-A中将对project-common的依赖声明为optional，optional即表示非transitive，此时当在resolve-web中引用project-A时，Maven并不会将project-common作为transitive依赖自动加入，除非有别的项目（比如project-B）声明了对project-common的transitive依赖或者我们在resolve-web中显式声明对project-common的依赖（方法一）。
 

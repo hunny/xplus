@@ -161,6 +161,7 @@
 
     <alibaba.otter.version>1.0.24</alibaba.otter.version>
     <atlassian-look-and-feel.version>1.6</atlassian-look-and-feel.version>
+    <cdp4j.version>2.1.1</cdp4j.version>
     <commons-codec.version>1.9</commons-codec.version>
     <commons-io.version>2.5</commons-io.version>
     <commons-lang3.version>3.4</commons-lang3.version>
@@ -259,6 +260,11 @@
         <groupId>de.sciss</groupId>
         <artifactId>weblaf</artifactId>
         <version>${weblaf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.webfolder</groupId>
+        <artifactId>cdp4j</artifactId>
+        <version>${cdp4j.version}</version>
       </dependency>
       <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
       <dependency>

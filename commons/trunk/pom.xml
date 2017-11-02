@@ -139,6 +139,7 @@
     <module>commons-tpl</module>
     <module>commons-util</module>
     <module>commons-zookeeper</module>
+    <module>commons-spark</module>
   </modules>
 
   <properties>
@@ -149,8 +150,8 @@
     <maven.test.skip>true</maven.test.skip>
     <downloadSources>true</downloadSources>
     <!-- compiler settings properties -->
-    <java_source_version>1.6</java_source_version>
-    <java_target_version>1.6</java_target_version>
+    <java_source_version>1.8</java_source_version>
+    <java_target_version>1.8</java_target_version>
     <file_encoding>UTF-8</file_encoding>
     <app_name><![CDATA[XPLUS® QQ™ Commons]]></app_name>
     <app_name.html><![CDATA[XPLUS&reg; QQ&alipay; Commons]]></app_name.html>

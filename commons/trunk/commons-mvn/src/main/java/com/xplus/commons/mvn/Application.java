@@ -19,7 +19,7 @@ public class Application {
    * @param args
    */
   public static void main(String[] args) {
-    new Application().run("ok");
+    new Application().run("spark");
   }
 
   public void run(final String moduleName) {

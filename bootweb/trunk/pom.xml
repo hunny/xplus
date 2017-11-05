@@ -16,6 +16,7 @@
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
     <webjars-bootstrap.version>3.3.7</webjars-bootstrap.version>
     <webjars-jquery.version>3.2.1</webjars-jquery.version>
+    <webjars-locator.version>0.30</webjars-locator.version>
   </properties>
 
   <modules>
@@ -41,6 +42,11 @@
         <artifactId>jquery</artifactId>
         <version>${webjars-jquery.version}</version>
       </dependency>
+        <dependency>
+          <groupId>org.webjars</groupId>
+          <artifactId>webjars-locator</artifactId>
+          <version>${webjars-locator.version}</version>
+        </dependency>
     </dependencies>
   </dependencyManagement>
 

@@ -174,5 +174,24 @@ spring.mvc.static-path-pattern=/** # Path pattern used for static resources.
   <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 ```
 
+#### 忽略引入版本
+
+* 追加如下依赖
+
+```
+<dependencies>
+    <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>webjars-locator</artifactId>
+        <version>0.30</version>
+    </dependency>
+</dependencies>
+```
+
+* 引入文件变更
+
+```
+
+```
 
 

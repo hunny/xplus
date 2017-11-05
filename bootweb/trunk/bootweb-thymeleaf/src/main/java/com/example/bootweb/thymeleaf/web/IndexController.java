@@ -70,6 +70,11 @@ public class IndexController {
         null, //
         "除英文版之外，该中文版是第一个由官方正式发布的开发文档，跟官方网站保持同步更新的中文版。"));
     
+    index.getList().add(make("flexmark-java", //
+        "https://github.com/vsch/flexmark-java", //
+        null, //
+        "flexmark-java is a Java implementation of CommonMark 0.28 spec parser using the blocks first, inlines after Markdown parsing architecture.。"));
+    
     model.addAttribute("data", index);
     
     return "index";

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title th:text="${title}">Thymeleaf示例</title>
+
+<!-- Bootstrap -->
+<link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css' />
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<link href="/assets/css/ie10-viewport-bug-workaround.css"
+  rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="/assets/css/dashboard.css" rel="stylesheet" />
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="/assets/lib/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="/assets/lib/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed"
+          data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span> <span
+            class="icon-bar"></span> <span class="icon-bar"></span> <span
+            class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Markdown</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <input type="text" class="form-control"
+            placeholder="Search..." />
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li class="active"><a href="#">Overview <span
+              class="sr-only">(current)</span></a></li>
+          <li><a href="#">Reports</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Export</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="">Nav item</a></li>
+          <li><a href="">Nav item again</a></li>
+          <li><a href="">One more nav</a></li>
+          <li><a href="">Another nav item</a></li>
+          <li><a href="">More navigation</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="">Nav item again</a></li>
+          <li><a href="">One more nav</a></li>
+          <li><a href="">Another nav item</a></li>
+        </ul>
+      </div>
+      <div
+        class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-header">Markdown</h2>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">实用网站</div>
+          <div class="panel-body">
+            <div>
+              <form class="form-inline">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">文件</div>
+                    <input type="text" class="form-control"
+                      name="markdown" placeholder="输入markdown文件地址" /> <a
+                      class="input-group-addon openmdurl" role="button">
+                      <span class="glyphicon glyphicon-log-in"
+                      aria-hidden="true"></span><span>查看</span>
+                    </a>
+                  </div>
+                </div>
+              </form>
+
+              <form class="form-inline">
+                <div class="form-group">
+                  <input type="file" class="markdownfile"
+                    name="uploadfile" value="" />
+                </div>
+              </form>
+            </div>
+
+            <p>
+              <a href="http://v3.bootcss.com/components/"
+                target="_blank">组件</a>：无数可复用的组件，包括字体图标、下拉菜单、导航、警告框、弹出框等更多功能。
+            </p>
+          </div>
+        </div>
+
+        <h2 class="sub-header">开发工具</h2>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">实用网站</div>
+          <div class="panel-body">
+            <p>
+              <a href="http://v3.bootcss.com/css/" target="_blank">全局
+                CSS 样式</a>：设置全局 CSS 样式；基本的 HTML 元素均可以通过 class
+              设置样式并得到增强效果；还有先进的栅格系统。
+            </p>
+            <p>
+              <a href="http://v3.bootcss.com/components/"
+                target="_blank">组件</a>：无数可复用的组件，包括字体图标、下拉菜单、导航、警告框、弹出框等更多功能。
+            </p>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>标题</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="dashboard, stat : ${data?.list}">
+                  <td th:text="${stat.index + 1}">&nbsp;</td>
+                  <td><a th:href="${dashboard.url}" target="_blank"
+                    th:text="${dashboard.text}"></a></td>
+                  <td th:text="${dashboard.desc}">&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">实用工具</div>
+          <div class="panel-body">
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-success">命令行创建工程：</li>
+              <li class="list-group-item list-group-item-info">mvn
+                archetype:generate -DgroupId=com.example.demo
+                -DartifactId=demo
+                -DarchetypeArtifactId=maven-archetype-quickstart
+                -DinteractiveMode=false</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/assets/js/index.js"></script>
+</body>
+</html>

@@ -1,3 +1,5 @@
+[TOC]
+
 # BootWeb
 
 ## 使用Maven生成工程
@@ -475,6 +477,12 @@ public class IndexController {
 
 ```
 
+## 创建bootweb-markdown工程
 
+命令行创建：
+
+```
+mvn archetype:generate -DgroupId=com.example.bootweb -DartifactId=bootweb-markdown -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+```
 
 

@@ -1,11 +1,18 @@
 package com.example.bootweb.thymeleaf.web;
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import com.example.bootweb.thymeleaf.web.view.Dashboard;
 import com.example.bootweb.thymeleaf.web.view.Index;
@@ -13,8 +20,13 @@ import com.example.bootweb.thymeleaf.web.view.Index;
 @Controller
 public class IndexController {
 
+  private final Logger logger = LoggerFactory.getLogger(IndexController.class);
+  
   @Value("${dashboard.number:4}")
   private Integer dashboardNumber;
+  
+  @Autowired
+  private RequestMappingHandlerMapping handlerMapping;
   
   @RequestMapping(value = {"/index.html", "/index", "/"})
   public String index(Model model) {
@@ -76,6 +88,34 @@ public class IndexController {
         "flexmark-java is a Java implementation of CommonMark 0.28 spec parser using the blocks first, inlines after Markdown parsing architecture.。"));
     
     model.addAttribute("data", index);
+    
+    model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());
+    for (Map.Entry<RequestMappingInfo, HandlerMethod> map : handlerMapping.getHandlerMethods().entrySet()) {
+      RequestMappingInfo info = map.getKey();
+      logger.info("{}-{}", map.getKey(), map.getValue());
+    }
+    
+//    StringBuilder builder = new StringBuilder("{");
+//    builder.append(this.patternsCondition);
+//    if (!this.methodsCondition.isEmpty()) {
+//      builder.append(",methods=").append(this.methodsCondition);
+//    }
+//    if (!this.paramsCondition.isEmpty()) {
+//      builder.append(",params=").append(this.paramsCondition);
+//    }
+//    if (!this.headersCondition.isEmpty()) {
+//      builder.append(",headers=").append(this.headersCondition);
+//    }
+//    if (!this.consumesCondition.isEmpty()) {
+//      builder.append(",consumes=").append(this.consumesCondition);
+//    }
+//    if (!this.producesCondition.isEmpty()) {
+//      builder.append(",produces=").append(this.producesCondition);
+//    }
+//    if (!this.customConditionHolder.isEmpty()) {
+//      builder.append(",custom=").append(this.customConditionHolder);
+//    }
+//    builder.append('}');
     
     return "index";
   }

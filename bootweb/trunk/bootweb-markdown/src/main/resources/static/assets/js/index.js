@@ -6,4 +6,10 @@ $(document).ready(function() {
 		}
 		window.open('/render?name=' + val, '_blank');
 	});
+	$(":file").filestyle({
+		input : false,
+		htmlIcon : '<span class="oi oi-random"></span>',
+		text: "Find file",
+		btnClass: "btn-primary"
+	});
 });

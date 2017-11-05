@@ -98,12 +98,15 @@
                   </div>
                 </div>
               </form>
-
-              <form class="form-inline">
+            </div>
+ 
+            <div style="margin-top:10px;margin-bottom:10px;">
+              <form class="form-inline" method="POST" enctype="multipart/form-data" action="/upload" target="_blank">
                 <div class="form-group">
-                  <input type="file" class="markdownfile"
-                    name="uploadfile" value="" />
+                  <input type="file" class="filestyle" name="file" value="" 
+                  data-buttonName="btn-primary" data-buttonText="Find file"/>
                 </div>
+                <button type="submit" class="btn btn-default">查看</button>
               </form>
             </div>
 
@@ -176,6 +179,7 @@
   <script src="/webjars/jquery/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/assets/lib/bootstrap-filestyle.min.js"></script>
   <script src="/assets/js/index.js"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@ mvn archetype:generate -DgroupId=com.example.bootweb -DartifactId=bootweb-parent
 ### 生成SpringBoot服务工程bootweb-server
 
 ```
-mvn archetype:generate -DgroupId=com.example.bootweb.server -DartifactId=bootweb-server -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+mvn archetype:generate -DgroupId=com.example.bootweb -DartifactId=bootweb-server -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 ```
 
 ### 父工程bootweb-parent中引入SpringBoot管理
@@ -191,7 +191,31 @@ spring.mvc.static-path-pattern=/** # Path pattern used for static resources.
 * 引入文件变更
 
 ```
+<link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css'>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+```
+
+## 创建CDN静态资源工程
+
+### 创建bootweb-cdn工程
+
+使用maven创建：
 
 ```
+mvn archetype:generate -DgroupId=com.example.bootweb -DartifactId=bootweb-cdn -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false -Dversion=0.0.1-SNAPSHOT
+```
+
+把bootweb-server工程中的asserts文件复制到bootweb-cdn工程下，删除bootweb-server目录下的asserts，同时在bootweb-server下引入:
+
+```
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>bootweb-cdn</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+```
+
+
 
 

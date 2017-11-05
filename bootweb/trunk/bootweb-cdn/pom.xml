@@ -8,16 +8,10 @@
     <artifactId>bootweb-parent</artifactId>
     <version>0.0.1-SHAPSHOT</version>
   </parent>
-  <artifactId>bootweb-server</artifactId>
-  <name>bootweb-server</name>
+  <artifactId>bootweb-cdn</artifactId>
+  <name>bootweb-cdn</name>
   <url>http://maven.apache.org</url>
-
   <dependencies>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>bootweb-cdn</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -28,18 +22,5 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>bootstrap</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>webjars-locator</artifactId>
-    </dependency>
   </dependencies>
-
 </project>

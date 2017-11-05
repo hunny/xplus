@@ -21,6 +21,7 @@
   <modules>
     <module>bootweb-server</module>
     <module>bootweb-cdn</module>
+    <module>bootweb-thymeleaf</module>
   </modules>
 
   <dependencyManagement>

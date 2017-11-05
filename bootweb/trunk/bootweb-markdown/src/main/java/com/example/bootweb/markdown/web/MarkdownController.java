@@ -26,6 +26,7 @@ import com.vladsch.flexmark.ext.toc.SimTocExtension;
 import com.vladsch.flexmark.ext.typographic.TypographicExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
 @Controller
@@ -42,6 +43,7 @@ public class MarkdownController {
   public String render(@RequestParam("name") String name, Model model) {
     model.addAttribute("title", name);
     try {
+      logger.info("Markdown file: {}", name);
       model.addAttribute("body", renderFile(new File(name)));
     } catch (Exception e) {
       e.printStackTrace();
@@ -90,6 +92,7 @@ public class MarkdownController {
   private String renderFile(File file) throws IOException, FileNotFoundException {
     MutableDataSet options = new MutableDataSet();
 
+    options.setFrom(ParserEmulationProfile.MARKDOWN);
     options.set(HtmlRenderer.INDENT_SIZE, 2);
     options.set(HtmlRenderer.RENDER_HEADER_ID, true);
     // uncomment to set optional extensions

@@ -50,6 +50,26 @@ public class IndexController {
         null, //
         "Thymeleaf is a modern server-side Java template engine for both web and standalone environments."));
     
+    index.getList().add(make("git - 简易指南", //
+        "http://www.bootcss.com/p/git-guide/", //
+        null, //
+        "助你开始使用 git 的简易指南，木有高深内容。"));
+    
+    index.getList().add(make("Layui", //
+        "http://www.layui.com/", //
+        null, //
+        "由职业前端倾情打造，面向所有层次的前后端程序猿，零门槛开箱即用的前端UI解决方案。"));
+    
+    index.getList().add(make("WebJars", //
+        "http://www.webjars.org/", //
+        null, //
+        "WebJars are client-side web libraries (e.g. jQuery & Bootstrap) packaged into JAR (Java Archive) files."));
+    
+    index.getList().add(make("angular.cn", //
+        "https://www.angular.cn/", //
+        null, //
+        "除英文版之外，该中文版是第一个由官方正式发布的开发文档，跟官方网站保持同步更新的中文版。"));
+    
     model.addAttribute("data", index);
     
     return "index";

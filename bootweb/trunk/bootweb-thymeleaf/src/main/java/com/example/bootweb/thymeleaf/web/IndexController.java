@@ -77,10 +77,20 @@ public class IndexController {
         null, //
         "WebJars are client-side web libraries (e.g. jQuery & Bootstrap) packaged into JAR (Java Archive) files."));
     
+    index.getList().add(make("Angularjs", //
+        "https://angularjs.org/", //
+        null, //
+        "Angularjs官网。"));
+
     index.getList().add(make("angular.cn", //
         "https://www.angular.cn/", //
         null, //
         "除英文版之外，该中文版是第一个由官方正式发布的开发文档，跟官方网站保持同步更新的中文版。"));
+    
+    index.getList().add(make("JHipster", //
+        "http://www.jhipster.tech/", //
+        null, //
+        "JHipster is a development platform to generate, develop and deploy Spring Boot + Angular Web applications and Spring microservices. 。"));
     
     index.getList().add(make("flexmark-java", //
         "https://github.com/vsch/flexmark-java", //

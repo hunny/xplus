@@ -92,6 +92,16 @@ public class IndexController {
         null, //
         "关于作者Daniel Woods是Netflix的高级软件工程师，负责开发持续交付和云部署工具。"));
     
+    index.getList().add(make("Windows下配置Git服务器和客户端", //
+        "http://www.cnblogs.com/lwme/archive/2012/12/25/configuring-git-server-and-client-on-windows.html", //
+        null, //
+        "Windows下配置Git服务器和客户端"));
+    
+    index.getList().add(make("Git本地服务器搭建及使用", //
+        "http://www.cnblogs.com/linsanshu/p/5512038.html", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

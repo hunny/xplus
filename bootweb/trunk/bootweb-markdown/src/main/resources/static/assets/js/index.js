@@ -4,7 +4,7 @@ $(document).ready(function() {
 		if (val == '') {
 			return;
 		}
-		window.open('/render?name=' + val, '_blank');
+		window.open('/render?name=' + encodeURIComponent(val), '_blank');
 	});
 	$(":file").filestyle({
 		input : false,

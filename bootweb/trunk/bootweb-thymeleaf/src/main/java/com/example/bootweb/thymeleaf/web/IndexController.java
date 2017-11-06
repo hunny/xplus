@@ -102,6 +102,11 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("Github spring-projects", //
+        "https://github.com/spring-projects", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

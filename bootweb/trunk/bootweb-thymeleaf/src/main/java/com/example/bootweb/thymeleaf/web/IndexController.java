@@ -112,6 +112,31 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("Gradle快速入门", //
+        "http://www.cnblogs.com/davenkin/p/gradle-learning-1.html", //
+        null, //
+        "-"));
+    
+    index.getList().add(make("比较好的文章，书籍等资源", //
+        "https://github.com/qibaoguang/Study-Step-by-Step", //
+        null, //
+        "-"));
+    
+    index.getList().add(make("免费的编程中文书籍索引", //
+        "https://github.com/justjavac/free-programming-books-zh_CN", //
+        null, //
+        "-"));
+    
+    index.getList().add(make("数据挖掘&机器学习", //
+        "http://blog.csdn.net/qq1175421841/article/details/51222769", //
+        null, //
+        "-"));
+    
+    index.getList().add(make("Jersey guide", //
+        "https://jersey.github.io/documentation/latest/getting-started.html", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

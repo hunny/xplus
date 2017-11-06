@@ -85,7 +85,12 @@ public class IndexController {
     index.getList().add(make("flexmark-java", //
         "https://github.com/vsch/flexmark-java", //
         null, //
-        "flexmark-java is a Java implementation of CommonMark 0.28 spec parser using the blocks first, inlines after Markdown parsing architecture.。"));
+        "flexmark-java is a Java implementation of CommonMark 0.28 spec parser using the blocks first, inlines after Markdown parsing architecture."));
+    
+    index.getList().add(make("深入学习微框架：Spring Boot", //
+        "http://www.infoq.com/cn/articles/microframeworks1-spring-boot", //
+        null, //
+        "关于作者Daniel Woods是Netflix的高级软件工程师，负责开发持续交付和云部署工具。"));
     
     model.addAttribute("data", index);
     

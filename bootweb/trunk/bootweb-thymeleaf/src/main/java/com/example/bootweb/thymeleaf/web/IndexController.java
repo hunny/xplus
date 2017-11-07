@@ -167,6 +167,11 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("baeldung.com - Setting Up Swagger 2 with a Spring REST API", //
+        "http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

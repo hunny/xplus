@@ -152,6 +152,11 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("springfox-demos", //
+        "https://github.com/springfox/springfox-demos", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

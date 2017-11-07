@@ -147,6 +147,11 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("Java 8新特性终极指南", //
+        "http://www.importnew.com/11908.html", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

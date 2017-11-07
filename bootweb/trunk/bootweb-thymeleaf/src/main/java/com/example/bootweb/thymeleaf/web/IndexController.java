@@ -157,6 +157,11 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("swaggerhub.com", //
+        "https://app.swaggerhub.com/help/index", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

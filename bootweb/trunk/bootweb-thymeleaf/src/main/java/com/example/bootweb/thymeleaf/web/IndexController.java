@@ -162,6 +162,11 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("Spring Boot RESTful API Documentation With Swagger 2", //
+        "https://dzone.com/articles/spring-boot-restful-api-documentation-with-swagger", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

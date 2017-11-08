@@ -17,6 +17,7 @@
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
     <webjars-bootstrap.version>3.3.7</webjars-bootstrap.version>
     <webjars-jquery.version>3.2.1</webjars-jquery.version>
+    <webjars-angularjs.version>1.6.6</webjars-angularjs.version>
     <webjars-locator.version>0.30</webjars-locator.version>
   </properties>
 
@@ -25,6 +26,7 @@
     <module>bootweb-cdn</module>
     <module>bootweb-thymeleaf</module>
     <module>bootweb-markdown</module>
+    <module>bootweb-angularjs</module>
   </modules>
 
   <dependencyManagement>
@@ -40,6 +42,11 @@
         <groupId>com.vladsch.flexmark</groupId>
         <artifactId>flexmark-all</artifactId>
         <version>${flexmark.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>angularjs</artifactId>
+        <version>${webjars-angularjs.version}</version>
       </dependency>
       <dependency>
         <groupId>org.webjars</groupId>

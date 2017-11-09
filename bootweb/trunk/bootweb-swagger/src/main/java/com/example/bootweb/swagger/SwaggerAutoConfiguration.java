@@ -49,13 +49,13 @@ public class SwaggerAutoConfiguration {
     if (swaggerProperty.getBasePath().isEmpty()) {
       swaggerProperty.getBasePath().add("/**");
     }
-    List<Predicate<String>> basePath = new ArrayList();
+    List<Predicate<String>> basePath = new ArrayList<>();
     for (String path : swaggerProperty.getBasePath()) {
       basePath.add(PathSelectors.ant(path));
     }
 
     // exclude-path处理
-    List<Predicate<String>> excludePath = new ArrayList();
+    List<Predicate<String>> excludePath = new ArrayList<>();
     for (String path : swaggerProperty.getExcludePath()) {
       excludePath.add(PathSelectors.ant(path));
     }

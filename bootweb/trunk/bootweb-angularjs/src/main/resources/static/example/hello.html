@@ -5,19 +5,71 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hello Angularjs!</title>
+<!-- Bootstrap -->
+<link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css' />
 </head>
 <body>
-  <div>
+  <div class="container">
     <h1>Angular简介</h1>
-    <h2>快速使用</h2>
+    <p>AngularJS 是一个 JavaScript 框架。AngularJS 通过 指令 扩展了 HTML，且通过 表达式 绑定数据到 HTML。</p>
+    <p><a href="http://www.runoob.com/angularjs/angularjs-intro.html" target="_blank">AngularJS速查教程</a></p>
+    <h2>快速上手</h2>
+    <h3>感受AngularJS四大核心特征</h3>
+    <h4>MVC</h4>
     <div>
-      <p>显示输入内容：{{name}}</p>
-      <input type="text" ng-model="name" placeholder="Hello World一小步，Angularjs一大步！" />
+      <p>Model:数据模型层</p>
+      <p>View:视图层，负责展示</p>
+      <p>Controller:业务逻辑和控制逻辑</p>
     </div>
     <div ng-controller="HelloWorld">
       <p>显示controller内容：{{data.name}}</p>
       <input type="text" ng-model="data.name" placeholder="Hello World一小步，Angularjs一大步！" />
     </div>
+    <code>
+var app = angular.module('app', []);
+app.controller('HelloWorld', ['$scope', 
+  function($scope) {
+    $scope.data = {
+      name : 'Hello World!'
+    };
+  } 
+]);
+    </code>
+    <h4>模块化</h4>
+    <div>
+      <p>Modules are Containers</p>
+      <p>Module->Config->Routes</p>
+      <p>Module->Filter</p>
+      <p>Module->Directive</p>
+      <p>Module->Factory->Service->Provider->Value</p>
+      <p>Module->Controller</p>
+    </div>
+    <h4>指令系统</h4>
+    <h4>双向数据绑定</h4>
+    <div>
+      <p>显示输入内容：{{name}}</p>
+      <input type="text" ng-model="name" placeholder="Hello World一小步，Angularjs一大步！" />
+    </div>
+    <h3>开发、调试及测试环境</h3>
+    <h2>基本概念与用法</h2>
+    <h3>MVC</h3>
+    <h3>模块化与依赖注入</h3>
+    <h3>双向数据绑定</h3>
+    <h3>指令(directive)</h3>
+    <h3>服务(service)</h3>
+    <h3>Provider</h3>
+    <h3>表单</h3>
+    <h3>官方实例BookStore</h3>
+    <h2>进阶:核心原理解析</h2>
+    <h3>Parse</h3>
+    <h3>双向数据绑定</h3>
+    <h3>依赖注入</h3>
+    <h2>ng控件开发</h2>
+    <h3>使用AngularJS改写jQuery控件</h3>
+    <h3>angularjs-ui</h3>
+    <h3>移动控件库ionic</h3>
+    <h2>TDD</h2>
+    <h3>Jasmine与Protractor</h3>
   </div>
   <!-- 
   http://www.runoob.com/angularjs/angularjs-intro.html

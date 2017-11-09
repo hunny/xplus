@@ -19,6 +19,7 @@
     <webjars-jquery.version>3.2.1</webjars-jquery.version>
     <webjars-angularjs.version>1.6.6</webjars-angularjs.version>
     <webjars-locator.version>0.30</webjars-locator.version>
+    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
   </properties>
 
   <modules>
@@ -73,6 +74,17 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring-boot.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+            <showWarnings>true</showWarnings>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" ng-app>
+<html lang="zh-CN" ng-app="app">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,6 +14,10 @@
       <p>显示输入内容：{{name}}</p>
       <input type="text" ng-model="name" placeholder="Hello World一小步，Angularjs一大步！" />
     </div>
+    <div ng-controller="HelloWorld">
+      <p>显示controller内容：{{data.name}}</p>
+      <input type="text" ng-model="data.name" placeholder="Hello World一小步，Angularjs一大步！" />
+    </div>
   </div>
   <!-- 
   http://www.runoob.com/angularjs/angularjs-intro.html
@@ -21,6 +25,6 @@
   ================================================== -->
   <script src="/webjars/jquery/jquery.min.js"></script>
   <script src="/webjars/angularjs/angular.min.js"></script>
-  <script src="/example/hello.js"></script>
+  <script src="/example/asset/js/hello.js"></script>
 </body>
 </html>

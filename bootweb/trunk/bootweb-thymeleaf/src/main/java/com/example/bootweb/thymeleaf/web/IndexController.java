@@ -177,6 +177,16 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("AngularUI", //
+        "https://angular-ui.github.io/", //
+        null, //
+        "AngularUI The companion suite(s) to the AngularJS framework."));
+    
+    index.getList().add(make("AngularUI", //
+        "https://angular-ui.github.io/", //
+        null, //
+        "AngularUI The companion suite(s) to the AngularJS framework."));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

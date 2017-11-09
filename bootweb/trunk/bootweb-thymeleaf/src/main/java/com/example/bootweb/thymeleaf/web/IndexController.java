@@ -172,6 +172,11 @@ public class IndexController {
         null, //
         "-"));
     
+    index.getList().add(make("《Spring Cloud微服务实战》作者", //
+        "http://blog.didispace.com/", //
+        null, //
+        "-"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

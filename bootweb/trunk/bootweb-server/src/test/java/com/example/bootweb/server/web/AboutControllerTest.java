@@ -37,7 +37,7 @@ public class AboutControllerTest {
   }
 
   @Test
-  public void testShow() throws Exception {
+  public void testAbout() throws Exception {
 
     String expectedResult = aboutService.about();
     String uri = "/about";

@@ -6,3 +6,10 @@ app.controller('HelloWorld', ['$scope',
 		};
 	} 
 ]);
+app.directive('hello', function() {
+	return {
+		restrict: 'E',
+		template: '<div>Hi, AngujarJS directive demo!</div>',
+		replace: true
+	};
+});

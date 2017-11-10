@@ -45,6 +45,18 @@ app.controller('HelloWorld', ['$scope',
       <p>Module->Controller</p>
     </div>
     <h4>指令系统</h4>
+    <div>
+      <hello></hello>
+      <code>
+app.directive('hello', function() {
+  return {
+    restrict: 'E',
+    template: '<div>Hi, AngujarJS directive demo!</div>',
+    replace: true
+  };
+});
+      </code>
+    </div>
     <h4>双向数据绑定</h4>
     <div>
       <p>显示输入内容：{{name}}</p>

@@ -1,12 +1,18 @@
 package com.example.bootweb.server;
 
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+import com.example.bootweb.server.service.AboutServiceTest;
+import com.example.bootweb.server.web.AboutControllerTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-/**
- * Unit test for simple App.
- */
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+    AboutServiceTest.class, AboutControllerTest.class })
 public class ApplicationTest extends TestCase {
   /**
    * Create the test case

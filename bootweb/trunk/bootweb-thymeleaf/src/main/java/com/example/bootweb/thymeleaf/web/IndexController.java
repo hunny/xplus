@@ -187,6 +187,21 @@ public class IndexController {
         null, //
         "AngularUI The companion suite(s) to the AngularJS framework."));
     
+    index.getList().add(make("Prism", //
+        "http://prismjs.com/download.html", //
+        null, //
+        "Prism is a lightweight, extensible syntax highlighter"));
+    
+    index.getList().add(make("github-markdown-css", //
+        "https://github.com/sindresorhus/github-markdown-css", //
+        null, //
+        "The minimal amount of CSS to replicate the GitHub Markdown style"));
+    
+    index.getList().add(make("markdown-css-themes", //
+        "https://github.com/jasonm23/markdown-css-themes", //
+        null, //
+        "Markdown css theme collection"));
+    
     model.addAttribute("data", index);
     
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

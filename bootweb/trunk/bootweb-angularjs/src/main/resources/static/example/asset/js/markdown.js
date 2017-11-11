@@ -12,7 +12,7 @@ markdown.directive('render', ['$http', function($http) {
     scope: {
       src: '='
     },
-    template: '<div></div>',
+    template: '<article class="markdown-body"></article>',
     replace: true,
     link: function(scope, element, attrs) {
       $http({

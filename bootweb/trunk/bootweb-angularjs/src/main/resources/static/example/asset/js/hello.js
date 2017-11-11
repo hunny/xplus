@@ -1,5 +1,5 @@
 var app = angular.module('app', []);
-app.controller('HelloWorld', ['$scope', 
+app.controller('helloWorld', ['$scope', 
 	function($scope) {
 		$scope.data = {
 			name : 'Hello World!'

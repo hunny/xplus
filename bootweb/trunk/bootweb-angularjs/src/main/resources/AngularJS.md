@@ -77,21 +77,22 @@ app.controller('helloWorld', ['$scope',
 	- Module->Factory->Service->Provider->Value
 	- Module->Controller
 
-### 指令系统
+* 一切都是从`angular.module`、`ng-app="app"`开始：
 
-### 双向数据绑定
-
-<div>测试</div>
+```
+<html ng-app="app">
+```
 
 ```javascript
 var app = angular.module('app', []);
-app.controller('HelloWorld', ['$scope', 
-	function($scope) {
-		$scope.data = {
-			name : 'Hello World!'
-		};
-	} 
-]);
+```
+
+### 指令系统
+
+* 编写指令`hello`：
+
+```javascript
+var app = angular.module('app', []);
 app.directive('hello', function() {
 	return {
 		restrict: 'E',
@@ -101,39 +102,275 @@ app.directive('hello', function() {
 });
 ```
 
+* 编写调用指令`<hello></hello>`：
+
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="github-markdown.css">
-<style>
-	.markdown-body {
-		box-sizing: border-box;
-		min-width: 200px;
-		max-width: 980px;
-		margin: 0 auto;
-		padding: 45px;
-	}
-
-	@media (max-width: 767px) {
-		.markdown-body {
-			padding: 15px;
-		}
-	}
-</style>
-<article class="markdown-body">
-	<h1>Unicorns</h1>
-	<p>All the things</p>
-</article>
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS Directive!</title>
+</head>
+<body>
+  <hello></hello>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script src="/example/asset/js/hello.js"></script>
+</body>
+</html>
 ```
 
-```json
-{
- ok : 12,
- name: "中国人"
-}
+### 双向数据绑定
+
+* 定义模型`ng-model="name"`，显示绑定数据`{{name}}`：
+
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS Two-Way Data Binding!</title>
+</head>
+<body>
+  <div ng-controller="dataBinding">
+    <p>Hello, {{name}}</p>
+    <p>Hello, <input type="text" ng-model="name" /></p>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+  	var app = angular.module('app', []);
+  	app.controller('dataBinding', ['$scope', function($scope) {
+		$scope.name = 'world!';
+  	}]);
+  </script>
+</body>
+</html>
 ```
 
-| 表格 | 说明 |
+## 前端开发工具
+
+| 名称 | 说明 |
 | --- | --- |
-|09 | OK |
-|01 | PK |
+| [Bower](http://bower.io) | Web sites are made of lots of things — frameworks, libraries, assets, and utilities. Bower manages all these things for you. |
+| [gulp](http://www.gulpjs.com.cn) | [gulp.js](https://gulpjs.com/)，gulp is a toolkit for automating painful or time-consuming tasks in your development workflow, so you can stop messing around and build something. |
+| [grunt](http://www.gruntjs.net/) | 代码合并和混淆 |
+| [Sublime](http://www.sublimetext.com/) | 代码编辑 |
+| [NodeJS](https://nodejs.org) | 开发和调试 |
+| [Git](https://git-scm.com/) | 版本管理 |
+| [Karma](https://karma-runner.github.io/) | Karma is to bring a productive testing environment to developers.  |
+| [Jasmine](https://jasmine.github.io/) | Jasmine is a behavior-driven development framework for testing JavaScript code. It does not depend on any other JavaScript frameworks. It does not require a DOM. And it has a clean, obvious syntax so that you can easily write tests. |
+| [Protractor](http://www.protractortest.org/) | Protractor is an end-to-end test framework for Angular and AngularJS applications. Protractor runs tests against your application running in a real browser, interacting with it as a user would. |
+| [http-server](https://www.npmjs.com/package/http-server) | http-server is a simple, zero-configuration command-line http server. It is powerful enough for production usage, but it's simple and hackable enough to be used for testing, local development, and learning. |
+
+## 基本概念和用法
+
+### 简介
+
+* AngularJS 是一个JavaScript框架
+  - AngularJS 是一个JavaScript框架。
+  - AngularJS 是以一个JavaScript文件形式发布的，通过`script`标签添加到网页中。
+
+* AngularJS 扩展了HTML
+  - AngularJS 通过`ng-directives`扩展了HTML。
+  - `ng-app` 指令定义一个 AngularJS 应用程序。
+  - `ng-model` 指令把元素值（比如输入域的值）绑定到应用程序。
+  - `ng-bind` 指令把应用程序数据绑定到HTML视图。
+
+* AngularJS运行过程
+  - 当网页加载完毕，AngularJS自动开启。
+  - `ng-app` 指令告诉AngularJS，拥有`ng-app`的元素是AngularJS应用程序的"所有者"。
+  - `ng-model` 指令把输入域的值绑定到应用程序变量 name。
+  - `ng-bind` 指令把应用程序变量 name 绑定到某个段落的 innerHTML。
+
+### 表达式
+
+* AngularJS 表达式
+  - 写在双大括号内：`{{ expression }}`。
+  - 把数据绑定到 HTML。
+  - 将在表达式书写的位置"输出"数据。
+  - 很像JavaScript表达式：它们可以包含文字、运算符和变量。
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS expression.</title>
+</head>
+<body>
+  <div ng-app="">
+     <p>我的第一个AngularJS表达式： {{ 5 + 3 }}</p>
+     <p>我的第二个AngularJS表达式： {{ 'Hello' + 3 }}</p>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+</body>
+</html>
+```
+
+* AngularJS 数字
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS 数字串表达式.</title>
+</head>
+<body>
+  <div ng-app="" ng-init="quantity=1;cost=5">
+     <p>总价： {{ quantity * cost }}</p>
+     <p>使用ng-bind显示总价： <span ng-bind="quantity * cost"></span></p>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+</body>
+</html>
+```
+
+* AngularJS 字符串
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS 字符串表达式.</title>
+</head>
+<body>
+  <div ng-app="" ng-init="firstName='John';lastName='Doe'">
+     <p>姓名： {{ firstName + " " + lastName }}</p>
+     <p>使用ng-bind显示姓名： <span ng-bind="firstName + ' ' + lastName"></span></p>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+</body>
+</html>
+```
+
+* AngularJS 对象
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS 对象表达式.</title>
+</head>
+<body>
+  <div ng-app="" ng-init="person={firstName:'John',lastName:'Doe'}">
+     <p>姓名： {{ person.lastName }}</p>
+     <p>使用ng-bind显示姓名： <span ng-bind="person.lastName"></span></p>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+</body>
+</html>
+```
+
+* AngularJS 数组
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS 数组表达式.</title>
+</head>
+<body>
+  <div ng-app="" ng-init="points=[1,15,19,2,40]">
+     <p>第三个值为 {{ points[2] }}</p>
+     <p>使用ng-bind显示第三个值为 <span ng-bind="points[2]"></span></p>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+</body>
+</html>
+```
+
+* AngularJS 表达式 与 JavaScript 表达式
+  - 类似于JavaScript表达式，AngularJS 表达式可以包含字母，操作符，变量。
+  - 与JavaScript表达式不同，AngularJS 表达式可以写在HTML中。
+  - 与JavaScript表达式不同，AngularJS 表达式不支持条件判断，循环及异常。
+  - 与JavaScript表达式不同，AngularJS 表达式支持过滤器。
+
+### 指令
+
+* AngularJS指令是以`ng`作为前缀的HTML属性。
+  - `ng-app`指令初始化一个 AngularJS 应用程序。
+  	+ `ng-app` 指令定义了AngularJS应用程序的根元素。
+  	+ `ng-app` 指令在网页加载完毕时会自动引导（自动初始化）应用程序。
+  - `ng-init`指令可以初始化AngularJS应用程序变量。
+  - `ng-model`或`ng-bind`指令或angular表达式把元素值绑定到应用程序。
+  - `ng-model`指令还可以：
+  	+ 为应用程序数据提供类型验证（number、email、required）。
+  	+ 为应用程序数据提供状态（invalid、dirty、touched、error）。
+  	+ 为HTML元素提供CSS类。
+  	+ 绑定HTML元素到HTML表单。
+  - `ng-repeat`指令对于集合中（数组中）的每个项会克隆一次HTML元素。
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS ng-init Directive.</title>
+</head>
+<body>
+  <div ng-app="" ng-init="firstName='John'">
+	<p>姓名为 <span ng-bind="firstName"></span></p>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+</body>
+</html>
+```
+
+* 数据绑定
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS ng-init Directive.</title>
+</head>
+<body>
+  <div ng-app="" ng-init="quantity=1;price=5">
+	<h2>价格计算器</h2>
+	数量： <input type="number" ng-model="quantity">
+	价格： <input type="number" ng-model="price">
+	<p><b>总价：</b> {{ quantity * price }}</p>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+</body>
+</html>
+```
+
+* 重复HTML元素
+  - 使用`ng-repeat`指令重复HTML元素
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS ng-init Directive.</title>
+</head>
+<body>
+  <div ng-app="" ng-init="names=['Jani','Hege','Kai'];objects=[
+{name:'Jani',country:'Norway'},
+{name:'Hege',country:'Sweden'},
+{name:'Kai',country:'Denmark'}]">
+    <h2>使用ng-repeat来循环数组</h2>
+    <ul>
+      <li ng-repeat="x in names">
+        {{ x }}
+      </li>
+    </ul>
+    <h2>使用ng-repeat指令循环对象</h2>
+    <ul>
+	  <li ng-repeat="x in objects">
+	    {{ x.name + ', ' + x.country }}
+	  </li>
+	</ul>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+</body>
+</html>
+```
+
+* 自定义指令
 

@@ -18,16 +18,6 @@ public class AssetController {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
-//  @RequestMapping(value = "/show.html", //
-//      method = RequestMethod.GET) //
-//  public String showhtml(Model model, //
-//      @RequestParam(value = "html", required = false, //
-//      defaultValue="请传入一段html") String html, //
-//      @RequestParam(value = "js", required = false) String js) {
-//    logger.debug("收到请求html[{}], javascript[{}]。");
-//    model.addAttribute("html", html);
-//    return "showhtml";
-//  }
   @RequestMapping(value = "/show.html", //
       method = RequestMethod.GET) //
   public void showhtml(HttpServletResponse response, //
@@ -36,6 +26,8 @@ public class AssetController {
       @RequestParam(value = "js", required = false) String js) throws IOException {
     logger.debug("收到请求html[{}], javascript[{}]。");
     html = StringEscapeUtils.unescapeHtml4(html);
+    response.setHeader("Content-type", "text/html;charset=UTF-8"); 
+    response.setCharacterEncoding("UTF-8"); 
     response.getWriter().write(html);
     response.getWriter().flush();
   }

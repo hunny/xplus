@@ -21,13 +21,13 @@
       <p>View:视图层，负责展示</p>
       <p>Controller:业务逻辑和控制逻辑</p>
     </div>
-    <div ng-controller="HelloWorld">
+    <div ng-controller="helloWorld">
       <p>显示controller内容：{{data.name}}</p>
       <input type="text" ng-model="data.name" placeholder="Hello World一小步，Angularjs一大步！" />
     </div>
     <code>
 var app = angular.module('app', []);
-app.controller('HelloWorld', ['$scope', 
+app.controller('helloWorld', ['$scope', 
   function($scope) {
     $scope.data = {
       name : 'Hello World!'

@@ -20,7 +20,7 @@ markdown.directive('render', ['$http', function($http) {
         url: scope.src
       }).then(function success(response) {
         element.html(response.data.html);
-        var codes = element.find('code.language-javascript, code.language-html');
+        var codes = element.find('code[class*="language-"]');
         codes.each(function() {
           Prism.highlightElement(this, true);// Prism framework to highlight element.
         });

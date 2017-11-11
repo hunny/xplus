@@ -45,6 +45,13 @@ app.directive('hello', function() {
 </article>
 ```
 
+```json
+{
+ ok : 12,
+ name: "中国人"
+}
+```
+
 | 表格 | 说明 |
 | --- | --- |
 |09 | OK |

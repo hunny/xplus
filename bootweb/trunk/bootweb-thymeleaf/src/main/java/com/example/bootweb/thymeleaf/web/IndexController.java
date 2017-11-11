@@ -190,7 +190,7 @@ public class IndexController {
     index.getList().add(make("Prism", //
         "http://prismjs.com/download.html", //
         null, //
-        "Prism is a lightweight, extensible syntax highlighter"));
+        "Prism is a lightweight, extensible syntax highlighter. http://prismjs.com/extending.html#api"));
     
     index.getList().add(make("github-markdown-css", //
         "https://github.com/sindresorhus/github-markdown-css", //

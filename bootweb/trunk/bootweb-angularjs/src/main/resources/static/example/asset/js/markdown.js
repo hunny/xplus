@@ -22,6 +22,9 @@ markdown.directive('render', ['$http', function($http) {
         element.html(response.data.html);
         var codes = element.find('code[class*="language-"]');
         codes.each(function() {
+          var test = angular.element('<a href="/example/asset/show.html?html=' + encodeURIComponent(this.innerHTML) + '" target="_blank">测试一下</a>');
+          angular.element(this).parent().after(test);
+          //.insertAfter("<div>测试insertAfter</div>");
           Prism.highlightElement(this, true);// Prism framework to highlight element.
         });
       }, function error(response) {

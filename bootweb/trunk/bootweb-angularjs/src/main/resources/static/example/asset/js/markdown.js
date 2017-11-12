@@ -30,30 +30,34 @@ markdown.directive('render', ['$http', function($http) {
           }
           Prism.highlightElement(this, true);// Prism framework to highlight element.
         });
-        angular.element('h2, h3, h4') //
-          .css({'cursor': 'pointer'}) //
-          .on('click', function() {
+        angular.element('h1, h2, h3, h4') //
+          .css({'cursor': 'pointer'}).on('click', function() {
           var elem = angular.element(this);
           var tagName = this.tagName.toUpperCase();
-          var hn = tagName.replace(/^H/, '');
-          var all = elem.nextAll();
-          var length = all.length;
-          for (var i = 0; i < length; i++) {
-            var nelem = all.get(i);
-            var ntag = nelem.tagName.toUpperCase();
-            var toggle = true;
-            if (/H\d+/.test(ntag)) {
-              for (var n = parseInt(hn); n >= 1; n--) {
-                if (ntag == ('H' + n)) {
-                  toggle = false;
+          if (tagName == 'H1') {
+            elem.nextAll().show();
+            return;
+          } else {
+            var hn = tagName.replace(/^H/, '');
+            var all = elem.nextAll();
+            var length = all.length;
+            for (var i = 0; i < length; i++) {
+              var nelem = all.get(i);
+              var ntag = nelem.tagName.toUpperCase();
+              var toggle = true;
+              if (/H\d+/.test(ntag)) {
+                for (var n = parseInt(hn); n >= 1; n--) {
+                  if (ntag == ('H' + n)) {
+                    toggle = false;
+                    break;
+                  }
+                }
+                if (!toggle) {
                   break;
                 }
               }
-              if (!toggle) {
-                break;
-              }
+              $(nelem).toggle();
             }
-            $(nelem).toggle();
           }
         });
       }, function error(response) {

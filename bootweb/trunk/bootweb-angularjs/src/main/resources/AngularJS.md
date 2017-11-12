@@ -431,3 +431,66 @@ app.directive('hello', function() {
   - 声明M注释指令时，注释：`<!--` 两边一定要留空格，不然什么都不会发生 `-->`。
   - 声明M注释指令时，需要在该指令添加`replace:true`属性，否则注释指令是不可见的。
 
+### 指令参数
+
+* 一个指令包含的参数，如下：
+
+```javascript
+angular.module('app', []) //
+.directive('myDirective', function() {
+    return {
+      restrict: String,                
+      priority: Number,
+      terminal: Boolean,
+      template: String or Template Function: function(element, attrs) {...},
+      templateUrl: String,
+      replace: Boolean or String,
+      scope: Boolean or Object,
+      transclude: Boolean,
+      controller: String or function(scope, element, attrs, transclude, otherInjectables) { ... },
+      controllerAs: String,
+      require: String,
+      link: function(scope, iElement, iAttrs) { ... },
+      compile: function(element, attrs, transclude) {// 返回一个对象或连接函数，如下所示：
+        return {
+          pre: function(scope, element, attrs, controller) { ... },
+          post: function(scope, element, attrs, controller) { ... }
+        }
+        return function postLink(...) { ... }
+      }
+    };
+ });
+```
+
+* 指令包含的参数分成三类：
+  - 描述指令或DOM本身特性的内部参数。
+  - 连接指令外界、与其他指令或控制器沟通的对外参数。
+  - 描述指令本身行为的行为参数。
+
+### 指令参数详解
+
+#### 内部参数
+
+| 指令 | 类型 | 说明 |
+| --- | --- | --- |
+| `restrict` | String | 声明指令的使用特性 |
+| `priority` | Number | 指令执行优先级 |
+| `template` | String | 指令链接DOM模板，例如`<h1>{{head}}</h1>` |
+| `templateUrl` | String | DOM模板路径 |
+| `replace` | Boolean | 指令链接模板是否替换原有元素 |
+
+其中，`restrict`指令，详解如下：
+
+| restrict | 声明 | 调用示例 |
+| --- | --- | --- |
+| E  | 元素名 | `<hello-world></hello-world>` |
+| A  | 属性 | `<div hello-world></div>` |
+| C  | 类名 | `<div class="hello-world"></div>` |
+| M  | 注释 | `<!-- directive: hello-world -->` |
+| EA | 默认EA | 可通过元素名和属性名来调用指令 |
+
+> 请注意：
+  - 定义指令时，若使用驼峰法来命名一个指令：`helloWorld`, 在使用它时需要以`-`分割：`hello-world`。
+  - 声明M注释指令时，注释：`<!--` 两边一定要留空格，不然什么都不会发生 `-->`。
+  - 声明M注释指令时，需要在该指令添加`replace:true`属性，否则注释指令是不可见的。
+

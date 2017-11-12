@@ -34,13 +34,24 @@ markdown.directive('render', ['$http', function($http) {
           .css({'cursor': 'pointer'}) //
           .on('click', function() {
           var elem = angular.element(this);
-          var tagName = this.tagName;
+          var tagName = this.tagName.toUpperCase();
+          var hn = tagName.replace(/^H/, '');
           var all = elem.nextAll();
           var length = all.length;
           for (var i = 0; i < length; i++) {
             var nelem = all.get(i);
-            if (nelem.tagName.toUpperCase() == tagName.toUpperCase()) {
-              break;
+            var ntag = nelem.tagName.toUpperCase();
+            var toggle = true;
+            if (/H\d+/.test(ntag)) {
+              for (var n = parseInt(hn); n >= 1; n--) {
+                if (ntag == ('H' + n)) {
+                  toggle = false;
+                  break;
+                }
+              }
+              if (!toggle) {
+                break;
+              }
             }
             $(nelem).toggle();
           }

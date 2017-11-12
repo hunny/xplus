@@ -408,7 +408,8 @@ app.directive('hello', function() {
     var app = angular.module("app", []);
     app.directive("helloWorld", function() {
         return {
-        	  restrict: "EACM",
+            restrict: "EACM",
+            replace: true,
             template: "<h2>Hello World, 自定义指令!</h2>"
         };
     });
@@ -424,6 +425,9 @@ app.directive('hello', function() {
 | E  | 元素名 | `<hello-world></hello-world>` |
 | A  | 属性 | `<div hello-world></div>` |
 | C  | 类名 | `<div class="hello-world"></div>` |
-| M  | 注释 | `<!-- directive: hello-world -->` 其中注释：`<!--` 两边一定要留空格，不然什么都不会发生 `-->` |
+| M  | 注释 | `<!-- directive: hello-world -->` |
 | EA | 默认EA | 可通过元素名和属性名来调用指令 |
+
+  - 声明M注释指令时，注释：`<!--` 两边一定要留空格，不然什么都不会发生 `-->`。
+  - 声明M注释指令时，需要在该指令添加`replace:true`属性，否则注释指令是不可见的。
 

@@ -296,6 +296,9 @@ app.directive('hello', function() {
   	+ `ng-app` 指令在网页加载完毕时会自动引导（自动初始化）应用程序。
   - `ng-init`指令可以初始化AngularJS应用程序变量。
   - `ng-model`或`ng-bind`指令或angular表达式把元素值绑定到应用程序。
+    + `ng-model`是用于表单元素的，支持双向绑定。对普通元素无效。
+    + `ng-bind`用于普通元素，不能用于表单元素，应用程序单向地渲染数据到元素。
+    + 当`ng-bind`和`{{}}`同时使用时，`ng-bind`绑定的值覆盖该元素的内容。
   - `ng-model`指令还可以：
   	+ 为应用程序数据提供类型验证（number、email、required）。
   	+ 为应用程序数据提供状态（invalid、dirty、touched、error）。

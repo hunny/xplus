@@ -288,7 +288,7 @@ app.directive('hello', function() {
   - 与JavaScript表达式不同，AngularJS 表达式不支持条件判断，循环及异常。
   - 与JavaScript表达式不同，AngularJS 表达式支持过滤器。
 
-### 指令
+### AngularJS指令
 
 * AngularJS指令是以`ng`作为前缀的HTML属性。
   - `ng-app`指令初始化一个 AngularJS 应用程序。
@@ -372,5 +372,58 @@ app.directive('hello', function() {
 </html>
 ```
 
-* 自定义指令
+### 自定义指令
+
+* 使用`.directive`函数来添加自定义的指令。
+* 调用自定义指令，HTML元素上需要添加自定义指令名。
+* 定义指令时，若使用驼峰法来命名一个指令， `helloWorld`, 但在使用它时需要以`-`分割, `hello-world`。
+* 以下为一个调用示例：
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS 自定义指令.</title>
+</head>
+<body>
+  <p>
+    第一种元素名调用方式：<hello-world></hello-world>
+  </p>
+  <p>
+    第二种属性调用方式：<div hello-world></div>
+  </p>
+  <p>
+    第三种类名调用方式：<div class="hello-world"></div>
+  </p>
+  <p>
+    第四种注释调用方式：
+    <!-- directive: hello-world -->
+  </p>
+
+  <!-- 以下调用方式不能起作用 -->
+  <helloWorld></helloWorld>
+
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module("app", []);
+    app.directive("helloWorld", function() {
+        return {
+        	  restrict: "EACM",
+            template: "<h2>Hello World, 自定义指令!</h2>"
+        };
+    });
+  </script>
+</body>
+</html>
+```
+
+* 指令参数`restrict`说明
+
+| restrict | 声明 | 调用示例 |
+| --- | --- | --- |
+| E  | 元素名 | `<hello-world></hello-world>` |
+| A  | 属性 | `<div hello-world></div>` |
+| C  | 类名 | `<div class="hello-world"></div>` |
+| M  | 注释 | `<!-- directive: hello-world -->` 其中注释：`<!--` 两边一定要留空格，不然什么都不会发生 `-->` |
+| EA | 默认EA | 可通过元素名和属性名来调用指令 |
 

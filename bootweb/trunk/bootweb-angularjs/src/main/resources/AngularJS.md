@@ -467,7 +467,7 @@ angular.module('app', []) //
 
 * 指令包含的参数分成三类：
   - 描述指令或DOM本身特性的内部参数。
-  - 连接指令外界、与其他指令或控制器沟通的对外参数。
+  - 连接指令外界、与其他指令或控制器沟通的沟通参数。
   - 描述指令本身行为的行为参数。
 
 ### 指令参数详解
@@ -496,4 +496,114 @@ angular.module('app', []) //
   - 定义指令时，若使用驼峰法来命名一个指令：`helloWorld`, 在使用它时需要以`-`分割：`hello-world`。
   - 声明M注释指令时，注释：`<!--` 两边一定要留空格，不然什么都不会发生 `-->`。
   - 声明M注释指令时，需要在该指令添加`replace:true`属性，否则注释指令是不可见的。
+
+#### 沟通参数-scope
+
+* scope参数的作用是，隔离指令与所在控制器间的作用域、隔离指令与指令间的作用域。
+* scope参数是可选的，默认值为false，可选true、对象{}：
+  - false：共享父作用域；
+  - true：继承父作用域且新建独立作用域；
+  - 对象{}：不继承父域且新建独立作用域；
+
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS scope参数的作用.</title>
+  <style type="text/css">
+  .panel {
+    margin-bottom:20px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .panel h4 {
+    margin-top:2px;
+    margin-bottom:10px;
+  }
+  .panel input {
+    height: 20px;
+    padding: 5px;
+  }
+  </style>
+</head>
+<body>
+    <div ng-controller='parentCtrl'>
+      <h3>指令scope参数——false、true、{}对比测试</h3>
+      <div class="panel">
+        <h4>controller父作用域:</h4>
+        <input type="text" ng-model="parentName" />
+        <span>  {{parentName}}</span>
+      </div>
+      <div class="panel">
+        <child-a></child-a>
+      </div>
+      <div class="panel">
+        <child-b></child-b>
+      </div>
+      <div class="panel">
+        <child-c></child-c>
+      </div>
+    </div>
+    <!--t1指令模板-->
+    <script type="text/html" id="t1">
+      <input type="text" ng-model="parentName" /><span>  {{parentName}}</span>
+    </script>
+    <script src="/webjars/angularjs/angular.min.js"></script>
+    <script type="text/javascript">
+      var app = angular.module("app", []);
+      app.controller('parentCtrl', function ($scope) {
+        $scope.parentName = "父作用域默认值";
+      });
+
+      //false：共享作用域
+      app.directive('childA', function () {
+        return {
+          restrict: 'E',
+          scope: false,
+          template: function (elem, attr) {
+            return "<h4>指令参数{scope:false}共享父作用域</h4>" + document.getElementById('t1').innerHTML;
+          }
+        };
+      });
+
+      //true：继承父域，并建立独立作用域
+      app.directive('childB', function () {
+        return {
+          restrict: 'E',
+          scope: true,
+          template: function (elem, attr) {
+            return "<h4>指令参数{scope:true}继承父作用域且新建独立作用域</h4>" + document.getElementById('t1').innerHTML;
+          },
+          controller: function ($scope) {
+            //$scope.parentName = "parent";
+            //已声明的情况下，$scope.$watch监听的是自己的parentName
+            $scope.$watch('parentName', function (n, o) {
+              console.log("child watch" + n);
+            });
+            //$scope.$parent.$watch监听的是父域的parentName
+            $scope.$parent.$watch('parentName', function (n, o) {
+              console.log("parent watch" + n);
+            });
+          }
+        };
+      });
+
+      //{}：不继承父域，建立独立作用域
+      app.directive('childC', function () {
+        return {
+          restrict: 'E',
+          scope: {},
+          template: function (elem, attr) {
+            return "<h4>指令参数{scope:{}}不继承父域且新建独立作用域</h4>" + document.getElementById('t1').innerHTML;
+          },
+          controller: function ($scope) {
+            console.log($scope);
+          }
+        };
+      });
+    </script>
+</body>
+</html>
+```
 

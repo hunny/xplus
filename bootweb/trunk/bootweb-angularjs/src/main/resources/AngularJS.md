@@ -500,10 +500,14 @@ angular.module('app', []) //
 #### 沟通参数-scope
 
 * scope参数的作用是，隔离指令与所在控制器间的作用域、隔离指令与指令间的作用域。
-* scope参数是可选的，默认值为false，可选true、对象{}：
-  - false：共享父作用域；
-  - true：继承父作用域且新建独立作用域；
-  - 对象{}：不继承父域且新建独立作用域；
+* scope参数是可选的，默认值为`false`，可选`true`、`{}`：
+
+| scope值 | 作用域 |
+| --- | --- |
+| `scope: false` | 共享父作用域 |
+| `scope: true` | 继承父作用域且新建独立作用域 |
+| `scope: {}` | 不继承父域且新建独立作用域 |
+
 
 ```html
 <!DOCTYPE html>
@@ -606,4 +610,58 @@ angular.module('app', []) //
 </body>
 </html>
 ```
+
+* `scope: false`特点：
+  - (1). 父域修改parentName的同时，指令绑定的parentName的元素会被刷新。
+  - (2). 指令内部parentName被修改时，父域的parentName同样会被刷新。
+* `scope: true`特点：
+  - (1). 在指令已声明parentName的情况下，父域parentName变更，指令中parentName不会发生变化。指令在true参数下，建立了的scope，独立并隔离与父控制器的scope。即使指令中parentName变更，父域也不会发生变化。
+  ```javascript
+    controller: function ($scope) {
+      $scope.parentName = "parent";
+    }
+  ```
+  - (2). 在指令未声明parentName的情况下，父域的parentName变更，指令中parentName也会刷新。这种情况很多时候会被忽略，指令的scope没有声明对象时，其元素绑定的仍然是父域的对象。
+  - (3). 在指令未声明parentName的情况下，一旦指令中对parentName赋值或双向绑定变更，对应的独立scope也会自动声明该绑定对象，这就回到了第(1)种情况。然而，指令中parentName变更，父域是不会变化的。
+  ```javascript
+    controller: function ($scope) {
+      // $scope.parentName = "parent";
+    }
+  ```
+  - (4). 在指令已声明parentName的情况下 ，在指令中监听父域parentName 的变化无效。但监听子域parentName的变化有效，独立子域scope，只能监听自己的，不能监听父域的。但通过 $scope.$parent可以监听父域。
+  ```javascript
+    controller: function ($scope) {
+      $scope.parentName = "parent" ;
+      //已声明的情况下，$scope.$watch监听的是自己的parentName
+      $scope.$watch( 'parentName' , function (n, o) {
+          console.log("child watch" + n);
+      });
+      //$scope.$parent.$watch监听的是父域的parentName
+      $scope.$parent.$watch( 'parentName' , function (n, o) {
+          console.log("parent watch" + n);
+      });
+    }
+  ```
+  - (5). 在指令未声明parentName的情况下 ，在指令中监听父域parentName的变化有效。
+  ```javascript
+    controller: function ($scope) {
+        //$scope.parentName = "parent";
+        //未声明的情况下，$scope.$watch监听的是父域的parentName
+        $scope.$watch('parentName' , function (n, o) {
+            console.log("child watch" + n);
+        });
+    }
+  ```
+* `scope: {}`特点：
+  - (1). 子域不继承父域，并建立独立作用域。
+  - (2). 可通过以下操作符与父级沟通：
+
+  | 操作符 | 说明 | 示例 |
+  | --- | --- | --- |
+  | @ | 单向数据绑定：用来传递普通字符串 | `<child-c my-age="{{age}}"></child-c>`<br>需要加`{{}}` |
+  | = | 双向数据绑定，用于传递对象 | `<child-c onSay="name"></child-c>`<br>不需要加`{{}}` |
+  | & | 传递函数 | `<child-c on-say="say('i m ' + name)"></child-c>`<br>&对应的attrName必须以`on-`开头 |
+
+
+
 

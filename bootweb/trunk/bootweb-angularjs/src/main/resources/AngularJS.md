@@ -659,8 +659,104 @@ angular.module('app', []) //
   | 操作符 | 说明 | 示例 |
   | --- | --- | --- |
   | @ | 单向数据绑定：用来传递普通字符串 | `<child-c my-age="{{age}}"></child-c>`<br>需要加`{{}}` |
-  | = | 双向数据绑定，用于传递对象 | `<child-c onSay="name"></child-c>`<br>不需要加`{{}}` |
+  | = | 双向数据绑定，用于传递对象 | `<child-c my-name="name"></child-c>`<br>不需要加`{{}}` |
   | & | 传递函数 | `<child-c on-say="say('i m ' + name)"></child-c>`<br>&对应的attrName必须以`on-`开头 |
+
+  - (3). 当scope对象为空对象时，无论是父域parentName，还是指令子域parentName发生变更，都不会影响到对方。因为指令建立的独立作用域，与父域是完全隔离的。
+  - (4). 当scope对象为非空对象时，指令会将该对象处理成子域scope的扩展属性。而父域与子域之间传递数据的任务，就是可以通过这块扩展属性完成。
+
+  ```html
+  <!DOCTYPE html>
+  <html ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <title>指令scope参数(@, =, &)测试</title>
+    <style type="text/css">
+    .panel {
+      margin-bottom:20px;
+      border: 1px solid #eee;
+      padding: 10px;
+    }
+    .panel h4 {
+      margin-top:2px;
+      margin-bottom:10px;
+    }
+    .panel input {
+      height: 20px;
+      padding: 5px;
+    }
+    .panel button {
+      height: 30px;
+    }
+    .panel .item {
+      margin: 5px;
+      padding: 5px;
+    }
+    </style>
+  </head>
+  <body>
+    <div ng-controller="parentCtrl">
+      <h3>指令scope参数(@, =, &)测试</h3>
+      <div class="panel">
+        <h4>controller父作用域:</h4>
+        <div class="item">Name: <input type="text" ng-model="name" />  <span>{{name}}</span></div>
+        <div class="item">Gender: <input type="text" ng-model="gender" />  <span>{{gender}}</span></div>
+        <div class="item">Age: <input type="text" ng-model="age" />  <span>{{age}}</span></div>
+        <div class="item"><button ng-click="say(name)">直接调用</button></div>
+      </div>
+      <div class="panel">
+        <demo my-name="name" my-gender-attr="gender" my-age="{{age}}" fun-say="say(name)"></demo>
+      </div>  
+      <!--t1指令模板-->
+      <script type="text/html" id="t1">
+        <div class="item">Name: <input type="text" ng-model="myName" />  <span>{{myName}}</span></div>
+        <div class="item">Gender: <input type="text" ng-model="myGender" />  <span>{{myGender}}</span></div>
+        <div class="item">Age: <input type="text" ng-model="myAge" />  <span>{{myAge}}</span></div>
+        <div class="item"><button ng-click="mySay(myName)">[&]调用</button></div>
+      </div>
+      </script>
+      <script src="/webjars/angularjs/angular.min.js"></script>
+      <script type="text/javascript">
+        var app = angular.module("app", []);
+        app.controller('parentCtrl', function ($scope) {
+          $scope.name = "Jack";
+          $scope.gender = "male";
+          $scope.age = "28";
+          $scope.say = function(msg) {
+            console.log('parent message: ' + msg);
+            alert('parent message: ' + msg);
+          };
+        });
+        app.directive('demo', function () {
+          return {
+            restrict: 'E',
+            scope: {
+              myName: '=',
+              myGender: '=myGenderAttr',
+              myAge: '@',
+              funSay: '&'
+            },
+            template: function (elem, attr) {
+              return "<h4>指令子作用域:</h4>" + document.getElementById('t1').innerHTML;
+            },
+            controller: function ($scope) {
+              console.log('directive controller');
+              console.log($scope.myName);
+              console.log($scope.myGender);
+              console.log($scope.myAge);
+              $scope.mySay = function(msg) {
+                console.log('directive : ' + msg);
+                alert('directive : ' + msg);
+                $scope.funSay();
+              }
+            }
+          };
+        });
+      </script>
+    </div>
+  </body>
+  </html>
+  ```
 
 
 

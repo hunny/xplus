@@ -705,6 +705,7 @@ angular.module('app', []) //
         <div class="item"><button ng-click="say(name)">直接调用</button></div>
       </div>
       <div class="panel">
+        <!--特别注意：@与=对应的attr，@是单向绑定父域的机制，记得加上{{}}；&对应的attrName直接调用父作用域-->
         <demo my-name="name" my-gender-attr="gender" my-age="{{age}}" fun-say="say(name)"></demo>
       </div>  
       <!--t1指令模板-->
@@ -757,6 +758,65 @@ angular.module('app', []) //
   </body>
   </html>
   ```
+  - (5). [@、=及&]总结
+    + `@`（or @Attr)绑定策略——本地作用域属性：使用`@`符号将本地作用域同DOM属性的值进行绑定。指令内部作用域可以使用外部作用域的变量。(单向引用父域对象)。请注意`@`是单向绑定本地作用域，记得加上`{{}}`。
+    ```
+    <demo my-age="{{age}}"></demo>
+    scope: {
+      myAge: '@',
+    }
+    ```
+    + `=` （or =Attr）绑定策略——双向绑定：通过`=`可以将本地作用域上的属性同父级作用域上的属性进行双向的数据绑定。就像普通的数据绑定一样，本地属性会反映出父数据模型中所发生的改变。（双向引用父域对象）。`=`策略不需要加上`{{}}`进行绑定。
+    ```
+    <demo my-name="name"></demo>
+    scope: {
+      myName: '=',
+    }
+    ```
+    + `&` （or &Attr）绑定策略——通过`&`符号可以对父级作用域进行绑定，以便在其中运行函数。（调用父域函数）。
+    ```
+    <demo fun-say="say(name)"></demo>
+    scope: {
+      funSay: '&',
+    }
+    ```
+    父域绑定调用函数及传参：
+    ```
+    app.controller('parentCtrl', function ($scope) {
+      $scope.say = function (msg) {
+        alert(msg);
+      };
+    })
+    ```
+    + scope扩展对象，既能够解耦父域与子域共域的问题，也能够实现指令与外界通讯的问题，是Angular开发指令化模块化的重要基础。
+
+#### 对外参数——require
+
+* scope是指令与外界作用域通讯的桥梁，而require是指令与指令之间通讯的桥梁。
+* `require`参数最大的作用在于，当要开发单指令无法完成，需要一些组合型指令的控件或功能，例如日期控件，通过require参数，指令可以获得外部其他指令的控制器，从而达到交换数据、事件分发的目的。
+* 使用方法：`require: String or Array`。
+  - String值为引入指令名称，并且有两个寻找指令策略符号`？`与`^`；
+  - Array数组则为多个外部指令名称。
+
+* 在link函数第4个参数ctrl中获取注入外部指令的控制器，如果require为String，ctrl为对象，如果require是数组，ctrl为数组。
+
+```javascript
+require: '^teacher',
+link: function ($scope, $element, $attrs, ctrl) {
+    //ctrl指向teacher指令的控制器
+}
+```
+
+* `？策略`——寻找指令名称，如果没有找到，link函数第4个参数为null；如果没有`？`，则报错。
+* `^ 策略`——在自身指令寻找指令名称的同时，向上父元素寻找；如果没有`^`，则仅在自身寻找。
+* 如下例子，指令studentA向上可以找到指令teacher及自身，但是不能找到相邻兄弟的student-b。
+
+```
+<div teacher>
+    <student-a></student-a>
+    <student-b></student-b>
+</div>
+```
 
 
 

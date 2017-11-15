@@ -818,6 +818,155 @@ link: function ($scope, $element, $attrs, ctrl) {
 </div>
 ```
 
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>指令require参数测试</title>
+  <style type="text/css">
+  .panel {
+    margin-bottom:20px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .panel .item {
+    margin: 5px;
+    padding: 5px;
+  }
+  </style>
+</head>
+<body>
+  <div class="panel" teacher>
+    <div class="item">{{name}}</div>
+    <student-a></student-a>
+    <student-b></student-b>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module("app", []);
+    //studentA——require指向父级指令teacher
+    app.directive('studentA', function () {
+      return {
+        require: '?^teacher',
+        scope: {},
+        template: '<div class="item">A\'s teacher name: <span>{{teacherName}}</span></div>',
+        link: function ($scope, $element, $attrs, ctrl) {
+          //获取teacher指令控制器，并调用其方法sayName()
+          $scope.teacherName = ctrl.sayName();
+        }
+      };
+    });
+    //studentB——require指向父级指令teacher，及指令studentA
+    app.directive('studentB', function () {
+      return {
+        require: ['?^teacher', '?studentA'],//采取`？`策略，不报错
+        // require: ['?^teacher', 'studentA'],//不能获得兄弟，也没有采取`？`策略，导致报错
+        scope: {},
+        template: '<div class="item">B\'s teacher name: <span>{{teacherName}}</span></div>',
+        link: function ($scope, $element, $attrs, ctrl) {
+          console.log(ctrl);
+          console.log($scope);
+          $scope.teacherName = ctrl[0].sayName();
+        }
+      };
+    });
+    app.directive('teacher', function () {
+      return {
+        restrict: 'A',
+        controller: function ($scope) {
+          $scope.name = "Miss wang";
+          //扩展控制器的方法sayName，目的是让外部内获取控制器内部数据
+          this.sayName = function () {
+              return $scope.name;
+          };
+        }
+      };
+    });
+  </script>
+</body>
+</html>
+```
 
+#### 行为参数——link与controller
+* link与controller都是描述指令行为(指令元素操作行为|指令作用域行为)的参数，但它们是要描述的行为是完全不同的类型。
 
+> controller语法 controller：String or Function
+* controller本身的意义就是赋予指令控制器，而控制器就是定义其内部作用域的行为的。所以controller要描述的是：指令的作用域的行为。
 
+```javascript
+//指向匿名控制器
+controller: function ($scope) {
+},
+//指向控制器mainCtrl
+controller: "mainCtrl"
+```
+
+> link语法 link：String Or Function
+* ink名称是链接函数，它会在形成模板树之后，在数据绑定之前，从最底部指令开始，逐个指令执行它们的link函数。在这个时间节点的link函数，操作DOM的性能开销是最低，非常适合在这个时机执行DOM的操作，例如鼠标操作或触控事件分发绑定、样式Class设置、增删改元素等等。所以link就是描述指令元素操作行为。
+
+```javascript
+link: function (scope, element, attr, ctrl) {
+  element.bind("click", function () {
+    console.log("绑定点击事件");
+  });
+  element.append("<p>增加段落块</p>");
+  //设置样式
+  element.css("background-color", "yellow");
+  //不推荐，在link中赋予scope行为
+  scope.hello = function () {
+    console.log("hello");
+  };
+}
+```
+
+* 在link中定义$scope行为是不推荐的。
+* 执行顺序是是先controller，后link。
+* 全局顺序：
+  - 执行controller，设置各个作用域scope。
+  - 加载模板，形成DOM模板树。
+  - 执行link，设置DOM各个行为。
+  - 数据绑定，最后scope绑上DOM。
+
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>指令require参数测试</title>
+  <style type="text/css">
+  .panel {
+    margin-bottom:20px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .panel .item {
+    margin: 5px;
+    padding: 5px;
+  }
+  </style>
+</head>
+<body>
+  <div class="panel" student>
+    <div class="item">{{name}}</div>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module("app", []);
+    app.directive('student', function () {
+      return {
+        restrict: 'A',
+        controller: function ($scope) {
+          $scope.name = "Jack";
+          console.log('controller running');
+        },
+        link: function (scope, element) {
+          element.append("<p class=\"item\">hello</p>");
+          console.log('link running');
+        }
+      };
+    });
+  </script>
+</body>
+</html>
+```

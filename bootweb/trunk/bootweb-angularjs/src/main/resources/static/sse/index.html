@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Server-Send Events</title>
+</head>
+<body>
+  <h3>Server-Send Events</h3>
+  <p>SSE是一种能让浏览器通过HTTP连接自动收到服务器端更新的技术。</p>
+  <div class="panel"></div>
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript">
+  if (window.EventSource) {
+    var eventSource = new EventSource("/sse/show.html");
+    //只要和服务器连接，就会触发open事件
+    eventSource.addEventListener("open", function() {
+      console.log("和服务器建立连接open");
+    });
+    //处理服务器响应报文中的load事件
+    eventSource.addEventListener("load", function(e) {
+      console.log("load服务器发送给客户端的数据为:" + e.data);
+    });
+    //如果服务器响应报文中没有指明事件，默认触发message事件
+    eventSource.addEventListener("message", function(e) {
+      console.log("message服务器发送给客户端的数据为:" + e.data);
+    });
+    //发生错误，则会触发error事件
+    eventSource.addEventListener("error", function(e) {
+      console.log("error服务器发送给客户端的数据为:" + e.data);
+    });
+  } else {
+    console.log("服务器不支持EvenSource对象");
+  }
+</script>
+</body>
+</html>

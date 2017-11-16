@@ -970,3 +970,34 @@ link: function (scope, element, attr, ctrl) {
 </body>
 </html>
 ```
+
+
+指令总结：
+
+```javascript
+angular.module('myApp', []).directive('first', [ function(){
+  return {
+    scope: false, //默认值为 false 共享父作用域 值为true时共享父级作用域并创建指令自己的                      
+    controller: function($scope, $element, $attrs, $transclude) {}, //作用域  值为{}时创建全新的隔离作用域, 值为string时为控制器名称
+    restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
+    template: 'first name:{{name}}',//值为string、function 用于显示dom元素
+    templateUrl: 'xxx.html' //值为string function 以id为xxx.html为 调用文件显示
+    prioruty: 0 //指明指令的优先级，若在dom上有多个指令优先级高的先执行
+    replace: flase // 默认值为false 当为true是直接替换指令所在的标签
+    terminal: true //值为true时优先级低于此指令的其它指令无效
+    link:function // 值为函数 用来定义指令行为从传入的参数中获取元素并进行处理
+  };
+}]).directive('second', [ function(){
+    return {
+      scope: true, 
+      // controller: function($scope, $element, $attrs, $transclude) {},
+      restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
+      //当修改这里的name时，second会在自己的作用域中新建一个name变量，与父级作用域中的
+      // name相对独立，所以再修改父级中的name对second中的name就不会有影响了
+      template: 'second name:{{name}}',
+    };
+}])
+.controller('DirectiveController', ['$scope', function($scope){
+    $scope.name="mike";
+}]);
+```

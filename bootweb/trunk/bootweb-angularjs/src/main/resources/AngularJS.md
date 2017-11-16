@@ -971,8 +971,7 @@ link: function (scope, element, attr, ctrl) {
 </html>
 ```
 
-
-指令总结：
+#### 自定义指令总结
 
 ```javascript
 angular.module('myApp', []).directive('first', [ function(){
@@ -1001,3 +1000,4 @@ angular.module('myApp', []).directive('first', [ function(){
     $scope.name="mike";
 }]);
 ```
+### Controller的实现

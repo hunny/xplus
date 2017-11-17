@@ -8,8 +8,8 @@
     <artifactId>bootweb-parent</artifactId>
     <version>0.0.1-SHAPSHOT</version>
   </parent>
-  <artifactId>bootweb-qzdynh2</artifactId>
-  <name>bootweb-qzdynh2</name>
+  <artifactId>bootweb-quartz</artifactId>
+  <name>bootweb-quartz</name>
   <url>http://maven.apache.org</url>
   <description>bootweb dynamic quartz by db of h2</description>
 

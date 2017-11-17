@@ -111,4 +111,24 @@ On fairly modern set of machines with a decent LAN (between the scheduler and da
 * TerracottaJobStore -为不使用数据库调用Quartz在保证规模性和健壮性方面上使用提供了一种手段。这意味着您的数据库可以免于来自Quartz的负载，并且可以将其所有资源保存在应用程序的其余部分中。
   - TerracottaJobStore可以集群或非集群，换句话讲，在应用程序重新启动时，从Terracotta服务器中获取工作数据并且在应用停止把存储它的数据到Terracotta服务器，因为数据是存储在Terracotta服务器，所以它的性能比使用数据库通过JDBCJobStore要好得多（约一个数量级的），但相当比RAMJobStore慢。
 
+## Schedule
+
+### JobFactory
+The default is Spring’s AdaptableJobFactory, which supports java.lang.Runnable objects as well as standard Quartz org.quartz.Job instances. Note that this default only applies to a local Scheduler, not to a RemoteScheduler (where setting a custom JobFactory is not supported by Quartz).
+
+### ThreadPool
+Default is a Quartz SimpleThreadPool with a pool size of 10. This is configured through the corresponding Quartz properties.
+
+### SchedulerFactory
+The default used here is the StdSchedulerFactory, reading in the standard quartz.properties from quartz.jar.
+
+### JobStore
+The default used is RAMJobStore which does not support persistence and is not clustered.
+
+### Life-Cycle
+The SchedulerFactoryBean implements org.springframework.context.SmartLifecycle and org.springframework.beans.factory.DisposableBean which means the life-cycle of the scheduler is managed by the Spring container. The sheduler.start() is called in the start() implementation of SmartLifecycle after initialization and the scheduler.shutdown() is called in the destroy() implementation of DisposableBean at application teardown.
+You can override the startup behaviour by setting setAutoStartup(..) to false. With this setting you have to manually start the scheduler.
+
+
+
 

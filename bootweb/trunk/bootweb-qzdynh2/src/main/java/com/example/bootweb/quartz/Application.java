@@ -1,4 +1,4 @@
-package com.example.bootweb.qzdynh2;
+package com.example.bootweb.quartz;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

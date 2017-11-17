@@ -1,4 +1,4 @@
-package com.example.bootweb.qzdynh2.entity;
+package com.example.bootweb.quartz.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.example.bootweb.quartz.profile.DynamicScheduleJobInH2;
+
 @Entity
+@DynamicScheduleJobInH2
 public class QuartzConfig {
 
   @Id

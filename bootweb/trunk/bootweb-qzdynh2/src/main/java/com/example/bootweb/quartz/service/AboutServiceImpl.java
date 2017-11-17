@@ -1,4 +1,4 @@
-package com.example.bootweb.qzdynh2.service;
+package com.example.bootweb.quartz.service;
 
 import org.springframework.stereotype.Service;
 

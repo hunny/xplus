@@ -1,4 +1,4 @@
-package com.example.bootweb.qzdynh2.config;
+package com.example.bootweb.quartz.config;
 
 import javax.annotation.Resource;
 
@@ -14,10 +14,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.example.bootweb.qzdynh2.dao.QuartzConfigRepository;
+import com.example.bootweb.quartz.dao.QuartzConfigRepository;
+import com.example.bootweb.quartz.profile.DynamicScheduleJobInH2;
 
 @EnableScheduling
 @Component
+@DynamicScheduleJobInH2
 public class ScheduleRefreshDatabase {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());

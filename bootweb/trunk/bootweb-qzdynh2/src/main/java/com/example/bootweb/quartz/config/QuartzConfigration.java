@@ -1,4 +1,4 @@
-package com.example.bootweb.qzdynh2.config;
+package com.example.bootweb.quartz.config;
 
 import org.quartz.Trigger;
 import org.springframework.context.annotation.Bean;
@@ -7,9 +7,11 @@ import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
-import com.example.bootweb.qzdynh2.task.ScheduleTask;
+import com.example.bootweb.quartz.profile.DynamicScheduleJobInH2;
+import com.example.bootweb.quartz.task.ScheduleTask;
 
 @Configuration
+@DynamicScheduleJobInH2
 public class QuartzConfigration {
 
   /**

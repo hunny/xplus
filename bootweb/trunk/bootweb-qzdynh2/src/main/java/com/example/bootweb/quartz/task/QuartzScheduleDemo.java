@@ -1,4 +1,4 @@
-package com.example.bootweb.qzdynh2.task;
+package com.example.bootweb.quartz.task;
 
 import java.util.Date;
 
@@ -7,7 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.example.bootweb.quartz.profile.DynamicScheduleJobInH2;
+
 @Component
+@DynamicScheduleJobInH2
 public class QuartzScheduleDemo {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());

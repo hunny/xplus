@@ -15,8 +15,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.example.bootweb.qzdynh2.Application;
-import com.example.bootweb.qzdynh2.service.AboutService;
+import com.example.bootweb.quartz.Application;
+import com.example.bootweb.quartz.service.AboutService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)

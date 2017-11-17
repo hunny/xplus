@@ -1,5 +1,7 @@
 # Quartz Schedule with Cron
 
+@BootQuartzScheduleDemo
+
 ## Add dependency
 
 ```
@@ -16,16 +18,18 @@
 ## Create Quartz Schedule Demo
 
 ```
-package com.example.bootweb.qzdynh2.task;
+package com.example.bootweb.quartz.task;
 
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@EnableScheduling
 public class QuartzScheduleDemo {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());

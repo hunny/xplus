@@ -1001,3 +1001,28 @@ angular.module('myApp', []).directive('first', [ function(){
 }]);
 ```
 ### Controller的实现
+
+#### Controller从URL地址中取请求参数
+
+While routing is indeed a good solution for application-level URL parsing, you may want to use the more low-level `$location` service, as injected in your own service or controller:
+
+```javascript
+var paramValue = $location.search().myParam; 
+```
+
+This simple syntax will work for `http://example.com/path?myParam=paramValue`. However, only if you configured the `$locationProvider` in the HTML 5 mode before:
+
+```javascript
+$locationProvider.html5Mode(true);
+```
+For example:
+
+```javascript
+var app = angular.module('app', []);
+app.config(['$locationProvider', function($locationProvider) {
+  $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: false
+  });
+}]);
+```

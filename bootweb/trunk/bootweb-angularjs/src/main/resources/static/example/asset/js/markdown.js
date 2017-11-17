@@ -1,8 +1,19 @@
 var markdown = angular.module('markdown', []);
-
-markdown.controller('indexCtrl', ['$scope', function($scope) {
+markdown.config(['$locationProvider', function($locationProvider) {
+  $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: false
+  });
+}]);
+markdown.controller('indexCtrl', ['$scope', '$location', function($scope, $location) {
+  var file = $location.search().filePath;
+  if (file) {
+    file = '&filePath=' + file;
+  } else {
+    file = '';
+  }
   $scope.http = {
-    url: '/md/text?_=' + new Date().getTime()
+    url: '/md/text?_=' + new Date().getTime() + file
   };
 }]);
 

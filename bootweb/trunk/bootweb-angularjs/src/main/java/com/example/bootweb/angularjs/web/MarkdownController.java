@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,12 +23,12 @@ import com.ibm.icu.text.MessageFormat;
 @RequestMapping(value = { "/md" })
 public class MarkdownController {
 
-  @Value("${bootweb.markdown.file-path:}")
-  private String filePath;
-  
+  // @Value("${bootweb.markdown.file-path:}")
+  // private String filePath;
+
   @Autowired
   private MarkdownService markdownService;
-  
+
   @RequestMapping(value = "list", //
       method = RequestMethod.GET, //
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -44,18 +43,19 @@ public class MarkdownController {
   }
 
   @RequestMapping(value = "text", method = RequestMethod.GET)
-  public Map<String, Object> text() throws IOException {
+  public Map<String, Object> text(@RequestParam(name = "filePath", required = false) String filePath)
+      throws IOException {
     InputStream inputStream = null;
     if (StringUtils.isBlank(filePath)) {// 默认文件。
       inputStream = this.getClass().getResourceAsStream("/AngularJS.md");
     } else {
       File targetFile = new File(filePath);
       if (!targetFile.exists()) {
-        throw new IOException(// 
+        throw new IOException(//
             MessageFormat.format("文件名称[{0}]不存在。", filePath));
       }
       if (!targetFile.isFile()) {
-        throw new IOException(// 
+        throw new IOException(//
             MessageFormat.format("文件名称[{0}]不是一个正常的文件。", filePath));
       }
       inputStream = new FileInputStream(targetFile);

@@ -497,6 +497,23 @@ angular.module('app', []) //
   - 声明M注释指令时，注释：`<!--` 两边一定要留空格，不然什么都不会发生 `-->`。
   - 声明M注释指令时，需要在该指令添加`replace:true`属性，否则注释指令是不可见的。
 
+在使用`template`时，可借助AngularJS缓存：
+
+```javascript
+var app = angular.module('app', []);
+// 注射器加载完成所有模块时，此方法执行一次。
+app.run(function($templateCache) {
+  $templateCache.put('hello.html', '<div>Hello World!</div>')
+});
+app.directive('hello', function($templateCache) {
+  return {
+    restrict: 'EMAC',
+    tempalte: $templateCache.get('hello.html'),
+    replace: true
+  };
+});
+```
+
 #### 沟通参数-scope
 
 * scope参数的作用是，隔离指令与所在控制器间的作用域、隔离指令与指令间的作用域。
@@ -1000,13 +1017,221 @@ angular.module('myApp', []).directive('first', [ function(){
     $scope.name="mike";
 }]);
 ```
-### Controller的实现
+### Controller控制器
+
+#### 使用注意点
+
+* 不要试图去复用Controller，一个控制器一般只负责一小块视图。
+* 不要在Controller中操作DOM，这不是控制器的职责。
+* 不要在Controller里面做数据格式化，ng有很好用的控件。
+* 不要在Controller里面做数据过滤操作，ng有$filter服务。
+* 一般来说，Controller是不会互相调用的，控制器之间的交互会通过事件进行。
+
+#### 作用域`$scope`,`$rootScope`
+
+* (作用域)`$scope`是应用在HTML(视图)和JavaScript(控制器)之间的数据通道，它是一个POJO(Plain Old Javascript Object)，它提供了一些工具方法`$watch()`/`$apply()`，它可以传播事件，可以向上可以向下。
+* 控制器中主要通过`$scope`来交互数据并且是表达式的执行环境，它是实现双向数据绑定的基础，分为本控制器的`$scope`和根作用域`$rootScope`：
+* 控制器中的属性对应了视图上的属性，视图中，不需要添加`$scope`前缀, 只需要添加属性名即可，例如：`{{name}}`。
+* 根作用域`$rootScope`：所有的应用都有一个`$rootScope`，它可以作用在`ng-app` 指令包含的所有 HTML 元素中。`$rootScope`可作用于整个应用中。是各个controller中scope的桥梁。用`$rootscope`定义的值，可以在各个 controller中使用。
+* 控制器中定义的`$rootScope`变量，无论定义先后，在各个控制器中都可以访问。
+* 可以使用angular.element($0).scope()进行调试。
+
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>Controller的scope测试</title>
+  <style type="text/css">
+  .panel {
+    margin-bottom:20px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .panel .item {
+    margin: 5px;
+    padding: 5px;
+  }
+  </style>
+</head>
+<body>
+  <div class="panel" ng-controller="greetCtrl">
+    <div class="item">Hello, {{name}}! {{variable}}</div>
+  </div>
+  <div class="panel" ng-controller="listCtrl">
+    <div class="item">
+      <ul>
+        <li ng-repeat="name in names">{{name}} from {{department}}</li>
+      </ul>
+    </div>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module("app", []);
+    app.controller('greetCtrl', ['$scope', '$rootScope', function ($scope, $rootScope) {
+      $scope.name = 'Greeting Controller!';
+      $rootScope.department = 'Root Scope AngularJS.';
+    }]);
+    app.controller('listCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+      $scope.names = ['Jack', 'Tom', 'Jerry', 'HunnyHu'];
+      $rootScope.variable = '后定义的$rootScope变量。';
+    }]);
+  </script>
+</body>
+</html>
+```
+
+#### 事件分发`$emit`,`$broadcast`,`$on`
+
+* `$on`、`$emit`和`$broadcast`使得event、data在controller之间的传递变的简单。
+* `$emit`：子传父传递event与data，`$broadcast`：父传子传递event与data，`$on`：监听或接收数据，用于接收event与data。
+* `$broadcast`、`$emit`事件必须依靠其他事件（ng-click等）进行触发，`$on`是属于监听和接收数据的。
+* `$on`方法中的event事件参数：
+  - event.name：事件名称。
+  - event.targetScope：发出或者传播原始事件的作用域。
+  - event.currentScope：目前正在处理的事件的作用域。
+  - event.stopPropagation()：一个防止事件进一步传播(冒泡/捕获)的函数(这只适用于使用`$emit`发出的事件)。
+  - event.preventDefault()：这个方法实际上不会做什么事，但是会设置`defaultPrevented`为true。直到事件监听器的实现者采取行动之前它才会检查`defaultPrevented`的值。
+  - event.defaultPrevented：如果调用了`preventDefault`则为true。
+
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>事件分发$emit,$broadcast测试</title>
+  <style type="text/css">
+  .panel {
+    margin-bottom:20px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .panel input {
+    height: 20px;
+    padding: 5px;
+  }
+  .panel button {
+    height: 30px;
+  }
+  .panel .item {
+    margin: 5px;
+    padding: 5px;
+  }
+  </style>
+</head>
+<body>
+  <div class="panel" ng-controller="eventCtrl">
+    <div class="item">
+      Root Scope MyEvent count:{{count}}
+    </div>
+    <div class="panel" ng-controller="eventCtrl">
+      <div class="item">
+        <button ng-click="$emit('MyEvent')">$emit('MyEvent')自己+向上</button>
+        <button ng-click="$broadcast('MyEvent')">$broadcast('MyEvent')自己+向下</button>
+      </div>
+      <div class="item">
+        Middle Scope MyEvent count:{{count}}
+      </div>
+      <div class="panel" ng-controller="eventCtrl">
+        <div class="item">
+          Leaf Scope MyEvent count:{{count}}
+        </div>
+      </div>
+      <div class="panel" ng-controller="eventCtrl">
+        <div class="item">
+          Leaf Scope MyEvent count:{{count}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module("app", []);
+    app.controller('eventCtrl', ['$scope', function ($scope) {
+      $scope.count = 0;
+      $scope.$on('MyEvent', function() {
+        $scope.count++;
+      });
+    }]);
+  </script>
+</body>
+</html>
+```
+
+#### 项目结构示例
+
+* 加载首页
+
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>加载首页</title>
+  <!-- 加载样式
+  <link rel='stylesheet' href='xxx.css'> -->
+  <!-- 定义样式
+  <style type="text/css">
+  </style> -->
+</head>
+<body>
+  <div ng-view></div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <!-- 加载脚本 <script src="other javascript lib.js"></script> -->
+  <!-- 加载脚本 <script src="app.js"></script> -->
+  <!-- 加载脚本 <script src="config.js"></script> -->
+  <!-- 加载脚本 <script src="controller.js"></script> -->
+  <!-- 加载脚本 <script src="filter.js"></script> -->
+  <!-- 加载脚本 <script src="service.js"></script> -->
+  <!-- 加载脚本 <script src="directive.js"></script> -->
+  <!-- 把脚本放在html中 -->
+  <script type="text/javascript">
+    var app = angular.module("app", []);
+    app.controller('helloCtrl', ['$scope', function ($scope) {
+      $scope.greeting = 'Hello World!';
+    }]);
+  </script>
+</body>
+</html>
+```
+* 目录结构
+* app
+  - css
+  - framework
+  - img
+  - js
+    + app.js
+    + config.js
+    + route.js
+    + controller/
+    + filter/
+    + service/
+    + directive/
+  - tpl
+  - index.html
+
+* `app.js`示例：
+```javascript
+var app = angular.module('app', ['ngRoute', 
+  'myCtrls', 'myFilters', 'myServices', 'myDirectives']);
+app.config(['$routeProvider', function($routeProvider) {
+  $routeProvider.when('/hello', function() {
+    templateUrl: 'tpl/hello.html',
+    controller: 'helloCtrl'
+  }).when('/list', function() {
+    templateUrl: 'tpl/list.html',
+    controller: 'listCtrl'
+  }).otherwise({
+    redirectTo: '/hello'
+  });
+}]);
+```
 
 #### 从取URL参数
 
 While routing is indeed a good solution for application-level URL parsing, you may want to use the more low-level `$location` service, as injected in your own service or controller:
 
-虽然`$route`路由确实是应用程序级URL解析的一个很好的解决方案，但可能希望在自己的服务或控制器中注入更低级的“位置”服务：
+虽然`$route`路由确实是应用程序级URL解析的一个很好的解决方案，但可能希望在自己的服务或控制器中注入更低层次的`$location`服务：
 
 ```javascript
 var paramValue = $location.search().myParam; 
@@ -1032,3 +1257,20 @@ app.config(['$locationProvider', function($locationProvider) {
   });
 }]);
 ```
+
+### 路由
+
+#### ngRoute
+
+* 使用ngRoute进行视图之间的路由
+
+#### UI-Route
+
+* [angular-ui.github.io](https://angular-ui.github.io)
+
+### Provider
+
+### AngularJS第三方组件
+
+[Kissy Gallery]，[angular-ui]
+

@@ -62,6 +62,23 @@ markdown.service('codecss', function() {
   };
 });
 
+markdown.service('catalog', function() {
+  this.make = function() {
+    var html = '<div class="catalog">';
+    angular.element('h1, h2, h3, h4, h5, h6').each(function() {
+      var cur = angular.element(this);
+      var id = cur.attr('id');
+      if (id) {
+        html += '<' + this.tagName + '>';
+        html += '<a href="#' + id + '">' + cur.text() + '</a>';
+        html += '</' + this.tagName + '>';
+      }
+    });
+    html += '</div>';
+    return html;
+  };
+});
+
 markdown.controller('indexCtrl', ['$scope', '$location',
     function($scope, $location) {
       var file = $location.search().filePath;
@@ -75,8 +92,8 @@ markdown.controller('indexCtrl', ['$scope', '$location',
       };
     }]);
 
-markdown.directive('render', ['$http', 'linktoggle', 'codecss',
-    function($http, linktoggle, codecss) {
+markdown.directive('render', ['$http', 'linktoggle', 'codecss', 'catalog',
+    function($http, linktoggle, codecss, catalog) {
       return {
         restrict: 'E',
         scope: {
@@ -91,7 +108,8 @@ markdown.directive('render', ['$http', 'linktoggle', 'codecss',
           }).then(function success(response) {
             element.html(response.data.html);
             codecss.add(element.find('code[class*="language-"]'));
-            linktoggle.add(angular.element('h1, h2, h3, h4'));
+            linktoggle.add(angular.element('h1, h2, h3, h4, h5, h6'));
+            element.children().first().before(catalog.make());
           }, function error(response) {
             console.log('请求失败');
           });

@@ -30,11 +30,11 @@ AngularJS 是一个JavaScript框架。AngularJS通过指令扩展了HTML，且�
 ```javascript
 var app = angular.module('app', []);
 app.controller('helloWorld', ['$scope', 
-	function($scope) {
-		$scope.data = {
-			name : 'Hello World!'
-		};
-	} 
+  function($scope) {
+    $scope.data = {
+      name : 'Hello World!'
+    };
+  } 
 ]);
 ```
 
@@ -46,7 +46,7 @@ app.controller('helloWorld', ['$scope',
 
 ```javascript
 $scope.data = {
-	name : 'Hello World!'
+  name : 'Hello World!'
 };
 ```
 
@@ -60,22 +60,22 @@ $scope.data = {
 
 ```javascript
 app.controller('helloWorld', ['$scope', 
-	function($scope) {
-		$scope.data = {
-			name : 'Hello World!'
-		};
-	} 
+  function($scope) {
+    $scope.data = {
+      name : 'Hello World!'
+    };
+  } 
 ]);
 ```
 
 ### 模块化
 
 * Modules are Containers
-	- Module->Config->Routes
-	- Module->Filter
-	- Module->Directive
-	- Module->Factory->Service->Provider->Value
-	- Module->Controller
+  - Module->Config->Routes
+  - Module->Filter
+  - Module->Directive
+  - Module->Factory->Service->Provider->Value
+  - Module->Controller
 
 * 一切都是从`angular.module`、`ng-app="app"`开始：
 
@@ -94,11 +94,11 @@ var app = angular.module('app', []);
 ```javascript
 var app = angular.module('app', []);
 app.directive('hello', function() {
-	return {
-		restrict: 'E',
-		template: '<div>Hi, AngujarJS directive demo!</div>',
-		replace: true
-	};
+  return {
+    restrict: 'E',
+    template: '<div>Hi, AngujarJS directive demo!</div>',
+    replace: true
+  };
 });
 ```
 
@@ -137,10 +137,10 @@ app.directive('hello', function() {
   </div>
   <script src="/webjars/angularjs/angular.min.js"></script>
   <script type="text/javascript">
-  	var app = angular.module('app', []);
-  	app.controller('dataBinding', ['$scope', function($scope) {
-		$scope.name = 'world!';
-  	}]);
+    var app = angular.module('app', []);
+    app.controller('dataBinding', ['$scope', function($scope) {
+    $scope.name = 'world!';
+    }]);
   </script>
 </body>
 </html>
@@ -292,18 +292,18 @@ app.directive('hello', function() {
 
 * AngularJS指令是以`ng`作为前缀的HTML属性。
   - `ng-app`指令初始化一个 AngularJS 应用程序。
-  	+ `ng-app` 指令定义了AngularJS应用程序的根元素。
-  	+ `ng-app` 指令在网页加载完毕时会自动引导（自动初始化）应用程序。
+    + `ng-app` 指令定义了AngularJS应用程序的根元素。
+    + `ng-app` 指令在网页加载完毕时会自动引导（自动初始化）应用程序。
   - `ng-init`指令可以初始化AngularJS应用程序变量。
   - `ng-model`或`ng-bind`指令或angular表达式把元素值绑定到应用程序。
     + `ng-model`是用于表单元素的，支持双向绑定。对普通元素无效。
     + `ng-bind`用于普通元素，不能用于表单元素，应用程序单向地渲染数据到元素。
     + 当`ng-bind`和`{{}}`同时使用时，`ng-bind`绑定的值覆盖该元素的内容。
   - `ng-model`指令还可以：
-  	+ 为应用程序数据提供类型验证（number、email、required）。
-  	+ 为应用程序数据提供状态（invalid、dirty、touched、error）。
-  	+ 为HTML元素提供CSS类。
-  	+ 绑定HTML元素到HTML表单。
+    + 为应用程序数据提供类型验证（number、email、required）。
+    + 为应用程序数据提供状态（invalid、dirty、touched、error）。
+    + 为HTML元素提供CSS类。
+    + 绑定HTML元素到HTML表单。
   - `ng-repeat`指令对于集合中（数组中）的每个项会克隆一次HTML元素。
 ```html
 <!DOCTYPE html>
@@ -314,7 +314,7 @@ app.directive('hello', function() {
 </head>
 <body>
   <div ng-app="" ng-init="firstName='John'">
-	<p>姓名为 <span ng-bind="firstName"></span></p>
+  <p>姓名为 <span ng-bind="firstName"></span></p>
   </div>
   <script src="/webjars/angularjs/angular.min.js"></script>
 </body>
@@ -332,10 +332,10 @@ app.directive('hello', function() {
 </head>
 <body>
   <div ng-app="" ng-init="quantity=1;price=5">
-	<h2>价格计算器</h2>
-	数量： <input type="number" ng-model="quantity">
-	价格： <input type="number" ng-model="price">
-	<p><b>总价：</b> {{ quantity * price }}</p>
+  <h2>价格计算器</h2>
+  数量： <input type="number" ng-model="quantity">
+  价格： <input type="number" ng-model="price">
+  <p><b>总价：</b> {{ quantity * price }}</p>
   </div>
   <script src="/webjars/angularjs/angular.min.js"></script>
 </body>
@@ -365,10 +365,10 @@ app.directive('hello', function() {
     </ul>
     <h2>使用ng-repeat指令循环对象</h2>
     <ul>
-	  <li ng-repeat="x in objects">
-	    {{ x.name + ', ' + x.country }}
-	  </li>
-	</ul>
+    <li ng-repeat="x in objects">
+      {{ x.name + ', ' + x.country }}
+    </li>
+  </ul>
   </div>
   <script src="/webjars/angularjs/angular.min.js"></script>
 </body>
@@ -1002,9 +1002,11 @@ angular.module('myApp', []).directive('first', [ function(){
 ```
 ### Controller的实现
 
-#### Controller从URL地址中取请求参数
+#### 从取URL参数
 
 While routing is indeed a good solution for application-level URL parsing, you may want to use the more low-level `$location` service, as injected in your own service or controller:
+
+虽然`$route`路由确实是应用程序级URL解析的一个很好的解决方案，但可能希望在自己的服务或控制器中注入更低级的“位置”服务：
 
 ```javascript
 var paramValue = $location.search().myParam; 
@@ -1012,10 +1014,14 @@ var paramValue = $location.search().myParam;
 
 This simple syntax will work for `http://example.com/path?myParam=paramValue`. However, only if you configured the `$locationProvider` in the HTML 5 mode before:
 
+这个简单的语法将应用于地址`http://example.com/path?myparam=paramvalue`。然而，这个前提是需要配置`$locationProvider`的HTML5模式：
+
 ```javascript
 $locationProvider.html5Mode(true);
 ```
+
 For example:
+一个配置`$locationProvider`的HTML5模式示例：
 
 ```javascript
 var app = angular.module('app', []);

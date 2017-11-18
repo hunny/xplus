@@ -5,75 +5,96 @@ markdown.config(['$locationProvider', function($locationProvider) {
     requireBase: false
   });
 }]);
-markdown.controller('indexCtrl', ['$scope', '$location', function($scope, $location) {
-  var file = $location.search().filePath;
-  if (file) {
-    file = '&filePath=' + file;
-  } else {
-    file = '';
-  }
-  $scope.http = {
-    url: '/md/text?_=' + new Date().getTime() + file
-  };
-}]);
 
-markdown.directive('render', ['$http', function($http) {
-  return {
-    restrict: 'E',
-    scope: {
-      src: '='
-    },
-    template: '<article class="markdown-body"></article>',
-    replace: true,
-    link: function(scope, element, attrs) {
-      $http({
-        method: 'GET',
-        url: scope.src
-      }).then(function success(response) {
-        element.html(response.data.html);
-        var codes = element.find('code[class*="language-"]');
-        codes.each(function() {
-          if (angular.element(this).hasClass('language-html')) {
-            var test = angular.element('<a href="/example/asset/show.html?html=' //
-                    + encodeURIComponent(this.innerHTML) //
-                    + '" target="_blank">测试一下</a>');
-            angular.element(this).parent().after(test);
-          }
-          Prism.highlightElement(this, true);// Prism framework to highlight element.
-        });
-        angular.element('h1, h2, h3, h4') //
-          .css({'cursor': 'pointer'}).on('click', function() {
-          var elem = angular.element(this);
-          var tagName = this.tagName.toUpperCase();
-          if (tagName == 'H1') {
-            elem.nextAll().show();
-            return;
-          } else {
-            var hn = tagName.replace(/^H/, '');
-            var all = elem.nextAll();
-            var length = all.length;
-            for (var i = 0; i < length; i++) {
-              var nelem = all.get(i);
-              var ntag = nelem.tagName.toUpperCase();
-              var toggle = true;
-              if (/H\d+/.test(ntag)) {
-                for (var n = parseInt(hn); n >= 1; n--) {
-                  if (ntag == ('H' + n)) {
-                    toggle = false;
-                    break;
-                  }
-                }
-                if (!toggle) {
-                  break;
-                }
-              }
-              $(nelem).toggle();
-            }
-          }
-        });
-      }, function error(response) {
-        console.log('请求失败');
-      });
+markdown.service('linktoggle', function() {
+  this.add = function(elements) {
+    var current = this;
+    elements.css({
+      'cursor': 'pointer'
+    }) //
+    .on('click', function() {
+      current.act(this);
+    });
+  };
+  this.stop = function(num, tag) {
+    for (var n = parseInt(num); n >= 1; n--) {
+      if (tag == ('H' + n)) { return true; }
+    }
+    return false;
+  };
+  this.act = function(htmlElement) {
+    var elem = angular.element(htmlElement);
+    var tagName = htmlElement.tagName.toUpperCase();
+    if (tagName == 'H1') {
+      elem.nextAll().show();
+      return;
+    }
+    var current = this;
+    var hn = tagName.replace(/^H/, '');
+    var all = elem.nextAll();
+    var length = all.length;
+    for (var i = 0; i < length; i++) {
+      var nelem = all.get(i);
+      var ntag = nelem.tagName.toUpperCase();
+      if (/H\d+/.test(ntag) && current.stop(hn, ntag)) {
+        break;
+      }
+      $(nelem).toggle();
     }
   };
-}]);
+});
+
+markdown.service('codecss', function() {
+  this.link = function(param) {
+    return angular.element('<a href="/example/asset/show.html?html=' //
+            + encodeURIComponent(param) //
+            + '" target="_blank">测试一下</a>');
+  };
+  this.add = function(elements) {
+    var current = this;
+    elements.each(function() {
+      if (angular.element(this).hasClass('language-html')) {
+        angular.element(this).parent().after(current.link(this.innerHTML));
+      }
+      // Prism framework to highlight element.
+      Prism.highlightElement(this, true);
+    });
+  };
+});
+
+markdown.controller('indexCtrl', ['$scope', '$location',
+    function($scope, $location) {
+      var file = $location.search().filePath;
+      if (file) {
+        file = '&filePath=' + file;
+      } else {
+        file = '';
+      }
+      $scope.http = {
+        url: '/md/text?_=' + new Date().getTime() + file
+      };
+    }]);
+
+markdown.directive('render', ['$http', 'linktoggle', 'codecss',
+    function($http, linktoggle, codecss) {
+      return {
+        restrict: 'E',
+        scope: {
+          src: '='
+        },
+        template: '<article class="markdown-body"></article>',
+        replace: true,
+        link: function(scope, element, attrs) {
+          $http({
+            method: 'GET',
+            url: scope.src
+          }).then(function success(response) {
+            element.html(response.data.html);
+            codecss.add(element.find('code[class*="language-"]'));
+            linktoggle.add(angular.element('h1, h2, h3, h4'));
+          }, function error(response) {
+            console.log('请求失败');
+          });
+        }
+      };
+    }]);

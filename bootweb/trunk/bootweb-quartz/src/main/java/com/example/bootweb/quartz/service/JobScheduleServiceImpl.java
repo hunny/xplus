@@ -8,10 +8,9 @@ import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bootweb.quartz.profile.SpringBootPersistQuartz;
@@ -20,13 +19,16 @@ import com.example.bootweb.quartz.profile.SpringBootPersistQuartz;
 @Service
 public class JobScheduleServiceImpl implements JobScheduleService {
 
+  @Autowired
+  private Scheduler scheduler;
+  
   public void add(Class<? extends Job> jobClass, String jobGroupName, String cronExpression) throws Exception {
     // 通过SchedulerFactory获取一个调度器实例
-    SchedulerFactory sf = new StdSchedulerFactory();
-    Scheduler sched = sf.getScheduler();
+//    SchedulerFactory sf = new StdSchedulerFactory();
+//    Scheduler scheduler = sf.getScheduler();
 
     // 启动调度器
-    sched.start();
+    scheduler.start();
     // 构建job信息
     JobDetail jobDetail = JobBuilder //
         .newJob(jobClass) //
@@ -42,7 +44,7 @@ public class JobScheduleServiceImpl implements JobScheduleService {
         .withSchedule(scheduleBuilder) //
         .build();
     try {
-      sched.scheduleJob(jobDetail, trigger);
+      scheduler.scheduleJob(jobDetail, trigger);
     } catch (SchedulerException e) {
       System.out.println("创建定时任务失败" + e);
       throw new RuntimeException("创建定时任务失败");
@@ -51,22 +53,22 @@ public class JobScheduleServiceImpl implements JobScheduleService {
 
   public void pause(Class<? extends Job> jobClass, String jobGroupName) throws Exception {
     // 通过SchedulerFactory获取一个调度器实例
-    SchedulerFactory sf = new StdSchedulerFactory();
-    Scheduler sched = sf.getScheduler();
-    sched.pauseJob(JobKey.jobKey(jobClass.getName(), jobGroupName));
+//    SchedulerFactory sf = new StdSchedulerFactory();
+//    Scheduler scheduler = sf.getScheduler();
+    scheduler.pauseJob(JobKey.jobKey(jobClass.getName(), jobGroupName));
   }
 
   public void resume(Class<? extends Job> jobClass, String jobGroupName) throws Exception {
     // 通过SchedulerFactory获取一个调度器实例
-    SchedulerFactory sf = new StdSchedulerFactory();
-    Scheduler sched = sf.getScheduler();
-    sched.resumeJob(JobKey.jobKey(jobClass.getName(), jobGroupName));
+//    SchedulerFactory sf = new StdSchedulerFactory();
+//    Scheduler scheduler = sf.getScheduler();
+    scheduler.resumeJob(JobKey.jobKey(jobClass.getName(), jobGroupName));
   }
 
   public void reschedule(Class<? extends Job> jobClass, String jobGroupName, String cronExpression) throws Exception {
     try {
-      SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-      Scheduler scheduler = schedulerFactory.getScheduler();
+//      SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+//      Scheduler scheduler = schedulerFactory.getScheduler();
       TriggerKey triggerKey = TriggerKey.triggerKey(jobClass.getName(), jobGroupName);
       // 表达式调度构建器
       CronScheduleBuilder scheduleBuilder = CronScheduleBuilder //
@@ -87,11 +89,11 @@ public class JobScheduleServiceImpl implements JobScheduleService {
 
   public void delete(Class<? extends Job> jobClass, String jobGroupName) throws Exception {
     // 通过SchedulerFactory获取一个调度器实例
-    SchedulerFactory sf = new StdSchedulerFactory();
-    Scheduler sched = sf.getScheduler();
-    sched.pauseTrigger(TriggerKey.triggerKey(jobClass.getName(), jobGroupName));
-    sched.unscheduleJob(TriggerKey.triggerKey(jobClass.getName(), jobGroupName));
-    sched.deleteJob(JobKey.jobKey(jobClass.getName(), jobGroupName));
+//    SchedulerFactory sf = new StdSchedulerFactory();
+//    Scheduler scheduler = sf.getScheduler();
+    scheduler.pauseTrigger(TriggerKey.triggerKey(jobClass.getName(), jobGroupName));
+    scheduler.unscheduleJob(TriggerKey.triggerKey(jobClass.getName(), jobGroupName));
+    scheduler.deleteJob(JobKey.jobKey(jobClass.getName(), jobGroupName));
   }
 
 }

@@ -349,6 +349,7 @@ public class SchedulerConfig {
   public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) throws IOException {
     SchedulerFactoryBean factory = new SchedulerFactoryBean();
     factory.setQuartzProperties(quartzProperties());
+    factory.setDataSource(dataSource);
     return factory;
   }
   @Bean

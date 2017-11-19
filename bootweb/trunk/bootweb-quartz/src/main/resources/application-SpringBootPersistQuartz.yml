@@ -2,6 +2,7 @@ spring:
   datasource:
     platform: h2
     url: jdbc:h2:mem:testdb
+    # url: jdbc:h2:file:~/dbh2/testdb;DB_CLOSE_DELAY=-1;AUTO_RECONNECT=TRUE;AUTO_SERVER=TRUE;TRACE_LEVEL_SYSTEM_OUT=3;MVCC=TRUE;
     username: sa
     password: 
     driver-class-name: org.h2.Driver
@@ -14,6 +15,10 @@ spring:
         web-allow-others: true
         trace: true
       path: /h2
+
+mybatis: 
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.bootweb.quartz.entity
 
 logging:
   level:

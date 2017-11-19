@@ -1158,6 +1158,187 @@ angular.module('myApp', []).directive('first', [ function(){
 </html>
 ```
 
+#### 监听值`$scope.$watch`
+
+* `$watch`是一个scope函数，用于监听模型变化，当模型部分发生变化时它会发出通知。
+  - `$watch(watchExpression, listener, objectEquality);`
+  - 参数的说明如下：
+    + `watchExpression`：监听的对象，它可以是一个angular表达式如`'name'`,或函数如`function(){return $scope.name}`。
+    + `listener`：当`watchExpression`变化时会被调用的函数或者表达式,它接收3个参数：newValue(新值), oldValue(旧值), scope(作用域的引用)
+    + `objectEquality`：是否深度监听，如果设置为true,它告诉Angular检查所监控的对象中每一个属性的变化. 如果你希望监控数组的个别元素或者对象的属性而不是一个普通的值, 那么你应该使用它
+
+* `$watch`性能问题：太多的`$watch`将会导致性能问题，`$watch`如果不再使用，最好将其释放掉。
+  - $watch函数返回一个注销监听的函数，如果我们想监控一个属性，然后在稍后注销它，可以使用下面的方式：
+  ```javascript
+  var watch = $scope.$watch('someModel.someProperty', callback);
+  // 满足某些条件后，注销监听，释放资源
+  watch();
+  ```
+
+* 一个示例：
+
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>事件分发$emit,$broadcast测试</title>
+  <style type="text/css">
+  .panel {
+    margin-bottom:20px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .panel input {
+    height: 20px;
+    padding: 5px;
+  }
+  .panel button {
+    height: 30px;
+  }
+  .panel .item {
+    margin: 5px;
+    padding: 5px;
+  }
+  </style>
+</head>
+<body>
+  <div class="panel" ng-controller="watchCtrl">
+    <div class="item">
+      名称：<input type="input" ng-model="name">
+    </div>
+    <div class="item">
+      显示：{{name}}
+    </div>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module("app", []);
+    app.controller('watchCtrl', ['$scope', function ($scope) {
+      $scope.$watch('name', function(newName) {
+        var val = '新名称：' + newName;
+        console.log(val);
+      });
+    }]);
+  </script>
+</body>
+</html>
+```
+
+* `$watch`单一的变量
+  - 对于普通的变量时，如数字，字符串等，直接如下写是可以监视到变量的变化，并执行相应的函数的。
+  ```javascript
+  $scope.count = 1;
+  $scope.$watch('count', function(){
+    // ...
+  });
+  ```
+
+* `$watch`多个变量
+  - 对于多个变量的监视变化，执行同一函数的话，可以将这几个变量转为字符串，以‘+’号隔开来进行监视
+  ```javascript
+  //当count或page变化时，都会执行这个匿名函数
+  $scope.count = 1;
+  $scope.page = 1;
+  $scope.$watch('count + page', function() {
+    // ...
+  });
+  ```
+
+* `$watch`对象或数组
+  - `$watch`函数其实是有三个变量的，第一个参数是需要监视的对象，第二个参数是在监视对象发生变化时需要调用的函数，实际上watch还有第三个参数，它在默认情况下是false。 
+  - 当第三个参数是false时，其实watch函数监视的是数组的地址，而数组的内容的变化不会影响数组地址的变化，所以watch函数此时不起作用。 
+  - 如果第三个参数为true，监视的是数组内容的变化。
+  ```javascript
+  $scope.items=[
+    {a:1},
+    {a:2}
+    {a:3}
+  ];
+  $scope.$watch('items', function() {...}, true);
+  ```
+  - 或者将监听返回结果为JSON字符串形式的该对象或数组的的匿名函数
+  ```javascript
+  $scope.items=[
+    {a:1},
+    {a:2}
+    {a:3}
+  ];
+  $scope.$watch(function() {
+    return JSON.stringify($scope.items);
+  },function() {...});
+  ```
+
+* `$watch`函数的返回结果
+  - 监视对象为“函数名()”的字符串，不要忘记加“()”
+  ```javascript
+  //未完成的任务个数
+  $scope.unDoneCount = function() {
+    var count = 0;
+    angular.forEach($scope.todoList, function(todo) {
+      count += todo.done ? 0 : 1;
+    });
+    return count;
+  };
+  //单选影响全选部分
+  $scope.$watch('unDoneCount()', function(nv) {
+    $scope.isDoneAll = nv ? false : true;
+  });
+  ```
+  - 在监视对象中设置为匿名函数，返回要监视的函数的返回值
+  ```javascript
+  $scope.$watch(function() {
+    return $scope.unDoneCount();//不要忘了(), 要执行的
+  }, function(nv) {
+    $scope.isDoneAll = nv ? false : true;
+  });
+  ```
+
+#### 调用方法`$scope.$apply`
+
+* 参考地址
+  - [理解Angular中的$apply()以及$digest()](http://blog.csdn.net/dm_vincent/article/details/38705099)
+  - [Understanding Angular’s $apply() and $digest()](https://www.sitepoint.com/understanding-angulars-apply-digest/)
+* 双向数据绑定其实也就是当模型发生了变化的时候，重绘了DOM，使你看到数据被更新了，引发模型变化的情况有：
+  - 1,dom事件；
+  - 2,xhr响应触发回调；
+  - 3,浏览器的地址变化；
+  - 4,计时器触发回调；
+  - 以上的某一个情况发生，都会触发模型监控机制，同时调用了$apply方法，重绘了dom;通常情况下，我们使用的一些指令或服务，如$http,$timeout,$location等都会调用$apply方法，从而使用dom被重绘，数据得到更新，实现了双向数据绑定。
+
+* `$apply()`方法可以在angular框架之外执行angular JS的表达式，例如：DOM事件、setTimeout、XHR或其他第三方的库。
+* 示例一，视图不会更新值为"Timeout called!"：
+```javascript
+function update($scope) {
+  $scope.message ="Waiting 2000ms for update";    
+  setTimeout(function () {
+  　$scope.message ="Timeout called!";
+    // AngularJS unaware of update to $scope
+  }, 2000); 
+}
+```
+* 示例二，视图会更新值为"Timeout called!":
+```javascript
+function update($scope) {
+  $scope.message ="Waiting 2000ms for update"; 
+  setTimeout(function () {
+  　$scope.$apply(function () {
+      $scope.message = "Timeout called!";
+    });
+  }, 2000); 
+}
+```
+* 示例三，视图会更新值为"Timeout called!":
+```javascript
+function update($scope, $timeout) {
+  $scope.message ="Waiting 2000ms for update"; 
+  $timeout(function () {
+    $scope.message = "Timeout called!";
+  }, 2000); 
+}
+```
+
+
 #### 项目结构示例
 
 * 加载首页
@@ -1227,6 +1408,43 @@ app.config(['$routeProvider', function($routeProvider) {
 }]);
 ```
 
+#### 网络请求`$http`
+
+* `$http`是一个用于与服务器交互数据的服务。
+* v1.5中`$http`的`success`和`error`方法已废弃。使用`then`方法替代。
+
+请求示例：
+
+```javascript
+var app = angular.module('app', []);
+app.controller('httpCtrl', ['$scope', '$http', function($scope, $http) {
+    $http({
+        method: 'GET',
+        url: 'http://localhost:8080/data/get/name.html'
+    }).then(function successCallback(response) {
+            $scope.names = response.data.name;
+        }, function errorCallback(response) {
+            // 请求失败执行代码
+    });
+}]);
+```
+
+* 简写方法
+  - POST与GET简写方法格式：
+  ```javascript
+  $http.get('/someUrl', config).then(successCallback, errorCallback);
+  $http.post('/someUrl', data, config).then(successCallback, errorCallback);
+  ```
+
+* 此外还有以下简写方法，具体参考[官方api](https://docs.angularjs.org/api/ng/service/$http)：
+  - `$http.get`
+  - `$http.head`
+  - `$http.post`
+  - `$http.put`
+  - `$http.delete`
+  - `$http.jsonp`
+  - `$http.patch`
+
 #### 从取URL参数
 
 While routing is indeed a good solution for application-level URL parsing, you may want to use the more low-level `$location` service, as injected in your own service or controller:
@@ -1270,7 +1488,117 @@ app.config(['$locationProvider', function($locationProvider) {
 
 ### Provider
 
+### Service
+
+* Service都是单例的。
+* Service由$injector负责实例化。
+* Service在整个应用的生命周期中存在，可以用来共享数据。
+* 在需要使用的地方利用依赖注入机制注入Service。
+* 自定义的Service需要写在内置的Service后面。
+* 内置Service的命名以$符号开头，自定义Service应该避免。
+* Service、Provider、Factory本质上都是Provider。
+
+### 使用`$filter`服务
+
+* `$filter`是用来进行数据格式的专用服务。
+* AngularJS内置了9个filter：
+  - currency 货币格式化
+  ```javascript
+  {{ 250 | currency }}            // 结果：$250.00
+  {{ 250 | currency:"RMB ￥ " }}  // 结果：RMB ￥ 250.00
+  ```
+  - date 格式化
+  ```javascript
+  {{1490161945000 | date:"yyyy-MM-dd HH:mm:ss"}} // 2017-03-22 13:52:25
+  ```
+  - filter查找：输入过滤器可以通过一个管道字符（|）和一个过滤器添加到指令中，该过滤器后跟一个冒号和一个模型名称。
+  ```javascript
+   // 查找name为iphone的行
+  {{ [{"age": 20,"id": 10,"name": "iphone"},
+      {"age": 12,"id": 11,"name": "sunm xing"},
+      {"age": 44,"id": 12,"name": "test abc"}] | filter:{'name':'iphone'} }}  
+  ```
+  - json 格式化json对象
+  ```javascript
+  {{ jsonTest | json}} //作用与JSON.stringify()一样
+  ```
+  - limitTo截取
+  ```javascript
+  {{"1234567890" | limitTo :6}} // 从前面开始截取6位
+  {{"1234567890" | limitTo:-4}} // 从后面开始截取4位
+  ```
+  - lowercase
+  ```javascript
+  {{ "TANK is GOOD" | lowercase }}      // 结果：tank is good
+  ```
+  - uppercase
+  ```javascript
+  {{ "lower cap string" | uppercase }}   // 结果：LOWER CAP STRING
+  ```
+  - number
+  ```javascript
+  {{149016.1945000 | number:2}} // 格式化（保留小数）
+  ```
+  - orderBy
+  ```javascript
+  // 根id降序排
+  {{ [{"age": 20,"id": 10,"name": "iphone"},
+      {"age": 12,"id": 11,"name": "sunm xing"},
+      {"age": 44,"id": 12,"name": "test abc"}] | orderBy:'id':true }}
+  // 根据id升序排
+  {{ [{"age": 20,"id": 10,"name": "iphone"},
+      {"age": 12,"id": 11,"name": "sunm xing"},
+      {"age": 44,"id": 12,"name": "test abc"}] | orderBy:'id' }}
+  ```
+
+* filter可以嵌套使用（用管道符号|分隔）。
+  - 在模板中使用filter:可以直接在{{}}中使用filter，跟在表达式后面用 | 分割，语法如下：
+  ```
+  {{ expression | filter }}
+  // 也可以多个filter连用，上一个filter的输出将作为下一个filter的输入
+  {{ expression | filter1 | filter2 | ... }}
+  // filter可以接收参数，参数用 : 进行分割
+  {{ expression | filter:argument1:argument2:... }}
+  // 可以在指令中使用filter，例如先对数组array进行过滤处理，然后再循环输出：
+  <span ng-repeat="a in array | filter ">
+  ```
+  - 在controller和service中使用filter
+  ```javascript
+  // 使用currency过滤器，只需将它注入到该controller中即可
+  app.controller('testCtrl', function($scope, currencyFilter) {
+    $scope.num = currencyFilter(123534);  
+  }
+  // 或者注入$filter服务可以来调用所需的filter
+  app.controller('testCtrl', function($scope, $filter){
+    $scope.num = $filter('currency')(123534);
+    $scope.date = $filter('date')(new Date());  
+  }
+  ```
+
+* filter是可以传递参数的。
+  - filter可以接收参数，参数用`:`进行分割。
+  ```javascript
+  {{149016.1945000 | number:2}} // 格式化（保留小数）
+  ```
+
+* 用户可以定义自己的filter:使用module的filter方法，返回一个函数，该函数接收输入值，并返回处理后的结果。
+
+```javascript
+app.filter('odditems', function() {
+  return function(inputArray) {
+    var array = [];
+    for(var i = 0;i < inputArray.length; i++){
+      if (i % 2 !== 0) {
+        array.push(inputArray[i]);
+      }
+    }
+    return array;
+  }
+});
+```
+
 ### AngularJS第三方组件
 
 [Kissy Gallery]，[angular-ui]
+
 

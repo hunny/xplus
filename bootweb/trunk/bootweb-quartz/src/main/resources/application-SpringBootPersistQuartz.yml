@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+    schema: classpath:schema-quartz.sql
+    data:
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+        trace: true
+      path: /h2
+
+logging:
+  level:
+    com:
+      example:
+        bootweb:
+          qzdynh2: DEBUG

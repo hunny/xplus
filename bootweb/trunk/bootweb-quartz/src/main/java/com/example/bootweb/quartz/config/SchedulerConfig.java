@@ -14,10 +14,13 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import com.example.bootweb.quartz.profile.SpringBootPersistQuartz;
 
+/**
+ * Quartz任务调度框架之最全Quartz系统参数配置详解{@link http://blog.csdn.net/zixiao217/article/details/53091812}
+ */
 @Configuration
 @SpringBootPersistQuartz
 public class SchedulerConfig {
-  
+
   @Bean
   public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) throws IOException {
     SchedulerFactoryBean factory = new SchedulerFactoryBean();
@@ -34,7 +37,8 @@ public class SchedulerConfig {
 
   /**
    * 监听到工程的启动，在工程停止再启动时可以让已有的定时任务继续进行。
-   * @return
+   * 
+   * @return QuartzInitializerListener
    */
   @Bean
   public QuartzInitializerListener executorListener() {

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>高德地图</title>
+<style type="text/css">
+body, html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-family: "微软雅黑";
+}
+
+#container {
+  height: 500px;
+  width: 100%;
+}
+
+#r-result {
+  width: 100%;
+  font-size: 14px;
+}
+</style>
+<script type="text/javascript"
+  src="http://webapi.amap.com/maps?v=1.4.0&key=fa6632450f9e39390da52c6b7606b069"></script>
+</head>
+<body>
+  <div id="container"></div>
+  <div id="r-result">
+    经度: <input id="longitude" type="text"
+      style="width: 100px; margin-right: 10px;" /> 纬度: <input
+      id="latitude" type="text"
+      style="width: 100px; margin-right: 10px;" /> <input type="button"
+      value="查询" onclick="addMarker()" style="margin-right: 10px;" />
+    <span id="lnglat"></span>
+  </div>
+  <script type="text/javascript">
+			var map = new AMap.Map('container', {
+				resizeEnable : true,
+				zoom : 10,
+				center : [ 116.480983, 40.0958 ]
+			});
+			var marker;
+			AMap.plugin([ 'AMap.ToolBar', 'AMap.Scale', 'AMap.OverView',
+					'AMap.MapType' ], function() {
+				map.addControl(new AMap.ToolBar());
+				map.addControl(new AMap.Scale());
+				map.addControl(new AMap.OverView({
+					isOpen : true
+				}));
+			});
+		    //为地图注册click事件获取鼠标点击出的经纬度坐标
+		    map.on('click', function(e) {
+		        document.getElementById("longitude").value = e.lnglat.getLng();
+		        document.getElementById("latitude").value = e.lnglat.getLat();
+		        document.getElementById("lnglat").innerHTML = 'GCJ02:{lng: ' + e.lnglat.getLng() + ', lat: ' + e.lnglat.getLat() + "}";
+		    });
+		    function addMarker() {
+		    	var longitude = document.getElementById("longitude").value;
+		    	var latitude = document.getElementById("latitude").value;
+				if (longitude != ""
+					&& latitude != "") {
+					if (!marker) {
+	    		        marker = new AMap.Marker({
+	    		            icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+	    		            position: [longitude, latitude]
+	    		        });
+	    		        marker.setMap(map);
+					} else {
+						marker.setPosition([longitude, //
+							latitude]); //更新点标记位置
+					}
+					map.panTo([longitude, latitude]);
+				}
+		    };
+		    function clearMarker() {
+		        if (marker) {
+		            marker.setMap(null);
+		            marker = null;
+		        }
+		    }
+		</script>
+</body>
+</html>

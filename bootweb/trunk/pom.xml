@@ -30,6 +30,7 @@
     <module>bootweb-cdn</module>
     <module>bootweb-thymeleaf</module>
     <module>bootweb-markdown</module>
+    <module>bootweb-map</module>
     <module>bootweb-angularjs</module>
     <module>bootweb-quartz</module>
     <module>bootweb-jaxrs</module>

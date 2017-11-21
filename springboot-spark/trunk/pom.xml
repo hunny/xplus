@@ -18,6 +18,7 @@
 
   <modules>
     <module>spark-starter</module>
+    <module>spring-spark</module>
   </modules>
 
   <dependencyManagement>

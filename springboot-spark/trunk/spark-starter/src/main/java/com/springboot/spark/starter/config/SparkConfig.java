@@ -22,8 +22,25 @@ public class SparkConfig {
 
   @Bean
   public SparkConf sparkConf() {
-    SparkConf sparkConf = new SparkConf().setAppName(appName).setSparkHome(sparkHome)
-        .setMaster(masterUri);
+    SparkConf sparkConf = new SparkConf() //
+        .setAppName(appName) // The name of application. This will appear in the
+                             // UI and in log data.
+        .setSparkHome(sparkHome) //
+        .setMaster(masterUri) //
+
+        // Port for application's dashboard, which shows memory and workload
+        // data.
+        .set("spark.ui.port", "7077") //
+
+        // Which scales the number of executors registered with this application
+        // up and down based on the workload
+        .set("dynamicAllocation.enabled", "false") //
+
+        // For serializing objects that will be sent over the network or need to
+        // be cached in serialized form.
+        .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer") //
+
+        .set("spark.driver.allowMultipleContexts", "true");
 
     return sparkConf;
   }

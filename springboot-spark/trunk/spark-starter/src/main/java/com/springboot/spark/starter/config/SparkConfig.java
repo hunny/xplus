@@ -5,15 +5,10 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import com.springboot.spark.starter.profile.SparkWordCount;
-
-@Configuration
 @PropertySource("classpath:META-INF/spark/spark-config.properties")
-@SparkWordCount
 public class SparkConfig {
 
   @Value("${app.name:jigsaw}")

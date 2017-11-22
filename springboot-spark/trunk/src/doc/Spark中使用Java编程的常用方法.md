@@ -485,6 +485,7 @@ public class MySpark {
 ## 访问Spark监控服务
 
 * [Spark Jobs](http://localhost:7077)
+* [Spark UI](http://localhost:4040)
 
 ## 参考
 

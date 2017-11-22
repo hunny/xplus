@@ -1,4 +1,4 @@
-package com.springboot.spark.starter.config;
+package com.springboot.spark.starter.runner;
 
 import java.io.Serializable;
 import java.util.Arrays;

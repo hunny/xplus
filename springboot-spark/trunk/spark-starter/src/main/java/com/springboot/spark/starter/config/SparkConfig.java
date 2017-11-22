@@ -46,13 +46,13 @@ public class SparkConfig {
   }
 
   @Bean
-  public JavaSparkContext javaSparkContext() {
-    return new JavaSparkContext(sparkConf());
+  public JavaSparkContext javaSparkContext(SparkConf sparkConf) {
+    return new JavaSparkContext(sparkConf);
   }
 
   @Bean
-  public SparkSession sparkSession() {
-    return SparkSession.builder().sparkContext(javaSparkContext().sc())
+  public SparkSession sparkSession(JavaSparkContext javaSparkContext) {
+    return SparkSession.builder().sparkContext(javaSparkContext.sc())
         .appName("Java Spark SQL basic example").getOrCreate();
   }
 

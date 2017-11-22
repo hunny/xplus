@@ -29,7 +29,7 @@ public class SparkWordCountFileRunner implements CommandLineRunner, Serializable
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
   
-  @Value("${app.name:jigsaw}")
+  @Value("${app.name:HunnyHu}")
   private String appName;
 
   @Value("${spark.home}")

@@ -11,7 +11,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @PropertySource("classpath:META-INF/spark/spark-config.properties")
 public class SparkConfig {
 
-  @Value("${app.name:jigsaw}")
+  @Value("${app.name:HunnyHu}")
   private String appName;
 
   @Value("${spark.home}")

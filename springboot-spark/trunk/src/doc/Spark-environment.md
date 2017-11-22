@@ -2,6 +2,10 @@
 
 # Spark
 
+## 参考
+
+[https://stackoverflow.com/questions/30053449/use-spring-together-with-spark](https://stackoverflow.com/questions/30053449/use-spring-together-with-spark)
+
 ## 概述
 
 * 每个Spark应用都包括一个在集群上运行用户的main函数和各种并行操作的驱动程序。Spark提供的主要抽象是一个弹性分布式数据集（RDD），RDD就是一个可以并行操作的分布在集群上各个节点的元素集合。RDDs可以通过位于Hadoop文件系统上的文件（或者任何其他Hadoop支持的文件系统），或者已经存在于驱动程序中的的Scala集合来创建并且变换。用户可能还会要求Spark将RDD持久化在内存中，这样就可以在并行操作之间高效地重复利用这个RDD。最后，RDDs可以从节点失败中自动恢复。

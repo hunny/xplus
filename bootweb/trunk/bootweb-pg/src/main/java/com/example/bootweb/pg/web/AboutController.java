@@ -20,7 +20,7 @@ public class AboutController {
     
     logger.info("Receive about request.");
     
-    return new ResponseEntity<String>("OK", HttpStatus.FOUND);
+    return new ResponseEntity<String>("ABC", HttpStatus.OK);
   }
   
 }

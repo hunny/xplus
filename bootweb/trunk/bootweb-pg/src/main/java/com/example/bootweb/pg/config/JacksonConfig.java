@@ -3,10 +3,12 @@ package com.example.bootweb.pg.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.bootweb.swagger.EnableSwagger2Api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Configuration
+@EnableSwagger2Api
 public class JacksonConfig {
 
   @Bean

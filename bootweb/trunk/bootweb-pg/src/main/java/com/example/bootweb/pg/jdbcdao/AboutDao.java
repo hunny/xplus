@@ -29,10 +29,17 @@ public class AboutDao {
   }
 
   public List<UuidBean> listBeanLikeName(String name) {
-    return jdbcTemplate.query("select * from about where name like ?", //
+    return jdbcTemplate.query("select id, name from about where name like ?", //
         new Object[] {
             "%" + name + "%" }, //
         new BeanPropertyRowMapper<UuidBean>(UuidBean.class));
+  }
+
+  public List<About> listLikeName(String name) {
+    return jdbcTemplate.query("select * from about where name like ?", //
+        new Object[] {
+            "%" + name + "%" }, //
+        new BeanPropertyRowMapper<About>(About.class));
   }
 
 }

@@ -14,6 +14,10 @@
   <url>http://maven.apache.org</url>
 
   <dependencies>
+    <dependency>
+      <groupId>com.example.bootweb.swagger</groupId>
+      <artifactId>spring-boot-starter-swagger</artifactId>
+    </dependency>
     <!-- PostgreSQL -->
     <dependency>
       <groupId>org.postgresql</groupId>

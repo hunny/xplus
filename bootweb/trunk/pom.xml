@@ -34,6 +34,7 @@
     <module>bootweb-angularjs</module>
     <module>bootweb-quartz</module>
     <module>bootweb-jaxrs</module>
+    <module>bootweb-pg</module>
   </modules>
 
   <dependencyManagement>

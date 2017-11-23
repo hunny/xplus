@@ -1,0 +1,43 @@
+# Spring Boot configuration
+spring:
+  profiles:
+    active: development
+  aop:
+    proxy-target-class: true
+
+# Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # url: jdbc:postgresql://localhost:5432/test_db?createDatabaseIfNotExist=true
+    # username: postgres
+    # password: postgres
+
+# JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: false
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+
+# Logger configuration
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework: INFO
+    org.hibernate: DEBUG
+    java.sql.Connection: DEBUG  
+    java.sql.Statement: DEBUG  
+    java.sql.PreparedStatement: DEBUG  
+    java.sql.ResultSet: DEBUG  
+
+# Server configuration
+server:
+  port: 8080
+

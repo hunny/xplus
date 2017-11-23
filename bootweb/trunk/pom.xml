@@ -35,6 +35,7 @@
     <module>bootweb-quartz</module>
     <module>bootweb-jaxrs</module>
     <module>bootweb-pg</module>
+    <module>bootweb-tpl</module>
   </modules>
 
   <dependencyManagement>

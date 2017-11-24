@@ -46,7 +46,7 @@ public class AboutPostgRESTService {
     headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
     HttpEntity<String> entity = new HttpEntity<String>( //
         objectMapper.writeValueAsString(about), headers);
-    ResponseEntity<Object> resp = restTemplate.exchange(serverUrl, //
+    ResponseEntity<Object> resp = restTemplate.exchange(serverUrl + "about", //
         HttpMethod.POST, //
         entity, //
         Object.class);

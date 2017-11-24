@@ -42,28 +42,27 @@ public class LoggingRestTemplate implements ClientHttpRequestInterceptor {
     if (!LOGGER.isDebugEnabled()) {
       return response;
     }
-    final ClientHttpResponse responseCopy = new BufferingClientHttpResponseWrapper(response);
+    final ClientHttpResponse responseWrapper = new BufferingClientHttpResponseWrapper(response);
     StringBuilder inputStringBuilder = new StringBuilder();
     BufferedReader bufferedReader = new BufferedReader(
-        new InputStreamReader(responseCopy.getBody(), "UTF-8"));
+        new InputStreamReader(responseWrapper.getBody(), "UTF-8"));
     String line = bufferedReader.readLine();
     while (line != null) {
       inputStringBuilder.append(line);
       inputStringBuilder.append('\n');
       line = bufferedReader.readLine();
     }
-//    responseCopy.close();
     LOGGER.debug(
         "==========================response begin=============================================");
-    LOGGER.debug("Status code  : {}", responseCopy.getStatusCode());
-    LOGGER.debug("Status text  : {}", responseCopy.getStatusText());
-    LOGGER.debug("Headers      : {}", responseCopy.getHeaders());
+    LOGGER.debug("Status code  : {}", responseWrapper.getStatusCode());
+    LOGGER.debug("Status text  : {}", responseWrapper.getStatusText());
+    LOGGER.debug("Headers      : {}", responseWrapper.getHeaders());
     LOGGER.debug("Response body: {}", inputStringBuilder.toString());
     // LOGGER.debug("Response body: {}",
     // IOUtils.toString(responseCopy.getBody()));
     LOGGER.debug(
         "==========================response end===============================================");
-    return responseCopy;
+    return responseWrapper;
   }
 
 }

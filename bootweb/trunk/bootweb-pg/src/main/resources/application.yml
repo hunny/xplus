@@ -31,12 +31,14 @@ logging:
     console: "%d %-5level %logger : %msg%n"
   level:
     org.springframework: INFO
+    org.springframework.web.client.RestTemplate: DEBUG
     org.hibernate: DEBUG
     java.sql.Connection: DEBUG
     java.sql.Statement: DEBUG
     java.sql.PreparedStatement: DEBUG
     java.sql.ResultSet: DEBUG
     com.example.bootweb.pg: DEBUG
+    org.apache.http: DEBUG
 
 # Server configuration
 server:

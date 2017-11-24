@@ -7,6 +7,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.HttpComponentsAsyncClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.bootweb.pg.logging.LoggingRestTemplate;
@@ -20,6 +21,7 @@ public class RestClientConfig {
     List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
     interceptors.add(new LoggingRestTemplate());
     restTemplate.setInterceptors(interceptors);
+    restTemplate.setRequestFactory(new HttpComponentsAsyncClientHttpRequestFactory());
     return restTemplate;
   }
 

@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +20,7 @@ import com.example.bootweb.pg.domain.About;
 import com.example.bootweb.pg.jdbcdao.UuidBean;
 import com.example.bootweb.pg.service.AboutJdbcService;
 import com.example.bootweb.pg.service.AboutJpaService;
+import com.example.bootweb.pg.service.AboutPostgRESTService;
 
 @RestController
 @RequestMapping(value = "/about", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -30,6 +33,9 @@ public class AboutController {
 
   @Autowired
   private AboutJdbcService aboutJdbcService;
+  
+  @Autowired
+  private AboutPostgRESTService aboutPostgRESTService;
 
   @GetMapping("/")
   public ResponseEntity<String> getAbout() {
@@ -119,6 +125,23 @@ public class AboutController {
       status = HttpStatus.NOT_FOUND;
     }
     return new ResponseEntity<>(abouts, status);
+  }
+  
+  @GetMapping("/postgrest/get/{id}")
+  public ResponseEntity<About> getByIdUsingPostgREST(@PathVariable("id") Long id) {
+    return new ResponseEntity<>(aboutPostgRESTService.getById(id), HttpStatus.OK);
+  }
+  
+  @PutMapping("/postgrest/create")
+  public ResponseEntity<About> createUsingPostgREST(@RequestBody About about) throws Exception {
+//    return new ResponseEntity<>(aboutPostgRESTService.getById(id), HttpStatus.OK);
+    aboutPostgRESTService.create(about);
+    return null;
+  }
+  
+  @GetMapping("/postgrest/api/{expr:.+}")
+  public ResponseEntity<Object[]> getByApiUsingPostgREST(@PathVariable("expr") String expr) {
+    return new ResponseEntity<>(aboutPostgRESTService.getByPostgREST(expr), HttpStatus.OK);
   }
 
 }

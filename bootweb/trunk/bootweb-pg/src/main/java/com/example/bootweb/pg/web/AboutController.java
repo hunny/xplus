@@ -134,9 +134,8 @@ public class AboutController {
   
   @PutMapping("/postgrest/create")
   public ResponseEntity<About> createUsingPostgREST(@RequestBody About about) throws Exception {
-//    return new ResponseEntity<>(aboutPostgRESTService.getById(id), HttpStatus.OK);
-    aboutPostgRESTService.create(about);
-    return null;
+    About ab = aboutPostgRESTService.create(about);
+    return new ResponseEntity<>(ab, HttpStatus.OK);
   }
   
   @GetMapping("/postgrest/api/{expr:.+}")

@@ -32,10 +32,11 @@ logging:
   level:
     org.springframework: INFO
     org.hibernate: DEBUG
-    java.sql.Connection: DEBUG  
-    java.sql.Statement: DEBUG  
-    java.sql.PreparedStatement: DEBUG  
-    java.sql.ResultSet: DEBUG  
+    java.sql.Connection: DEBUG
+    java.sql.Statement: DEBUG
+    java.sql.PreparedStatement: DEBUG
+    java.sql.ResultSet: DEBUG
+    com.example.bootweb.pg: DEBUG
 
 # Server configuration
 server:

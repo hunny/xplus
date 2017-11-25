@@ -1486,7 +1486,146 @@ app.config(['$locationProvider', function($locationProvider) {
 
 * [angular-ui.github.io](https://angular-ui.github.io)
 
+### Module
+
+* 模块定义了一个应用程序。
+* 模块是应用程序中不同部分的容器。
+* 模块是应用控制器的容器。
+* 控制器通常属于一个模块。
+* 定义一个模块
+  - 通过AngularJS的`angular.module`函数来创建模块；
+  - `"myApp"`参数对应执行应用的HTML元素。
+  - 可以在AngularJS应用中添加控制器，指令，过滤器等。
+  - 在模块定义中`[]`参数用于定义模块的依赖关系。
+  - 中括号`[]`表示该模块没有依赖，如果有依赖的话会在中括号写上依赖的模块名字。
+
+```html
+<div ng-app="myApp">...</div>
+<script type="text/javascript">
+var app = angular.module("myApp", []); 
+</script>
+```
+
+### AngularJS全局API
+
+* 常用的如下：
+
+| API | 描述 |
+| --- | --- |
+| angular.lowercase() | 转换字符串为小写 |
+| angular.uppercase() | 转换字符串为大写 |
+| angular.isString() | 判断给定的对象是否为字符串，如果是返回 true。 |
+| angular.isNumber() | 判断给定的对象是否为数字，如果是返回 true。 |
+
 ### Provider
+
+* Provider模式是策略模式和工厂模式的结合体。
+* 核心目的是为了让接口和实现分离。
+* 在ng中，所有provider都可以用来注入：provider/factory/service/constant/value。
+* provider是基础，其它都是调用provider函数实现的，只是参数不同。
+* 以下类型的函数可以接受注入：controller/directive/filter/service/factory等。
+* ng中的依赖注入是通过provider和injector这两个机制联合实现的。
+* 在自定义服务里进行注入，但不能注入$scope作用域对象。
+
+#### 定义Provider
+
+* 定义Provider
+
+```javascript
+var app = angular.module('app', []);
+app.provider('helloAngular', function() {
+  return {
+  	$get: function() {
+  		var name = 'Greeting!';
+  		function getName() {
+  			return name;
+  		}
+  		return {
+        getName: getName
+  		};
+  	}
+  };
+});
+// Controller调用
+app.controller('myCtrl', ['$scope', 'helloAngular', function($scope, helloAngular) {
+  $scope.name = helloAngular.getName();
+}]);
+```
+
+* 只有provder是能传`.config()`函数的 service。如果想在service 对象启用之前，先进行模块范围的配置，那就应该选择provider。
+  - 需要注意的是：在config函数里注入provider时，名字应该是：providerName+Provider. 
+* 使用Provider的优点就是，可以在Provider对象传递到应用程序的其他部分之前在`app.config`函数中对其进行修改。 
+* 当使用Provider创建一个service时，唯一的可以在控制器中访问的属性和方法是通过$get()函数返回内容。
+
+```javascript
+var app = angular.module('myApp', []);
+//需要注意的是：在config函数里注入provider时，名字应该是：`providerName + Provider`   
+app.config(function(myProviderProvider){
+  myProviderProvider.setName("大圣");       
+});
+app.provider('myProvider', function() {
+  var name = "";
+  var test = {"a":1,"b":2};
+  //注意的是，setter方法必须是(`set + 变量首字母大写`)格式
+  this.setName = function(newName) {
+    name = newName  
+  }
+  this.$get = function($http, $q) {
+    return {
+      getData : function() {
+        var d = $q.defer();
+        $http.get("url")//读取数据的函数。
+          .success(function(response) {
+            d.resolve(response);
+          }) //
+          .error(function(){
+            d.reject("error");
+          });
+        return d.promise;
+      },
+      "lastName": name,
+      "test": test
+    }
+  }
+});
+app.controller('myCtrl', function($scope,myProvider) {
+  console.log(myProvider.lastName);
+  console.log(myProvider.test.a)
+  myProvider.getData().then(function(data) {
+    console.log(data);
+  }, function(data) {
+    console.log(data);
+  });
+});
+```
+
+### Factory
+
+* 创建factory，作用就是返回一个有属性有方法的对象。相当于：`var f = myFactory();`
+
+```javascript
+//创建模型
+var app = angular.module('myApp', []);
+//通过工厂模式创建自定义服务
+app.factory('myFactory', function() {
+  var service = {};//定义一个Object对象'
+  service.name = "张三";
+  var age;//定义一个私有化的变量
+  //对私有属性写getter和setter方法
+  service.setAge = function(newAge){
+    age = newAge;
+  }
+  service.getAge = function(){
+    return age; 
+  }
+  return service;//返回这个Object对象
+});
+//创建控制器
+app.controller('myCtrl', ['$scope', 'myFactory', function($scope, myFactory) {
+  myFactory.setAge(20);
+  $scope.name = myFactory.getAge();
+}]);
+```
 
 ### Service
 
@@ -1497,8 +1636,78 @@ app.config(['$locationProvider', function($locationProvider) {
 * 自定义的Service需要写在内置的Service后面。
 * 内置Service的命名以$符号开头，自定义Service应该避免。
 * Service、Provider、Factory本质上都是Provider。
+* 定义Service：通过service方式创建自定义服务，相当于new的一个对象：`var s = new myService();`，只要把属性和方法添加到this上才可以在controller里调用。
+
+```javascript
+var app = angular.module('app', []);
+app.service('helloAngular', function() {
+  this.name = 'Greeting!';
+  this.getName = function() {
+  	return this.name;
+  }
+});
+// Controller调用
+app.controller('myCtrl', ['$scope', 'helloAngular', function($scope, helloAngular) {
+  $scope.name = helloAngular.getName();
+}]);
+```
+
+#### `$http` 服务
+
+* `$http`是 AngularJS 应用中最常用的服务。 服务向服务器发送请求，应用响应服务器传送过来的数据。
+
+```javascript
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+  $http.get("welcome.htm").then(function (response) {
+    $scope.myWelcome = response.data;
+  });
+});
+```
+
+* 以上是一个非常简单的 $http 服务实例，更多 $http 服务应用请查看[AngularJS Http](http://www.runoob.com/angularjs/angularjs-http.html)教程。
+
+#### `$timeout`服务
+
+* AngularJS`$timeout`服务对应了JS `window.setTimeout`函数。
+
+```javascript
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $timeout) {
+  $scope.myHeader = "Hello World!";
+  $timeout(function () {
+    $scope.myHeader = "How are you today?";
+  }, 2000);
+});
+```
+
+#### `$interval`服务
+
+* AngularJS`$interval`服务对应了JS`window.setInterval`函数。
+
+```javascript
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $interval) {
+  $scope.theTime = new Date().toLocaleTimeString();
+  $interval(function () {
+    $scope.theTime = new Date().toLocaleTimeString();
+  }, 1000);
+});
+```
+
 
 ### 使用`$filter`服务
+
+* 定义filter
+
+```javascript
+var app = angular.module('app', []);
+app.filter('myFormat',['helloAngular', function(helloAngular) {
+    return function(x) {
+        return helloAngular.getName(x);
+    };
+}]);
+```
 
 * `$filter`是用来进行数据格式的专用服务。
 * AngularJS内置了9个filter：
@@ -1596,6 +1805,224 @@ app.filter('odditems', function() {
   }
 });
 ```
+
+### Angualr进阶
+
+* angular对象上的静态工具方法
+
+```javascript
+/**
+ * angular对象上的静态工具方法
+ * @type {number}
+ */
+var counter = 0;
+for (var p in angular) {
+	counter++;
+	if (angular.isFunction(angular[p])) {
+		console.log('Function->' + p);
+	} else {
+		console.log('Property-->' + p + '-->' + angular[p]);
+	}
+}
+console.log(counter);
+```
+
+```javascript
+var injector = angular.injector();
+console.log(injector);
+
+var module = angular.module('app', []);
+console.log(module);
+```
+
+#### 自动启动
+
+* 引入AngularJS文件。
+* 在元素上有一个ng-app指令。
+
+#### 手动启动
+
+* 引入AngularJS文件。
+* 文档中无`ng-app`指令。
+* 手动调用代码`angular.bootstrap(document, ['app']);`执行启动。
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>手动启动AngularJS测试</title>
+  <style type="text/css">
+  .panel {
+    margin-bottom:20px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .panel input {
+    height: 20px;
+    padding: 5px;
+  }
+  .panel button {
+    height: 30px;
+  }
+  .panel .item {
+    margin: 5px;
+    padding: 5px;
+  }
+  </style>
+</head>
+<body>
+  <div class="panel" ng-controller="hiCtrl">
+    <div class="item">
+      名称：<input type="input" ng-model="name">
+    </div>
+    <div class="item">
+      显示：{{name}}
+    </div>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module("app", []);
+    app.controller('hiCtrl', ['$scope', function ($scope) {
+    	$scope.name = 'AngularJS start up.';
+      $scope.$watch('name', function(newName, oldName) {
+        var val = '新名称：' + newName + '，旧名称：' + oldName;
+        console.log(val);
+      });
+    }]);
+    // 要使用document加载完成后再调用。
+    angular.element(document).ready(function() {
+      setTimeout(function() {
+        angular.bootstrap(document, ['app']);// 手工启动。
+      }, 2000); // 2s后再加载。
+    });
+  </script>
+</body>
+</html>
+```
+
+#### 多个ng-app
+
+* 如果一个文档中写了多个`ng-app`，则只会自动启动第一个angular。
+* 其它的可以手动启动。
+
+#### 绑定jQuery
+
+#### 全局angular(injector方法)
+
+##### 参数注入
+
+* 推断型注入：根据参数名称`$scope`推断，注入`$scope`，函数的参数名称必须要与被注入的对象相同。
+  - 可通过`ctrl.$inject = ['$scope']`的方式声明注入。
+
+```javascript
+var app = angular.module('app', []);
+
+var ctrl = function($scope) {
+  $scope.name = 'Hello world!';
+};
+app.controller('ctrl', ctrl);
+```
+
+* 标注式注入：通过`$inject`的方式注入
+
+```javascript
+var app = angular.module('app', []);
+
+var ctrl = function($scope) {
+  $scope.name = 'Hello world!';
+};
+ctrl.$inject = ['$scope'];//如果需要混淆js，可声明注入。
+app.controller('ctrl', ctrl);
+```
+
+* 内联式注入：在定义时即声明
+
+```javascript
+var app = angular.module('app', []);
+app.controller('ctrl', ['$scope', function($scope) {
+  $scope.name = 'Hello world!';
+}]);
+```
+
+##### 注入调用
+
+* 使用`$injector`注入时调用服务
+
+```html
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>注入调用测试</title>
+  <style type="text/css">
+  .panel {
+    margin-bottom:20px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .panel input {
+    height: 20px;
+    padding: 5px;
+  }
+  .panel button {
+    height: 30px;
+  }
+  .panel .item {
+    margin: 5px;
+    padding: 5px;
+  }
+  </style>
+</head>
+<body>
+  <div class="panel" ng-controller="hiCtrl">
+    <div class="item">
+      名称：<input type="input" ng-model="name">
+    </div>
+    <div class="item">
+      显示：{{name}}
+    </div>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script type="text/javascript">
+  var app = angular.module('app', []);
+  app.factory('hello', function() {
+    return {
+      name: 'Hello World!'
+    };
+  });
+	app.controller('hiCtrl', ['$scope', '$injector', function($scope, $injector) {
+	  console.log($scope);
+	  console.log($injector);
+	  $injector.invoke(function(hello) {// 直接调用服务。
+	    console.log(hello.name);
+	    $scope.name = hello.name
+	  });
+	}]);
+  </script>
+</body>
+</html>
+```
+
+* 使用`$injector`的方法获取函数参数名称
+
+```javascript
+$injector.annotate(function(arg0, arg1){});
+// will output: ["arg0", "arg1"]
+```
+
+* 以下的方式是等效的
+
+```javascript
+var $injector = angular.injector();
+expect($injector.get('$injector').toBe($injector));
+expect($injector.invoke(function($injector) {
+	return $injector;
+})).toBe($injector);
+```
+
+具体可以参考官方关于`angular.injector`的说明。
+
 
 ### AngularJS第三方组件
 

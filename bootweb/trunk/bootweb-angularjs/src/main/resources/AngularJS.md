@@ -988,6 +988,38 @@ link: function (scope, element, attr, ctrl) {
 </html>
 ```
 
+#### `compile`
+
+```javascript
+var app = angular.module('myApp', []);
+app.directive('manyHello', function() {
+  return {
+  	restrict: 'A',
+  	compile: function(element, attrs, transclude) {
+  		console.log('开始指令编译');
+  		var tpl = element.children().clone();
+  		for (var i = 0; i < attrs.numofhello - 1; i++) {
+  			element.append(tpl);
+  		}
+  		return function(scope, element, attrs, controller) {
+        console.log('指令连接');
+  		}
+  	},
+  	link: function() {
+  		// 该函数是不会执行的。
+  		// 同时有compile和link，link函数是不会执行的。
+  	}
+  };
+});
+```
+
+* compile函数的作用是对指令的模板进行转换。
+* link的作用是在模型和视图之间建立关联，包括在元素上注册事件监听。
+* scope在链接阶段才会被绑定到元素上，因此compile阶段操作scope会报错。
+* 对于同一个指令的多个实例，compile只会执行一次；而link对于指令的每个实例都会执行一次。
+* 一般情况下只要编写link函数就可以了。
+* 请注意，如果编写的自定义的compile函数，自定义的link函数无效，因为compile函数应该返回一个link函数供后续处理。
+
 #### 自定义指令总结
 
 ```javascript
@@ -1375,6 +1407,7 @@ function update($scope, $timeout) {
 </body>
 </html>
 ```
+
 * 目录结构
 * app
   - css
@@ -1481,6 +1514,182 @@ app.config(['$locationProvider', function($locationProvider) {
 #### ngRoute
 
 * 使用ngRoute进行视图之间的路由
+* 路由功能是由`$routeProvider`服务和`ng-view`搭配实现，`ng-view`相当于提供了页面模板的挂载点，当切换URL进行跳转时，不同的页面模板会放在`ng-view`所在的位置; 然后通过`$routeProvider`配置路由的映射。
+* 一般主要通过两个方法：
+  - `when()`：配置路径和参数;
+  - `otherwise`：配置其他的路径跳转，可以想成default。
+* when的第二个参数：
+  - `controller`：对应路径的控制器函数，或者名称
+  - `controllerAs`：给控制器起个别名
+  - `template`：对应路径的页面模板，会出现在ng-view处,比如`<div>xxxx</div>`
+  - `templateUrl`：对应模板的路径，比如`src/xxx.html`
+  - `resolve`：该属性会以键值对对象的形式，给路由相关的控制器绑定服务或者值。然后把执行的结果值或者对应的服务引用，注入到控制器中。如果resolve中是一个promise对象，那么会等它执行成功后，才注入到控制器中，此时控制器会等待resolve中的执行结果。
+  - `redirectTo`：重定向地址
+  - `reloadOnSearch`：设置是否在只有地址改变时，才加载对应的模板;search和params改变都不会加载模板
+  - `caseInsensitiveMatch`：路径区分大小写
+* 路由有几个常用的事件：
+  - `$routeChangeStart`：这个事件会在路由跳转前触发
+  - `$routeChangeSuccess`：这个事件在路由跳转成功后触发
+  - `$routeChangeError`：这个事件在路由跳转失败后触发
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ngRoute & ng-view示例</title>
+</head>
+<body ng-app="myApp">
+  <div>
+    <ul>
+      <li><a href="#!/">Home</a></li>
+      <li><a href="#!/cats">cats</a></li>
+    </ul>
+  </div>
+  <div ng-view></div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script src="/webjars/angularjs/angular-route.min.js"></script>
+  <script type="text/javascript">
+  var app = angular.module('myApp', ['ngRoute']);
+	app.controller('RootCtrl', ['$scope', function($scope) {
+	  $scope.title = "Home Page";
+	}]);
+	app.controller('CatsCtrl', ['$scope', function($scope) {
+    $scope.title = "Cats Page";
+	}]);
+	app.config(['$routeProvider', function($routeProvider) {
+    $routeProvider
+      .when('/', {
+        controller : 'RootCtrl',
+        template : '<h1>{{title}}</h1>'
+      }) //
+      .when('/cats', {
+        controller : 'CatsCtrl',
+        template : '<h1>{{title}}</h1>'
+      }) //
+      .otherwise({
+        redirectTo : '/'
+      });
+	}]);
+  </script>
+</body>
+</html>
+```
+
+```html
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>ngRoute & ng-view示例</title>
+  <style type="text/css">
+  div.green {
+  	height: 20px;
+  	width: 100%;
+  	background-color: green;
+  }
+  div.blue {
+  	height: 20px;
+  	width: 100%;
+  	background-color: blue;
+  }
+  </style>
+</head>
+<body>
+  <div ng-controller="myCtrl">
+    <ul>
+      <li><a href="#/a">click a</a></li>
+      <li><a href="#/b">click b</a></li>
+    </ul>
+    <ng-view></ng-view>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script src="/webjars/angularjs/angular-route.min.js"></script>
+  <script type="text/javascript">
+    angular.module("myApp", ["ngRoute"]) //
+    .config(function($routeProvider, $locationProvider) {
+      $routeProvider //
+      .when('/a', {
+        templateUrl: 'a.html',
+        controller: 'aCtrl'
+      }) //
+      .when('/b', {
+        template: '<div ng-controller="bCtrl" class="blue">B {{hello}}</div>',
+        controller: 'bCtrl',
+        resolve: {
+          // I will cause a 3 second delay
+          delay: function($q, $timeout) {
+            var delay = $q.defer();
+            $timeout(delay.resolve, 300);
+            return delay.promise;
+          }
+        }
+      }) //
+      .otherwise({
+        redirectTo: '/a'
+      });
+      $locationProvider.hashPrefix("");
+    }) //
+    .controller("aCtrl", function($scope) {
+      $scope.hello = "hello,a!";
+      console.log('A controller');
+    }) //
+    .controller("bCtrl", function($scope) {
+      $scope.hello = "hello,b!";
+      console.log('B controller');
+    }) //
+    .controller("myCtrl", function($scope, $location) {
+      $scope.$on("$viewContentLoaded", function() {
+        console.log("ng-view content loaded!");
+      }); //
+      $scope.$on("$routeChangeStart", function(event, next, current) {
+        //event.preventDefault(); //cancel url change
+        console.log("route change start!");
+        console.log("next: " + next);
+        console.log("current: " + current);
+      }); //
+    });
+  </script>
+</body>
+</html>
+```
+
+* a.html
+
+```html
+<div ng-controller="aCtrl" class="green">A {{hello}}</div>
+```
+
+#### `ng-view` & `$route`默认值变更
+
+* The $location service is designed to support hash prefixed URLs
+for cases where the browser does not support HTML5 push-state navigation.
+
+* The Google Ajax Crawling Scheme expects that local paths within a SPA start with a hash-bang (e.g. somedomain.com/base/path/#!/client/side/path).
+
+* The $locationProvide allows the application developer to configure the hashPrefix, and it is normal to set this to a bang '!', but the default has always been the empty string ''.
+
+* This has caused some confusion where a user is not aware of this feature and wonders why adding a hash value to the location (e.g. $location.hash('xxx')) results in a double hash: ##xxx.
+
+* This commit changes the default value of the prefix to '!', which is more natural and expected.
+
+* See https://developers.google.com/webmasters/ajax-crawling/docs/getting-started
+
+Closes #13812
+
+BREAKING CHANGE
+
+* The hash-prefix for $location hash-bang URLs has changed from the empty string "" to the bang "!". If your application does not use HTML5 mode or is being run on browsers that do not support HTML5 mode, and you have not specified your own hash-prefix then client side URLs will now contain a "!" prefix. For example, rather than mydomain.com/#/a/b/c will become mydomain/#!/a/b/c.
+
+* If you actually wanted to have no hash-prefix then you should configure this by adding a configuration block to you application:
+
+```
+appModule.config(['$locationProvider', function($locationProvider) {
+  $locationProvider.hashPrefix("");
+}]);
+```
+
+* [Reference]()https://github.com/angular/angular.js/pull/14202
 
 #### UI-Route
 
@@ -1601,6 +1810,9 @@ app.controller('myCtrl', function($scope,myProvider) {
 
 ### Factory
 
+* 在service里面当我们仅仅需要的是一个方法和数据的集合且不需要处理复杂的逻辑的时候，factory()是一个非常不错的选择。
+  - 注意：需要使用.config()来配置service的时候不能使用factory()方法。
+* angular里的service是一个单例对象，在应用生命周期结束的时候（关闭浏览器）才会被清除。而controllers在不需要的时候就会被销毁了。
 * 创建factory，作用就是返回一个有属性有方法的对象。相当于：`var f = myFactory();`
 
 ```javascript
@@ -1636,6 +1848,9 @@ app.controller('myCtrl', ['$scope', 'myFactory', function($scope, myFactory) {
 * 自定义的Service需要写在内置的Service后面。
 * 内置Service的命名以$符号开头，自定义Service应该避免。
 * Service、Provider、Factory本质上都是Provider。
+* service()方法很适合使用在功能控制比较多的service里面，它是一个可注入的构造器，在AngularJS中它是单例的，用它在Controller中通信或者共享数据都很合适。
+  - 在service里面可以不用返回东西，因为AngularJS会调用new关键字来创建对象。但是返回一个自定义对象也不会出错。
+  - 注意：需要使用.config()来配置service的时候不能使用service()方法。
 * 定义Service：通过service方式创建自定义服务，相当于new的一个对象：`var s = new myService();`，只要把属性和方法添加到this上才可以在controller里调用。
 
 ```javascript
@@ -1695,6 +1910,63 @@ app.controller('myCtrl', function($scope, $interval) {
 });
 ```
 
+### `constant` & `value`
+
+* AngularJS可以通过`constant(name, value)`和`value(name, value)`创建服务。
+  - 相同点是：都可以接受两个参数，name和value。
+  - 不同点是：
+    + 1. value不可以在config里注入，但是constant可以。
+    + 2. value可以修改，但是constant不可以修改，一般直接用constant配置一些需要经常使用的数据。
+
+#### `constant(name, value)`
+
+* `constant(name, value)`可以将一个已经存在的变量值注册为服务，并将其注入到应用的其他部分中。其中，name为注册的常量的名字，value为注册的常量的值或对象。
+
+```javascript
+angular.module('myApp') //
+.constant('apiKey', '123123123') //
+.controller('myController', function($scope, apiKey) {
+  // 可以像上面一样用apiKey作为常量
+  // 用123123123作为字符串的值
+  $scope.apiKey = apiKey;
+});
+
+angular.module('myApp') //
+.constant('apiKey', {name:[], age:[], date:[]}) //
+.factory('myFactory', function(apiKey, $scope) {
+  apiKey.name = "名称测试";
+});
+```
+
+#### `value(name, value)`
+
+* `value(name, value)`的name同样是需要注册的服务名,value将这个值将作为可以注入的实例返回。
+
+```javascript
+angular.module('myApp').value('apiKey', '123123123');
+```
+
+#### `constant` & `value`区别
+
+* 最大的区别是：常量`constant`可以注入到配置函数中，而值`value`不行。
+* 通常情况下，可以通过`value()`来注册服务对象或函数，用`constant()`来配置数据。
+
+```javascript
+angular.module('myApp', []) //
+.constant('apiKey', '123123123') //
+.config(function(apiKey) {
+  // 在这里apiKey将被赋值为123123123
+  // 就像上面设置的那样
+})
+.value('FBid','231231231') //
+.config(function(FBid) {
+  // 这将抛出一个错误，未知的provider: FBid
+  // 因为在config函数内部无法访问这个值
+});
+```
+* 当想要创建一个服务，并且这个服务只需要返回数据时，就可以使用constant(name, value)和value(name,value)，不过，它们有两个显著的区别：
+  - 1.value不可以在config里注入，但是constant可以。
+  - 2.value可以修改，但是constant不可以修改，一般直接用constant配置一些需要经常使用的数据。
 
 ### 使用`$filter`服务
 
@@ -1998,6 +2270,10 @@ app.controller('ctrl', ['$scope', function($scope) {
 	    console.log(hello.name);
 	    $scope.name = hello.name
 	  });
+	  // 可以使用$injector获取服务
+	  // $injector.get('serviceName');
+	  // 可以使用$injector判断属性
+	  // $injector.has('property');
 	}]);
   </script>
 </body>
@@ -2023,9 +2299,9 @@ expect($injector.invoke(function($injector) {
 
 具体可以参考官方关于`angular.injector`的说明。
 
-
 ### AngularJS第三方组件
 
 [Kissy Gallery]，[angular-ui]
 
-
+* 知道了一个东西的优点，你只是入门了。
+* 理解了一个东西的缺点，说明你精通了。

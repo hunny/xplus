@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>ngRoute & ng-view示例</title>
+  <style type="text/css">
+  div.green {
+  	height: 20px;
+  	width: 100%;
+  	background-color: green;
+  }
+  div.blue {
+  	height: 20px;
+  	width: 100%;
+  	background-color: blue;
+  }
+  </style>
+</head>
+<body>
+  <div ng-controller="myCtrl">
+    <ul>
+      <li><a href="#/a">click a</a></li>
+      <li><a href="#/b">click b</a></li>
+    </ul>
+    <ng-view></ng-view>
+  </div>
+  <script src="/webjars/angularjs/angular.min.js"></script>
+  <script src="/webjars/angularjs/angular-route.min.js"></script>
+  <script type="text/javascript">
+    angular.module("myApp", ["ngRoute"]) //
+    .config(function($routeProvider, $locationProvider) {
+      $routeProvider //
+      .when('/a', {
+        templateUrl: 'a.html',
+        controller: 'aCtrl'
+      }) //
+      .when('/b', {
+        template: '<div ng-controller="bCtrl" class="blue">B {{hello}}</div>',
+        controller: 'bCtrl',
+        resolve: {
+          // I will cause a 3 second delay
+          delay: function($q, $timeout) {
+            var delay = $q.defer();
+            $timeout(delay.resolve, 300);
+            return delay.promise;
+          }
+        }
+      }) //
+      .otherwise({
+        redirectTo: '/a'
+      });
+      $locationProvider.hashPrefix("");
+    }) //
+    .controller("aCtrl", function($scope) {
+      $scope.hello = "hello,a!";
+      console.log('A controller');
+    }) //
+    .controller("bCtrl", function($scope) {
+      $scope.hello = "hello,b!";
+      console.log('B controller');
+    }) //
+    .controller("myCtrl", function($scope, $location) {
+      $scope.$on("$viewContentLoaded", function() {
+        console.log("ng-view content loaded!");
+      }); //
+      $scope.$on("$routeChangeStart", function(event, next, current) {
+        //event.preventDefault(); //cancel url change
+        console.log("route change start!");
+        console.log("next: " + next);
+        console.log("current: " + current);
+      }); //
+    });
+  </script>
+</body>
+</html>

@@ -45,16 +45,18 @@ app.service('linktoggle', function() {
 });
 
 app.service('codecss', function() {
-  this.link = function(param) {
-    return angular.element('<a href="/markdwon/test?html=' //
+  this.link = function(param, contextPath) {
+    return angular.element('<a href="' //
+            + contextPath //
+            + '/markdwon/test?html=' //
             + encodeURIComponent(param) //
             + '" target="_blank">测试一下</a>');
   };
-  this.add = function(elements) {
+  this.add = function(elements, contextPath) {
     var current = this;
     elements.each(function() {
       if (angular.element(this).hasClass('language-html')) {
-        angular.element(this).parent().after(current.link(this.innerHTML));
+        angular.element(this).parent().after(current.link(this.innerHTML, contextPath));
       }
       // Prism framework to highlight element.
       Prism.highlightElement(this, true);
@@ -67,7 +69,7 @@ app.service('catalog', function() {
     var html = '<div class="panel panel-default">';
     html += '  <div class="panel-heading" onclick="$(this).next(\'.panel-body\').toggle();">目录</div>';
     html += '  <div class="panel-body">';
-    html += '    <div class="catalog" style="height:300px;overflow:scroll;">';
+    html += '    <div class="catalog">';
     var hs = angular.element('h1, h2, h3, h4, h5, h6');
     hs.each(function() {
       var cur = angular.element(this);
@@ -87,7 +89,7 @@ app.service('catalog', function() {
 
 app.controller('appController', ['$scope', function($scope) {
   $scope.http = {
-    url: '/md/html?_=' + new Date().getTime() + '&filePath=' + $scope.file
+    url: $scope.init.contextPath + '/md/html?_=' + new Date().getTime() + '&filePath=' + $scope.init.file
   };
 }]);
 
@@ -106,7 +108,7 @@ app.directive('render', ['$http', 'linktoggle', 'codecss', 'catalog', //
           url: scope.src
         }).then(function success(response) {
           element.html(response.data.html); // Render content.
-          codecss.add(element.find('code[class*="language-"]')); // Render code css.
+          codecss.add(element.find('code[class*="language-"]'), attrs.contextpath); // Render code css.
           linktoggle.add(angular.element('h1, h2, h3, h4, h5, h6'));// Render action.
           angular.element('.dashboard_catalog').html(catalog.make());// Render catalog.
         }, function error(response) {

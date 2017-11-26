@@ -5,12 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Markdown</title>
-  <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/assets/css/github-markdown.css">
-  <link rel="stylesheet" href="/assets/css/prism.css" />
-  <link rel="stylesheet" href="/assets/markdown/css/my.css" />
+  <link rel="stylesheet" href="${request.contextPath}/webjars/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="${request.contextPath}/assets/css/github-markdown.css">
+  <link rel="stylesheet" href="${request.contextPath}/assets/css/prism.css" />
+  <link rel="stylesheet" href="${request.contextPath}/assets/markdown/css/my.css" />
 </head>
-<body ng-app="app" ng-init="file='${request.requestURI}'">
+<body ng-app="app" ng-init="init={file:'${request.servletPath}',contextPath:'${request.contextPath}'}">
   <nav class="navbar navbar-fixed-top">
     <div class="container-fluid">
       <div id="navbar" class="navbar-collapse collapse">
@@ -21,11 +21,11 @@
     </div>
   </nav>
   <div class="container" ng-controller="appController">
-    <render src="http.url">页面加载中</render>
+    <render src="http.url" contextPath="${request.contextPath}">页面加载中</render>
   </div>
-  <script src="/webjars/jquery/jquery.min.js"></script>
-  <script src="/webjars/angularjs/angular.min.js"></script>
-  <script src="/assets/markdown/js/markdown.js"></script>
-  <script src="/assets/lib/prism.js" data-manual></script>
+  <script src="${request.contextPath}/webjars/jquery/jquery.min.js"></script>
+  <script src="${request.contextPath}/webjars/angularjs/angular.min.js"></script>
+  <script src="${request.contextPath}/assets/markdown/js/markdown.js"></script>
+  <script src="${request.contextPath}/assets/lib/prism.js" data-manual></script>
 </body>
 </html>

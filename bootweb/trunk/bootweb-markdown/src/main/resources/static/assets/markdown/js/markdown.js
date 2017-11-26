@@ -85,35 +85,34 @@ app.service('catalog', function() {
   };
 });
 
-app.controller('appController', ['$scope', 
-  function($scope) {
-    $scope.http = {
-      url: '/md/html?_=' + new Date().getTime() + '&filePath=' + $scope.file
-    };
+app.controller('appController', ['$scope', function($scope) {
+  $scope.http = {
+    url: '/md/html?_=' + new Date().getTime() + '&filePath=' + $scope.file
+  };
 }]);
 
-app.directive('render', ['$http', 'linktoggle', 'codecss', 'catalog',
-    function($http, linktoggle, codecss, catalog) {
-      return {
-        restrict: 'E',
-        scope: {
-          src: '='
-        },
-        template: '<article class="markdown-body"></article>',
-        replace: true,
-        link: function(scope, element, attrs) {
-          console.log(scope.src);
-          $http({
-            method: 'GET',
-            url: scope.src
-          }).then(function success(response) {
-            element.html(response.data.html);
-            codecss.add(element.find('code[class*="language-"]'));
-            linktoggle.add(angular.element('h1, h2, h3, h4, h5, h6'));
-            angular.element('.dashboard_catalog').html(catalog.make());
-          }, function error(response) {
-            console.log('请求失败');
-          });
-        }
-      };
-    }]);
+app.directive('render', ['$http', 'linktoggle', 'codecss', 'catalog', //
+  function($http, linktoggle, codecss, catalog) {
+    return {
+      restrict: 'E',
+      scope: {
+        src: '='
+      },
+      template: '<article class="markdown-body"></article>',
+      replace: true,
+      link: function(scope, element, attrs) {
+        $http({
+          method: 'GET',
+          url: scope.src
+        }).then(function success(response) {
+          element.html(response.data.html); // Render content.
+          codecss.add(element.find('code[class*="language-"]')); // Render code css.
+          linktoggle.add(angular.element('h1, h2, h3, h4, h5, h6'));// Render action.
+          angular.element('.dashboard_catalog').html(catalog.make());// Render catalog.
+        }, function error(response) {
+          console.log('请求失败');
+        });
+      }
+    };
+  }
+]);

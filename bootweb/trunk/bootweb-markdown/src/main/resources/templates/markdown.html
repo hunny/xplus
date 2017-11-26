@@ -11,6 +11,15 @@
   <link rel="stylesheet" href="/assets/markdown/css/my.css" />
 </head>
 <body ng-app="app" ng-init="file='${request.requestURI}'">
+  <nav class="navbar navbar-fixed-top">
+    <div class="container-fluid">
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dashboard_catalog"></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <div class="container" ng-controller="appController">
     <render src="http.url">页面加载中</render>
   </div>

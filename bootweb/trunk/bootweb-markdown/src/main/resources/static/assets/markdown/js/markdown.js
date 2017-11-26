@@ -65,9 +65,9 @@ app.service('codecss', function() {
 app.service('catalog', function() {
   this.make = function() {
     var html = '<div class="panel panel-default">';
-    html += '  <div class="panel-heading">目录</div>';
+    html += '  <div class="panel-heading" onclick="$(this).next(\'.panel-body\').toggle();">目录</div>';
     html += '  <div class="panel-body">';
-    html += '    <div class="catalog">';
+    html += '    <div class="catalog" style="height:300px;overflow:scroll;">';
     var hs = angular.element('h1, h2, h3, h4, h5, h6');
     hs.each(function() {
       var cur = angular.element(this);
@@ -110,7 +110,7 @@ app.directive('render', ['$http', 'linktoggle', 'codecss', 'catalog',
             element.html(response.data.html);
             codecss.add(element.find('code[class*="language-"]'));
             linktoggle.add(angular.element('h1, h2, h3, h4, h5, h6'));
-            element.children().first().before(catalog.make());
+            angular.element('.dashboard_catalog').html(catalog.make());
           }, function error(response) {
             console.log('请求失败');
           });

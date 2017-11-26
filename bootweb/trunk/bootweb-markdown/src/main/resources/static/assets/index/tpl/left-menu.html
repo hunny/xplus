@@ -1,20 +1,7 @@
 <div>
-  <ul class="nav nav-sidebar">
-    <li class="active"><a href="#tool">Overview</a></li>
-    <li><a href="#tool2">Tool2</a></li>
-    <li><a href="#tool3">Tool3</a></li>
-    <li><a href="#">Export</a></li>
-  </ul>
-  <ul class="nav nav-sidebar">
-    <li><a href="">Nav item</a></li>
-    <li><a href="">Nav item again</a></li>
-    <li><a href="">One more nav</a></li>
-    <li><a href="">Another nav item</a></li>
-    <li><a href="">More navigation</a></li>
-  </ul>
-  <ul class="nav nav-sidebar">
-    <li><a href="">Nav item again</a></li>
-    <li><a href="">One more nav</a></li>
-    <li><a href="">Another nav item</a></li>
+  <ul class="nav nav-sidebar" ng-repeat="arr in items" >
+    <li ng-repeat="item in arr" ng-class="{'active':item.active}">
+      <a href="#{{item.href}}" ng-click="myclick()">{{item.name}}</a>
+    </li>
   </ul>
 </div>

@@ -1,0 +1,28 @@
+.catalog h1, .catalog h2, .catalog h3, .catalog h4, .catalog h5,
+  .catalog h6 {
+  margin: 0px;
+  padding: 0px;
+  font-size: 1em;
+  border: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+}
+.catalog h1 {
+  margin-left: 0px;
+}
+.catalog h2 {
+  margin-left: 10px;
+}
+.catalog h3 {
+  margin-left: 20px;
+}
+.catalog h4 {
+  margin-left: 30px;
+}
+.catalog h5 {
+  margin-left: 40px;
+}
+.catalog h6 {
+  margin-left: 50px;
+}

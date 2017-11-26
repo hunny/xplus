@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<title th:text="${title}">Thymeleaf示例</title>
+<!-- Bootstrap -->
+<link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css' />
+</head>
+<body>
+  <div class="container-fluid" th:utext="${body}"></div>
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript">
+  	$(document).ready(function() {
+  		$('table').addClass("table table-bordered table-striped");
+  	});
+  </script>
+</body>
+</html>

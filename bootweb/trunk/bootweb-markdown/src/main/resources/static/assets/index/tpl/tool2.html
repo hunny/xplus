@@ -1,0 +1,35 @@
+<h2 class="sub-header">开发工具</h2>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">实用网站</div>
+  <div class="panel-body">
+    <p>
+      <a href="http://v3.bootcss.com/css/" target="_blank">全局
+        CSS 样式</a>：设置全局 CSS 样式；基本的 HTML 元素均可以通过 class
+      设置样式并得到增强效果；还有先进的栅格系统。
+    </p>
+    <p>
+      <a href="http://v3.bootcss.com/components/"
+        target="_blank">组件</a>：无数可复用的组件，包括字体图标、下拉菜单、导航、警告框、弹出框等更多功能。
+    </p>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>标题</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="dashboard, stat : ${data?.list}">
+          <td th:text="${stat.index + 1}">&nbsp;</td>
+          <td><a th:href="${dashboard.url}" target="_blank"
+            th:text="${dashboard.text}"></a></td>
+          <td th:text="${dashboard.desc}">&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

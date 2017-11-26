@@ -1,0 +1,37 @@
+<h2 class="page-header">Markdown</h2>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">实用网站</div>
+  <div class="panel-body">
+    <div>
+      <form class="form-inline">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-addon">文件</div>
+            <input type="text" class="form-control"
+              name="markdown" placeholder="输入markdown文件地址" /> <a
+              class="input-group-addon openmdurl" role="button">
+              <span class="glyphicon glyphicon-log-in"
+              aria-hidden="true"></span><span>查看</span>
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div style="margin-top:10px;margin-bottom:10px;">
+      <form class="form-inline" method="POST" enctype="multipart/form-data" action="/upload" target="_blank">
+        <div class="form-group">
+          <input type="file" class="filestyle" name="file" value="" 
+          data-buttonName="btn-primary" data-buttonText="Find file"/>
+        </div>
+        <button type="submit" class="btn btn-default">查看</button>
+      </form>
+    </div>
+
+    <p>
+      <a href="http://v3.bootcss.com/components/"
+        target="_blank">组件</a>：无数可复用的组件，包括字体图标、下拉菜单、导航、警告框、弹出框等更多功能。
+    </p>
+  </div>
+</div>

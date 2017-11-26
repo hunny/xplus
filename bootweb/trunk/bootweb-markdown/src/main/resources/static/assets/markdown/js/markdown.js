@@ -64,8 +64,12 @@ app.service('codecss', function() {
 
 app.service('catalog', function() {
   this.make = function() {
-    var html = '<div class="catalog">';
-    angular.element('h1, h2, h3, h4, h5, h6').each(function() {
+    var html = '<div class="panel panel-default">';
+    html += '  <div class="panel-heading">目录</div>';
+    html += '  <div class="panel-body">';
+    html += '    <div class="catalog">';
+    var hs = angular.element('h1, h2, h3, h4, h5, h6');
+    hs.each(function() {
       var cur = angular.element(this);
       var id = cur.attr('id');
       if (id) {
@@ -74,6 +78,8 @@ app.service('catalog', function() {
         html += '</' + this.tagName + '>';
       }
     });
+    html += '    </div>';
+    html += '  </div>';
     html += '</div>';
     return html;
   };

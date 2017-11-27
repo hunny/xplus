@@ -71,10 +71,9 @@ app.directive('leftMenu', function() {
         }
       }); //
       $scope.$on("$routeChangeStart", function(event, next, current) {
-        //event.preventDefault(); //cancel url change
-        console.log("route change start!");
+        // event.preventDefault(); //cancel url change
         console.log("next: " + JSON.stringify(next));
-        console.log("current: " + current);
+        // console.log("current: " + current);
       }); //
     }]
   };

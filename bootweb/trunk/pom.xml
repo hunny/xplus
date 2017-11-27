@@ -38,6 +38,7 @@
     <module>bootweb-jaxrs</module>
     <module>bootweb-pg</module>
     <module>bootweb-tpl</module>
+    <module>bootweb-websocket</module>
   </modules>
 
   <dependencyManagement>

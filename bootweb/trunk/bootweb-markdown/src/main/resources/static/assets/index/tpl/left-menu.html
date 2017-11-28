@@ -1,7 +1,6 @@
 <div class="left-menu">
   <ul class="nav nav-sidebar list-group" ng-repeat="arr in items" >
-    <li class="list-group-item disabled">菜单名称</li>
-    <li ng-repeat="item in arr" ng-class="{'active':item.active}" class="list-group-item">
+    <li ng-repeat="item in arr" ng-class="{'active':item.active, 'disabled':item.group}" class="list-group-item">
       <a href="#{{item.href}}" ng-click="myclick()">{{item.name}}</a>
     </li>
   </ul>

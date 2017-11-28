@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +48,14 @@ public class MarkdownController {
     }
     result.put("html", markdownService.markdownToHtml(inputStream));
     return result;
+  }
+  
+  @RequestMapping(value = "/file/list", method = RequestMethod.GET)
+  public List<String> list(@RequestParam(name = "path", required = false) String path) {
+    if (StringUtils.isBlank(path)) {
+      return Collections.emptyList();
+    }
+    return markdownService.list(path, true);
   }
 
 }

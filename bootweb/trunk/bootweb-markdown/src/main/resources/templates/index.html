@@ -23,7 +23,7 @@
       <script th:src="@{/assets/lib/respond.js/1.4.2/respond.min.js}"></script>
     <![endif]-->
 </head>
-<body ng-app="app">
+<body ng-app="app" ng-init="constant={contextPath:'${request.contextPath}'}">
   <nav-view></nav-view>
   <div class="container-fluid">
     <div class="row">
@@ -38,6 +38,9 @@
   <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
   <script th:src="@{/webjars/angularjs/angular.min.js}"></script>
   <script th:src="@{/webjars/angularjs/angular-route.min.js}"></script>
+  <script th:src="@{/assets/index/index.config.js}"></script>
+  <script th:src="@{/assets/index/index.directive.js}"></script>
+  <script th:src="@{/assets/index/index.controller.js}"></script>
   <script th:src="@{/assets/index/index.js}"></script>
 </body>
 </html>

@@ -1,0 +1,47 @@
+<h2 class="page-header">Markdown文件</h2>
+<div class="panel panel-default">
+  <div class="panel-heading">说明</div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <form class="form-inline">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">文件路径</div>
+              <input type="text" class="form-control"
+                name="markdown" ng-model="path" placeholder="输入markdown文件路径" /> 
+              <a class="input-group-addon openmdurl" role="button" ng-click="list()">
+                <span class="glyphicon glyphicon-log-in"
+                aria-hidden="true"></span><span style="margin-left:10px;">查看</span>
+              </a>
+            </div>
+          </div>
+        </form>
+      </li>
+      <li class="list-group-item">
+        <a href="http://v3.bootcss.com/components/"
+            target="_blank">组件</a>：无数可复用的组件，包括字体图标、下拉菜单、导航、警告框、弹出框等更多功能。
+      </li>
+      <li class="list-group-item">
+        <a href="http://v3.bootcss.com/css/"
+            target="_blank">全局CSS样式</a>：设置全局 CSS 样式；基本的 HTML 元素均可以通过 class 设置样式并得到增强效果；还有先进的栅格系统。
+      </li>
+    </ul>
+  </div>
+  <div class="table-responsive" ng-show="showTable">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>地址</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in items">
+          <td>{{$index + 1}}</td>
+          <td><a href="{{item}}" target="_blank">{{item}}</a></td>
+         </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

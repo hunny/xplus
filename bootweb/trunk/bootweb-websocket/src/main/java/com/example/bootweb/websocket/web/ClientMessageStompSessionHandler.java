@@ -1,6 +1,7 @@
 package com.example.bootweb.websocket.web;
 
 import java.lang.reflect.Type;
+import java.util.concurrent.CountDownLatch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,11 @@ public class ClientMessageStompSessionHandler implements StompSessionHandler {
   
   private ObjectMapper objectMapper;
   
-  public ClientMessageStompSessionHandler() {
+  private CountDownLatch latch;
+  
+  public ClientMessageStompSessionHandler(CountDownLatch latch) {
     objectMapper = objectMapper();
+    this.latch = latch;
   }
   
   public ObjectMapper objectMapper() {
@@ -34,9 +38,10 @@ public class ClientMessageStompSessionHandler implements StompSessionHandler {
   
   @Override
   public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-    session.subscribe("/topic/clientService", new ClientMessageStompFrameHandler());
 //    session.send("/app/hello", "{\"name\":\"Client\"}".getBytes());
-
+    //
+    session.setAutoReceipt(true);
+    session.subscribe("/topic/clientService", new ClientMessageStompFrameHandler(this.latch));
     try {
       log.info("New session: {}", session.getSessionId());
       log.info("connectedHeaders: {}", objectMapper.writeValueAsString(connectedHeaders));
@@ -62,7 +67,7 @@ public class ClientMessageStompSessionHandler implements StompSessionHandler {
     log.info("Received: {}, Type: {}", payload, payload.getClass().getName());
     try {
       log.info("handleFrame headers {}, payload {}", //
-          objectMapper.writeValueAsString(headers),
+          objectMapper.writeValueAsString(headers), //
           objectMapper.writeValueAsString(payload));
     } catch (JsonProcessingException e) {
       e.printStackTrace();

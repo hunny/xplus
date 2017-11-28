@@ -1,6 +1,7 @@
 package com.example.bootweb.websocket.web;
 
 import java.lang.reflect.Type;
+import java.util.concurrent.CountDownLatch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,12 @@ public class ClientMessageStompFrameHandler implements StompFrameHandler {
   private final Logger logger = LoggerFactory.getLogger(getClass());
   
   private ObjectMapper objectMapper;
+  private CountDownLatch latch;
+  private int num = 0;
   
-  public ClientMessageStompFrameHandler() {
+  public ClientMessageStompFrameHandler(CountDownLatch latch) {
     objectMapper = objectMapper();
+    this.latch = latch;
   }
   
   public ObjectMapper objectMapper() {
@@ -44,9 +48,14 @@ public class ClientMessageStompFrameHandler implements StompFrameHandler {
   @Override
   public void handleFrame(StompHeaders headers, Object payload) {
     try {
-      logger.info("handleFrame headers {}, payload {}", //
-          objectMapper.writeValueAsString(headers),
+      logger.info("{}. handleFrame headers {}, payload {}", //
+          num, //
+          objectMapper.writeValueAsString(headers), //
           objectMapper.writeValueAsString(payload));
+      num ++;
+      if (num > 10) {
+        this.latch.countDown();
+      };
     } catch (JsonProcessingException e) {
       e.printStackTrace();
       logger.error(e.getMessage());

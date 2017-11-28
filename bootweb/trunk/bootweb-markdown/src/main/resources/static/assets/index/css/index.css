@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+.nav-sidebar>.active>a, .nav-sidebar>.active>a:hover, .nav-sidebar>.active>a:focus
+  {
+  background-color: #337ab7;
+  border-color: #337ab7;
+}
+
+.nav-sidebar>li>a {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.nav-sidebar>li>a {
+  padding: 2px 4px;
+}
+
+.nav-sidebar>li:hover {
+  background-color: transparent;
+}
+
+.nav-sidebar>li>a:hover {
+  background-color: transparent;
+}
+.left-menu {
+  margin-top:-20px;
+}

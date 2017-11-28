@@ -10,11 +10,11 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
-import com.example.bootweb.websocket.profile.SimpleMessageWebSocketDemo;
+import com.example.bootweb.websocket.profile.WebSocketClientDemo;
 
 @Controller
-@SimpleMessageWebSocketDemo
-public class SimpleMessageController {
+@WebSocketClientDemo
+public class ClientMessageController {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -22,12 +22,10 @@ public class SimpleMessageController {
   private SimpMessagingTemplate simpMessagingTemplate;
 
   @Scheduled(fixedDelay = 1000)
-  // @SendTo("/topic/updateService")
-  public String send() {
+  public void sendClientMessage() {
     String message = "Hello, " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     logger.info(message);
-    simpMessagingTemplate.convertAndSend("/topic/updateService", message);
-    return message;
+    simpMessagingTemplate.convertAndSend("/topic/clientService", new ClientMessage(message));
   }
 
 }

@@ -8,16 +8,25 @@ import java.util.regex.Pattern;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.SparkSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import com.springboot.spark.starter.runner.official.profile.WordCountProfile;
 
 import scala.Tuple2;
 
+@Component
+@WordCountProfile
 public class WordCountRunner implements CommandLineRunner, Serializable {
 
   private static final long serialVersionUID = -1240166366466641399L;
 
   private static final Pattern SPACE = Pattern.compile(" ");
 
+  @Autowired
+  private SparkSession spark;
+  
   @Override
   public void run(String... args) throws Exception {
     if (args.length < 1) {
@@ -25,7 +34,7 @@ public class WordCountRunner implements CommandLineRunner, Serializable {
       System.exit(1);
     }
 
-    SparkSession spark = SparkSession.builder().appName("JavaWordCount").getOrCreate();
+//    SparkSession spark = SparkSession.builder().appName("JavaWordCount").getOrCreate();
 
     JavaRDD<String> lines = spark.read().textFile(args[0]).javaRDD();
 
@@ -40,6 +49,7 @@ public class WordCountRunner implements CommandLineRunner, Serializable {
       System.out.println(tuple._1() + ": " + tuple._2());
     }
     spark.stop();
+    System.exit(0);
   }
 
 }

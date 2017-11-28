@@ -36,7 +36,7 @@
 <script type="text/javascript">
 var stompClient = null;
 function connect() {
-    var socket = new SockJS("/my-websocket");// http://localhost:8443/ws
+    var socket = new SockJS("/my-websocket");// http://localhost:8080/my-websocket
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
 		setConnected(true);

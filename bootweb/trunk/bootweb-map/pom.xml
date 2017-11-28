@@ -9,10 +9,11 @@
     <version>0.0.1-SHAPSHOT</version>
   </parent>
   <artifactId>bootweb-map</artifactId>
+  <packaging>jar</packaging>
   <name>bootweb-map</name>
   <description>地图</description>
   <url>http://maven.apache.org</url>
-  
+
   <dependencies>
     <dependency>
       <groupId>com.example.bootweb.swagger</groupId>
@@ -45,4 +46,14 @@
       <artifactId>webjars-locator</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

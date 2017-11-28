@@ -6,6 +6,7 @@
 
   <groupId>com.example.bootweb.swagger</groupId>
   <artifactId>spring-boot-starter-swagger</artifactId>
+  <packaging>jar</packaging>
   <version>0.0.1-SHAPSHOT</version>
   <name>bootweb-swagger</name>
   <url>http://maven.apache.org</url>
@@ -80,6 +81,18 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

@@ -9,6 +9,7 @@
     <version>0.0.1-SHAPSHOT</version>
   </parent>
   <artifactId>bootweb-server</artifactId>
+  <packaging>jar</packaging>
   <name>bootweb-server</name>
   <url>http://maven.apache.org</url>
 
@@ -41,5 +42,14 @@
       <artifactId>webjars-locator</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

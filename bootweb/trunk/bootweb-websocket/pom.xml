@@ -9,6 +9,7 @@
     <version>0.0.1-SHAPSHOT</version>
   </parent>
   <artifactId>bootweb-websocket</artifactId>
+  <packaging>jar</packaging>
   <name>bootweb-websocket</name>
   <description>Booweb template project</description>
   <url>http://maven.apache.org</url>
@@ -44,5 +45,14 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

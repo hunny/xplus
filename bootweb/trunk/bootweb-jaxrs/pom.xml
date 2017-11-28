@@ -9,6 +9,7 @@
     <version>0.0.1-SHAPSHOT</version>
   </parent>
   <artifactId>bootweb-jaxrs</artifactId>
+  <packaging>jar</packaging>
   <name>bootweb-jaxrs</name>
   <url>http://maven.apache.org</url>
 
@@ -24,5 +25,14 @@
       <artifactId>spring-boot-starter-jersey</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

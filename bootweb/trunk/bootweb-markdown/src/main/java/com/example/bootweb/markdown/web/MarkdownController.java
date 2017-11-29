@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,11 +52,17 @@ public class MarkdownController {
   }
   
   @RequestMapping(value = "/file/list", method = RequestMethod.GET)
-  public List<String> list(@RequestParam(name = "path", required = false) String path) {
+  public List<FileBean> list(@RequestParam(name = "path", required = false) String path) {
     if (StringUtils.isBlank(path)) {
       return Collections.emptyList();
     }
-    return markdownService.list(path, true);
+    List<FileBean> result = new ArrayList<>();
+    List<String> list = markdownService.list(path, true);
+    for (String str : list) {
+      File file = new File(str);
+      result.add(new FileBean(file.getName(), file.getAbsolutePath()));
+    }
+    return result;
   }
 
 }

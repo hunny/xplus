@@ -33,14 +33,14 @@
       <thead>
         <tr>
           <th>序号</th>
-          <th>地址</th>
+          <th>文件名称</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="item in items">
           <td>{{$index + 1}}</td>
-          <td><a href="{{item}}" target="_blank">{{item}}</a></td>
-         </tr>
+          <td title="{{item.path}}"><a href="{{item.path}}" target="_blank">{{item.name}}</a></td>
+        </tr>
       </tbody>
     </table>
   </div>

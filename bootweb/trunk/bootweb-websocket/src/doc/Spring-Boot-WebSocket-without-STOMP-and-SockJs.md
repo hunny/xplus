@@ -140,4 +140,48 @@ This is it for server side.
 
 ### Implemention of client side in javascript
 
+```javascript
+var ws = null;
+function connect() {
+	ws = new WebSocket('ws://localhost:8080/name');
+	ws.onmessage = function(data){
+		showMessage(data.data);
+	}
+	setConnected(true);
+}
+function disconnect() {
+    if (ws != null) {
+        ws.close();
+    }
+    setConnected(false);
+    console.log("Disconnected");
+}
 
+function setConnected(connected) {
+	$("#connect").prop("disabled", connected);
+	$("#disconnect").prop("disabled", !connected);
+}
+
+function showMessage(message) {
+    $("#server-msg").append('<li class="list-group-item">' + message + '</li>');
+}
+
+function sendName() {
+    ws.send($("#name").val());
+}
+
+$(function() {
+	$("form").on('submit', function(e) {
+		e.preventDefault();
+	});
+	$("#connect").click(function() {
+		connect();
+	});
+	$("#disconnect").click(function() {
+		disconnect();
+	});
+	$("#send").click(function() {
+		sendName();
+	});
+});
+```

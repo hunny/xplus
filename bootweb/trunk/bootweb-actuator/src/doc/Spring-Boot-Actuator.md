@@ -54,6 +54,54 @@ endpoints.info.sensitive=false
 
 If you're interested, [here are the code and configurations](http://www.devglan.com/spring-boot/spring-boot-actuator-rest-endpoints-example/#/customizing-actuator-endpoints) for customization of actuator endpoints.
 
+## Custom Endpoint Implementation
+
+Apart from the above default endpoints exposed by spring boot, We can write our own endpoints by implementing the interface Endpoint. This is useful when you want to expose application details which are an added feature to your application. For example, in this example I have created a custom endpoint to display the server details for the application.
+
+The implementation class would looks like this:
+
+```java
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.boot.actuate.endpoint.Endpoint;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ServerEndpoint implements Endpoint<List<String>> {
+  
+  public String getId() {
+    return "server";
+  }
+
+  public List<String> invoke() {
+    List<String> serverDetails = new ArrayList<String>();
+    try {
+      serverDetails.add("Server IP Address : " + InetAddress.getLocalHost().getHostAddress());
+      serverDetails.add("Server OS : " + System.getProperty("os.name").toLowerCase());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return serverDetails;
+  }
+
+  public boolean isEnabled() {
+    return true;
+  }
+
+  public boolean isSensitive() {
+    return false;
+  }
+}
+```
+
+Here’s what the output might look like:
+
+```
+  ["Server IP Address : 192.168.1.164","Server OS : Mac OS X"]
+```
+
 ## Securing Actuator Endpoints
 
 As we saw, there are only two endpoints, health and info, that are by default not sensitive. But other endpoints, like loggers and beans, that are sensitive and hence require authorization to access. To access these sensitive endpoints, you can either disable the sensitivity or secure it using Spring Security.

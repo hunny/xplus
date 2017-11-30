@@ -60,7 +60,11 @@ public class MarkdownController {
     List<String> list = markdownService.list(path, true);
     for (String str : list) {
       File file = new File(str);
-      result.add(new FileBean(file.getName(), file.getAbsolutePath()));
+      String p = file.getAbsolutePath().replaceAll("\\\\", "/");
+      if (!p.startsWith("/")) {
+        p = "/" + p;
+      }
+      result.add(new FileBean(file.getName(), p));
     }
     return result;
   }

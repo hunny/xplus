@@ -45,6 +45,7 @@
     <module>bootweb-tpl</module>
     <module>bootweb-websocket</module>
     <module>bootweb-actuator</module>
+    <module>bootweb-security</module>
   </modules>
 
   <dependencyManagement>

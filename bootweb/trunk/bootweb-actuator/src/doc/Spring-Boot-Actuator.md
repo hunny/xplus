@@ -218,6 +218,55 @@ security.user.password=secret
 management.security.role=SUPERUSER
 ```
 
+## Health endpoint
+The /health endpoint is used to check the health/status of the running application. It’s usually used by basic monitoring software to alert you if the production goes down.
+
+By default only health information is shown to unauthorized access over HTTP:
+
+```
+{
+   "status" : "UP"
+}
+```
+
+This health information is collected from all the beans implementing HealthIndicator interface configured in your application context.
+
+Some information returned by `HealthIndicator` is sensitive in nature – but you can configure `endpoints.health.sensitive=false` to expose the other information like disk space, data source etc.
+
+## Custom Health Endpoint
+You can also roll your own custom health indicator. One can extend the HealthIndicator interface and provide their own implementation. CustomHealthCheck is implementing the method health() which is declared in the interface HealthIndicator. When you create a custom class of this type and override the method health(), the default functionality will be overwritten by your custom logic.
+
+```java
+@Component
+public class CustomHealthCheck implements HealthIndicator {
+    public Health health() {
+        int errorCode = 0;
+        if (errorCode != 1) {
+            return Health.down().withDetail("Error Code", errorCode).build();
+        }
+        return Health.up().build();
+    }
+}
+```
+
+The output will be:
+
+```
+    {
+      "status": "DOWN",
+      "customHealthCheck": {
+        "status": "DOWN",
+        "Error Code": 0
+      },
+      "diskSpace": {
+        "status": "UP",
+        "free": 19593824409432,
+        "threshold": 15485791
+      }
+    }
+```
+
 ## 参考
 
 * [Spring Boot Actuator: A Complete Guide](https://dzone.com/articles/spring-boot-actuator-a-complete-guide)
+* [An-introduction-to-spring-boot-actuator](https://aboullaite.me/an-introduction-to-spring-boot-actuator/)

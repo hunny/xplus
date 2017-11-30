@@ -20,8 +20,8 @@ public class WebSocketWithoutSTOMPSockJsSocketHandler extends TextWebSocketHandl
   @Override
   public void handleTextMessage(WebSocketSession session, TextMessage message)
       throws InterruptedException, IOException {
+    String str = message.getPayload();
     for(WebSocketSession webSocketSession : sessions) {
-      String str = message.getPayload();
       if (webSocketSession.isOpen()) {
         System.out.println(str);
         webSocketSession.sendMessage(new TextMessage("Hello " + str + " !"));

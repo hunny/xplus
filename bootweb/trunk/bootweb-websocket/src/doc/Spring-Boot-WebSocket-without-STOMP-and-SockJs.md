@@ -140,6 +140,8 @@ This is it for server side.
 
 ### Implemention of client side in javascript
 
+Now let's jump to client side code.Here we have defined 3 methods each for creating websocket connection when user clicks on connect button, sending message to the server once send button is clicked and another for listening the server response that will come from the server.
+
 ```javascript
 var ws = null;
 function connect() {
@@ -185,3 +187,45 @@ $(function() {
 	});
 });
 ```
+### Sending Message to Single Session
+
+Above implementation will broadcast message to all the sessions and hence all the client will receive the messaage at a time. To send message to a single client we need to tweak our `WebSocketWithoutSTOMPSockJsSocketHandler.java` as below.
+
+
+```java
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+import com.example.bootweb.websocket.profile.WebSocketWithoutSTOMPSockJsDemo;
+@Component
+public class WebSocketWithoutSTOMPSockJsSocketHandler extends TextWebSocketHandler {
+  private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+  @Override
+  public void handleTextMessage(WebSocketSession session, TextMessage message)
+      throws InterruptedException, IOException {
+    String str = message.getPayload();
+    session.sendMessage(new TextMessage("Hello " + str + " !"));
+  }
+  @Override
+  public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    //the messages will be broadcasted to all users.
+    sessions.add(session);
+  }
+  @Override
+  public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    super.afterConnectionClosed(session, status);
+    sessions.remove(session);
+  }
+}
+```
+
+This change in `WebSocketWithoutSTOMPSockJsSocketHandler.java` will ensure that the message is sent to a single session.
+
+## Reference
+
+* [Spring Boot + WebSocket example without STOMP and SockJs](http://www.devglan.com/spring-boot/spring-websocket-integration-example-without-stomp)

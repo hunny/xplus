@@ -206,6 +206,16 @@ public class IndexController {
         "http://www.jhipster.tech/", //
         null, //
         "Goal is to generate for a complete and modern Web app or microservice architecture."));
+    
+    index.getList().add(make("Spring Cloud中文网-官方文档中文版", //
+        "https://springcloud.cc/", //
+        null, //
+        "Spring Cloud 微服务架构集大成者，云计算最佳业务实践。"));
+    
+    index.getList().add(make("Spring Cloud 官网", //
+        "http://projects.spring.io/spring-cloud/", //
+        null, //
+        "Spring Cloud 微服务架构集大成者，云计算最佳业务实践。"));
 
     model.addAttribute("data", index);
 

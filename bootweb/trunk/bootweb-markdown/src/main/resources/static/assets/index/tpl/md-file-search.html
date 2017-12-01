@@ -4,19 +4,11 @@
   <div class="panel-body">
     <ul class="list-group">
       <li class="list-group-item">
-        <form class="form-inline">
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-addon">文件路径</div>
-              <input type="text" class="form-control"
-                name="markdown" ng-model="path" placeholder="输入markdown文件路径" /> 
-              <a class="input-group-addon openmdurl" role="button" ng-click="list()">
-                <span class="glyphicon glyphicon-log-in"
-                aria-hidden="true"></span><span style="margin-left:10px;">查看</span>
-              </a>
-            </div>
-          </div>
-        </form>
+        <div class="input-group">
+          <span class="input-group-addon">文件路径</span>
+          <input type="text" class="form-control" placeholder="输入markdown文件路径" ng-model="path">
+          <span class="input-group-addon" ng-click="list()"><span class="glyphicon glyphicon-search"></span></span>
+        </div>
       </li>
       <li class="list-group-item">
         <a href="http://v3.bootcss.com/components/"
@@ -32,12 +24,21 @@
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th>序号</th>
-          <th>文件名称</th>
+          <th>
+            <span class="text-center text-middle">序号</span>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon">文件名称@</span>
+              <input type="text" class="form-control" placeholder="关键字过滤" ng-model="test">
+              <span class="input-group-addon" ng-click="sort('name')"><span class="glyphicon glyphicon-sort-by-alphabet{{sortName}}"></span></span>
+              <span class="input-group-addon" ng-click="sort('path')"><span class="glyphicon glyphicon-sort-by-attributes{{sortPath}}"></span></span>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in items">
+        <tr ng-repeat="item in items | filter:test"> <!-- | orderBy:'name':reverse -->
           <td>{{$index + 1}}</td>
           <td title="{{item.path}}"><a href="{{item.path}}" target="_blank">{{item.name}}</a></td>
         </tr>

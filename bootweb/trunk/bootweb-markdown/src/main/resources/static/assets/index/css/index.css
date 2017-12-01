@@ -25,3 +25,9 @@
 .left-menu {
   margin-top:-20px;
 }
+.text-middle {
+  clear:both;
+  display:block;
+  line-height:34px;
+  height:34px;
+}

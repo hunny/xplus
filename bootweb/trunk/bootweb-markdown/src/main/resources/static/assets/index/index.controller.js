@@ -1,4 +1,4 @@
-app.controller("fileListController", ['$scope', '$http', function($scope, $http) {
+app.controller("fileListController", ['$scope', '$http', '$filter', function($scope, $http, $filter) {
   $scope.items = [];
   $scope.path = '';
   $scope.showTable = ($scope.items.length != 0);
@@ -10,6 +10,15 @@ app.controller("fileListController", ['$scope', '$http', function($scope, $http)
     }, function() {
       console.log('Request Error.');
     });
+  }
+  $scope.sort = function(name) {
+    if (name == 'name') {
+      $scope.sortName = $scope.sortName == '-alt' ? '' : '-alt';
+    } else if (name = 'path') {
+      $scope.sortPath = $scope.sortPath == '-alt' ? '' : '-alt';
+    }
+    $scope.items = $filter('orderBy')($scope.items, name, $scope.reverse);
+    $scope.reverse = !$scope.reverse;
   }
 }]);
 app.controller("toolController", ['$scope', function($scope) {

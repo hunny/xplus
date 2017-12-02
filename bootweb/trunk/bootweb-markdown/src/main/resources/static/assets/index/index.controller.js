@@ -3,6 +3,7 @@ app.controller("fileListController", ['$scope', '$http', '$filter', function($sc
   $scope.path = '';
   $scope.showTable = ($scope.items.length != 0);
   $scope.list = function() {
+	$scope.path = $scope.path.replace(/\\/g, '/');
     $http.get('/md/file/list?_=' + new Date().getTime() + '&path=' + $scope.path) //
     .then(function(response) {
       $scope.items = response.data;

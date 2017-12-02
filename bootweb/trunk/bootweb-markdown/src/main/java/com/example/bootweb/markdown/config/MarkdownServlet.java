@@ -47,7 +47,7 @@ public class MarkdownServlet extends HttpServlet {
     reqMap.put("contextPath", req.getContextPath());
     reqMap.put("pathInfo", req.getPathInfo());
     reqMap.put("requestURI", req.getRequestURI());
-    reqMap.put("servletPath", req.getServletPath());
+    reqMap.put("servletPath", req.getServletPath().replaceAll("\\", "/"));
     for (Map.Entry<String, Object> map : reqMap.entrySet()) {
       if (null == map.getValue()) {
         reqMap.put(map.getKey(), "");

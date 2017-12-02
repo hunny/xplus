@@ -56,57 +56,103 @@
 <script type="text/javascript">
 var ws = null;
 function connect() {
-	if (!$('#userId').val()) {
-	  console.log('请输入用户ID');
-	  return;
-	}
-	var wsUrl = 'ws://localhost:8080/websocketServer/' + $('#userId').val();
-    if ('WebSocket' in window) {
-  	    console.log('StandardWebSocket');
-    	ws = new WebSocket(wsUrl);
-    } else if ('MozWebSocket' in window) {
-    	console.log('MozWebSocket');
-    	ws = new MozWebSocket(wsUrl);
-    } else {
-    	alert('该浏览器不支持WebSocket.');
-    	return;
-    }
-    ws.onmessage = function(resp) {
-    	console.log('收到消息：' + resp.data);
-    	$('#server-msg').append('<li class="list-group-item">' + resp.data + '</li>');
-    }
-    ws.onclose = function(resp) {
-    	console.log('连接中断');
-    	setConnected(false);
-    }
-    ws.onopen = function() {
-    	console.log('连接成功');
-    	setConnected(true);
-    }
+  if (!$('#userId').val()) {
+    console.log('请输入用户ID');
+    return;
+  }
+  var wsUrl = 'ws://localhost:8080/websocketServer/' + $('#userId').val();
+  if ('WebSocket' in window) {
+	    console.log('StandardWebSocket');
+  	  ws = new WebSocket(wsUrl);
+  } else if ('MozWebSocket' in window) {
+    console.log('MozWebSocket');
+    ws = new MozWebSocket(wsUrl);
+  } else {
+    alert('该浏览器不支持WebSocket.');
+    return;
+  }
+  ws.onmessage = function(resp) {
+  	console.log('收到消息：' + resp.data);
+  	$('#server-msg').append('<li class="list-group-item">' + resp.data + '</li>');
+  }
+  ws.onclose = function(resp) {
+  	console.log('连接中断');
+  	setConnected(false);
+  }
+  ws.onopen = function() {
+  	console.log('连接成功');
+  	setConnected(true);
+  }
 }
 function disconnect() {
-    if (ws != null) {
+  if (ws != null) {
     	ws.close();
-    }
-    console.log("Disconnected");
-	setConnected(false);
+  }
+  console.log("Disconnected");
+  setConnected(false);
 }
 
 function setConnected(connected) {
-	$("#connect").prop("disabled", connected);
-	$("#disconnect").prop("disabled", !connected);
+  $("#connect").prop("disabled", connected);
+  $("#disconnect").prop("disabled", !connected);
+}
+
+function send(userId, message) {
+  if (!userId || !message) {
+    console.log('UserId Or Message is blank. [' + userId + '], [' + message + ']');
+    return;
+  }
+  $.ajax({
+    url:"/send/" + userId,
+    type: 'GET',
+    data: {
+      'message': message,
+      '_': new Date().getTime()
+    },
+    success: function (result) {
+      console.log(result);
+    }, error: function (result) {
+    	  console.log('OK');
+  	}//
+  });
+}
+
+function sendAll(message) {
+  if (!message) {
+    console.log('Message is blank. [' + message + ']');
+    return;
+  }
+  $.ajax({
+    url: "/send/to/all",
+    type: 'GET',
+    data: {
+      'message': message,
+      '_': new Date().getTime()
+    },
+    success: function(result) {
+      console.log(result);
+    }, error: function(result) {
+    	  console.log('OK');
+  	}//
+  });
 }
   
 $(function() {
-	$("form").on('submit', function(e) {
-		e.preventDefault();
-	});
-	$("#connect").click(function() {
-		connect();
-	});
-	$("#disconnect").click(function() {
-		disconnect();
-	});
+  $("form").on('submit', function(e) {
+  	e.preventDefault();
+  });
+  $("#connect").click(function() {
+  	connect();
+  });
+  $("#disconnect").click(function() {
+  	disconnect();
+  });
+  $("#send").click(function() {
+  	send($('#userId').val(), $('#message').val());
+  });
+  $("#sendAll").click(function() {
+  	sendAll($('#allmessage').val());
+  });
 });
 </script>
 </body>

@@ -429,3 +429,62 @@ $(function() {
 </body>
 </html>
 ```
+
+## WebSocket断线重连解决方案
+
+* WebSocket是HTML5下一个不错的网络协议解决方案，有一个场景很多猿猿都会遇到，手机锁屏后大约60秒，IOS会自动断开WebSocket连接，连接丢失了，那我们的数据也就断了。WebSocket 断线重连方案如下：
+
+### ReconnectingWebSocket
+
+* Reconnecting WebSocket是一个javascript封闭的WebSocket库，非常小，压缩后仅有3KB。它的功能是当WebSocket断线后自动帮你重连。使用方法很简单：
+  - 把`var ws = new WebSocket('ws://....'); `替换成`var ws = new ReconnectingWebSocket('ws://....');`就可以了。当WebSocket断开着它会帮你自动重连，socket永不断线！
+
+* 它支持事件
+```
+onopen
+onmessage
+onmessage
+onmessage
+onclose // At this point the WebSocket instance is dead.
+```
+
+### WebSocket断线重连原理实现
+
+```javascript
+var ws = new WebSocket('ws:../../websocket');
+ws.onmessage = function(msg){
+    console.log('msg:',msg);
+    //do something
+};
+ws.onclose = function(){
+    console.log('closed....');
+};
+```
+
+* 实现websocket断线重连
+
+```javascript
+var ws = new WebSocket('ws:../../websocket');
+ws.onmessage = function(msg){
+    console.log('msg:',msg);
+    //do something
+};
+//把刚才干的事情重写一遍
+function reconnect (){
+    rews = new WebSocket('ws:../../websocket');
+    rews.onmessage = function(){
+      //dosomthing  
+    };
+    rews.onclose = function(){
+        //dosomthing
+    };
+}
+//每隔5秒去调用一次
+var disConnect = function(){
+    setTimeout(function(){
+         reconnect();
+    },5000);
+}
+//函数放在onclose里
+ws.onclose = disConnect;
+```

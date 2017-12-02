@@ -7,7 +7,11 @@
         <div class="input-group">
           <span class="input-group-addon">文件路径</span>
           <input type="text" class="form-control" placeholder="输入markdown文件路径" ng-model="path">
-          <span class="input-group-addon" ng-click="list()"><span class="glyphicon glyphicon-search"></span></span>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="list()">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+          </span>
         </div>
       </li>
       <li class="list-group-item">
@@ -31,8 +35,14 @@
             <div class="input-group">
               <span class="input-group-addon">文件名称@</span>
               <input type="text" class="form-control" placeholder="关键字过滤" ng-model="test">
-              <span class="input-group-addon" ng-click="sort('name')"><span class="glyphicon glyphicon-sort-by-alphabet{{sortName}}"></span></span>
-              <span class="input-group-addon" ng-click="sort('path')"><span class="glyphicon glyphicon-sort-by-attributes{{sortPath}}"></span></span>
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="sort('name')">
+                  <span class="glyphicon glyphicon-sort-by-alphabet{{sortName}}"></span>
+                </button>
+                <button class="btn btn-default" type="button" ng-click="sort('path')">
+                  <span class="glyphicon glyphicon-sort-by-attributes{{sortPath}}"></span>
+                </button>
+              </div>
             </div>
           </th>
         </tr>

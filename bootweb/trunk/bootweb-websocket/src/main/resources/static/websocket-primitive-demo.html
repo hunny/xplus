@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebSocket - Primitive Demo</title>
+  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/webjars/jquery/jquery.min.js"></script>
+</head>
+<body>
+<div id="main-content" class="container">
+  <h2>WebSocket - Primitive Demo</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="list-group">
+        <div class="list-group-item">
+          <div class="input-group">
+            <span class="input-group-addon">UserId　@</span>
+            <input type="text" id="userId" class="form-control" placeholder="UserId">
+            <div class="input-group-btn">
+              <button id="connect" class="btn btn-default" type="button">Connect</button>
+              <button id="disconnect" class="btn btn-default" type="button" disabled="disabled">Disconnect
+            </div>
+          </div>
+        </div>
+        <div class="list-group-item">
+          <div class="input-group">
+            <span class="input-group-addon">Message@</span>
+            <input type="text" id="message" class="form-control" placeholder="Message">
+            <div class="input-group-btn">
+              <button id="send" class="btn btn-default" type="button">Send</button>
+            </div>
+          </div>
+        </div>
+        <div class="list-group-item">
+          <div class="input-group">
+            <span class="input-group-addon">Message@</span>
+            <input type="text" id="allmessage" class="form-control" placeholder="Message">
+            <div class="input-group-btn">
+              <button id="sendAll" class="btn btn-default" type="button">Send All</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <ul id="server-msg" class="list-group">
+        <li class="list-group-item disabled">服务端消息</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var ws = null;
+function connect() {
+	if (!$('#userId').val()) {
+	  console.log('请输入用户ID');
+	  return;
+	}
+	var wsUrl = 'ws://localhost:8080/websocketServer/' + $('#userId').val();
+    if ('WebSocket' in window) {
+  	    console.log('StandardWebSocket');
+    	ws = new WebSocket(wsUrl);
+    } else if ('MozWebSocket' in window) {
+    	console.log('MozWebSocket');
+    	ws = new MozWebSocket(wsUrl);
+    } else {
+    	alert('该浏览器不支持WebSocket.');
+    	return;
+    }
+    ws.onmessage = function(resp) {
+    	console.log('收到消息：' + resp.data);
+    	$('#server-msg').append('<li class="list-group-item">' + resp.data + '</li>');
+    }
+    ws.onclose = function(resp) {
+    	console.log('连接中断');
+    	setConnected(false);
+    }
+    ws.onopen = function() {
+    	console.log('连接成功');
+    	setConnected(true);
+    }
+}
+function disconnect() {
+    if (ws != null) {
+    	ws.close();
+    }
+    console.log("Disconnected");
+	setConnected(false);
+}
+
+function setConnected(connected) {
+	$("#connect").prop("disabled", connected);
+	$("#disconnect").prop("disabled", !connected);
+}
+  
+$(function() {
+	$("form").on('submit', function(e) {
+		e.preventDefault();
+	});
+	$("#connect").click(function() {
+		connect();
+	});
+	$("#disconnect").click(function() {
+		disconnect();
+	});
+});
+</script>
+</body>
+</html>

@@ -32,6 +32,18 @@ public class WebSocketSessionController {
     headerAccessor.setSessionId(sessionId);
     Map<String, Object> msg = new Gson().fromJson(message, Map.class);
     messagingTemplate.convertAndSend("/topic/reply", msg.get("name"));
+//  String user = (String)msg.get("user");
+//  if (StringUtils.isNoneBlank(user)) {
+//    logger.info("准备发送消息给客户端：sessionId={}, user={}, =message{}", sessionId, user, message);
+//    SimpMessageHeaderAccessor targetHeaderAccessor = SimpMessageHeaderAccessor
+//        .create(SimpMessageType.MESSAGE);
+//    targetHeaderAccessor.setSessionId(sessionId);
+//    targetHeaderAccessor.setLeaveMutable(true);
+//    messagingTemplate.convertAndSendToUser(sessionId, //
+//        "/topic/nitoifcation", //
+//        msg.get("name"), //
+//        targetHeaderAccessor.getMessageHeaders());
+//  }
   }
   
 }

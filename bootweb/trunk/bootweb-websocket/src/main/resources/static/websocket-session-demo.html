@@ -68,6 +68,14 @@ function connect() {
 		  console.log(greeting);
 		  showGreeting(greeting.body);
 		});
+		/* var user = $("#user").val();
+          if (user) {
+            console.log('subscribe user topic: ' + frame);
+        	    stompClient.subscribe("/user/nitoifcation", function(resp) {
+      	      console.log('收到用户订阅的消息: ' + resp.body);
+        		  showGreeting(resp.body);
+            });
+          } */
 	});
 }
 
@@ -84,8 +92,7 @@ function sendName() {
     return;
   }
   stompClient.send("/app/message", {}, JSON.stringify({
-    'name' : $("#name").val(),
-    'user' : $("#user").val()
+    'name' : $("#name").val()
   }));
   $("#name").val('');
 }

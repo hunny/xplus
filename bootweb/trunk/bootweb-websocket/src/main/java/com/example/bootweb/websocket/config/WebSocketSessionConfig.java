@@ -20,6 +20,7 @@ public class WebSocketSessionConfig extends AbstractWebSocketMessageBrokerConfig
     // 一个定义了客户端接收的地址前缀，一个定义了客户端发送地址的前缀
     config.enableSimpleBroker("/topic/", "/queue/");// 表示客户端订阅地址的前缀信息，也就是客户端接收服务端消息的地址的前缀信息
     config.setApplicationDestinationPrefixes("/app");// 指服务端接收地址的前缀，意思就是说客户端给服务端发消息的地址的前缀
+//  config.setUserDestinationPrefix("/user");//处理指定用户发送消息
   }
 
   // 添加一个服务端点，来接收客户端的连接。

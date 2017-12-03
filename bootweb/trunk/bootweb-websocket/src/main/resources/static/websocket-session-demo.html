@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello WebSocket Session</title>
+  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/main.css" rel="stylesheet">
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+  <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">WebSocket Session Keeping Demo</h3>
+    </div>
+    <div class="panel-body">
+      <div class="list-group">
+        <div class="list-group-item">Run as spring.profiles.active=WebSocketSessionDemo</div>
+        <a href="https://spring.io/guides/gs/messaging-stomp-websocket/" target="_blank" class="list-group-item">Using WebSocket to build an interactive web application</a>
+        <div class="list-group-item">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" id="connect">Connect</button>
+              <button class="btn btn-default" type="button" id="disconnect" disabled="disabled">Disconnect</button>
+            </span>
+            <input type="text" id="user" class="form-control" placeholder="The user of message to ">
+          </div>
+        </div>
+        <div class="list-group-item">
+          <div class="input-group">
+            <input type="text" id="name" class="form-control" placeholder="Your message here...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" id="send" disabled="disabled">Send</button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="list-group server-message">
+        <div class="list-group-item disabled">Server Message</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+//@WebSocketSessionDemo
+var stompClient = null;
+
+function setConnected(connected) {
+	$("#connect").prop("disabled", connected);
+	$("#disconnect").prop("disabled", !connected);
+	$("#send").prop("disabled", !connected);
+}
+
+function connect() {
+	var socket = new SockJS('/websocket-server-endpoint');
+	stompClient = Stomp.over(socket);
+	stompClient.connect({}, function(frame) {
+		setConnected(true);
+		console.log('Connected: ' + frame);
+		stompClient.subscribe('/topic/reply', function(greeting) {
+		  console.log(greeting);
+		  showGreeting(greeting.body);
+		});
+	});
+}
+
+function disconnect() {
+	if (stompClient !== null) {
+		stompClient.disconnect();
+	}
+	setConnected(false);
+	console.log("Disconnected");
+}
+
+function sendName() {
+  if (!$("#name").val()) {
+    return;
+  }
+  stompClient.send("/app/message", {}, JSON.stringify({
+    'name' : $("#name").val(),
+    'user' : $("#user").val()
+  }));
+  $("#name").val('');
+}
+
+function showGreeting(message) {
+	$("div.server-message").append('<div class="list-group-item">' + message + '</div>');
+}
+
+$(function() {
+	$("#connect").click(function() {
+		connect();
+	});
+	$("#disconnect").click(function() {
+		disconnect();
+	});
+	$("#send").click(function() {
+		sendName();
+	});
+});
+</script>
+</body>
+</html>

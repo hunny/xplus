@@ -217,6 +217,11 @@ public class IndexController {
         null, //
         "Spring Cloud 微服务架构集大成者，云计算最佳业务实践。"));
 
+    index.getList().add(make("Spring Cloud 官网", //
+        "http://projects.spring.io/spring-cloud/", //
+        null, //
+        "Spring Cloud 微服务架构集大成者，云计算最佳业务实践。"));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

@@ -20,7 +20,7 @@ public class MenuController {
     List<MenuItem> list = new ArrayList<>();
     list.add(new MenuItem("菜单名称"));
     list.add(new MenuItem("tool", "命令行创建工程"));
-    list.add(new MenuItem("tool2", "测试示例2"));
+    list.add(new MenuItem("tool2", "开发工具"));
     list.add(new MenuItem("tool3", "测试示例3"));
     list.add(new MenuItem("md/file/search", "MD文件显示"));
     result.add(list);

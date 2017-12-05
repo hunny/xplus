@@ -16,6 +16,7 @@
     <scala.binary.version>2.11</scala.binary.version>
     <spark.version>2.2.0</spark.version>
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
+    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
   </properties>
 
   <modules>
@@ -63,14 +64,23 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring-boot.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.3</version>
+          <version>${maven-compiler-plugin.version}</version>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+            <showWarnings>true</showWarnings>
           </configuration>
         </plugin>
       </plugins>

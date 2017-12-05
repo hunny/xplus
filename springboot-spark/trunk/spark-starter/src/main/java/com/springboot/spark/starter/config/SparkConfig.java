@@ -39,6 +39,8 @@ public class SparkConfig {
         // For serializing objects that will be sent over the network or need to
         // be cached in serialized form.
         .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer") //
+        
+        .set("spark.local.dir", "D:/spark") //work with -Dspark.local.dir=D:/spark
 
         .set("spark.driver.allowMultipleContexts", "true");
 

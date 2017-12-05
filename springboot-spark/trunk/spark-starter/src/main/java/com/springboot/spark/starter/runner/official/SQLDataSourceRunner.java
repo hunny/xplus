@@ -10,6 +10,7 @@ import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ import com.springboot.spark.starter.runner.official.profile.SQLDataSourceProfile
 public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
 
   private static final long serialVersionUID = -1186586366947489351L;
-
+  
   public static class Square implements Serializable {
     
     private static final long serialVersionUID = 3604247260359580567L;
@@ -70,44 +71,58 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
     }
   }
 
-  @SuppressWarnings("unused")
   public void runBasicDataSourceExample(SparkSession spark) {
-    Dataset<Row> usersDF = spark.read().load("examples/src/main/resources/users.parquet");
-    usersDF.select("name", "favorite_color").write().save("namesAndFavColors.parquet");
+    Dataset<Row> usersDF = spark.read().load("src/main/resources/testdata/users.parquet");
+    usersDF.show();
+    System.out.println("from src/main/resources/testdata/users.parquet");
+    usersDF.select("name", "favorite_color").write().mode(SaveMode.Overwrite).save("tmp/namesAndFavColors.parquet");
     Dataset<Row> peopleDF = spark.read().format("json")
-        .load("examples/src/main/resources/people.json");
-    peopleDF.select("name", "age").write().format("parquet").save("namesAndAges.parquet");
+        .load("src/main/resources/testdata/people.json");
+    peopleDF.show();
+    System.out.println("from src/main/resources/testdata/people.json");
+    peopleDF.select("name", "age").write().mode(SaveMode.Overwrite).format("parquet").save("tmp/namesAndAges.parquet");
     Dataset<Row> peopleDFCsv = spark.read().format("csv").option("sep", ";")
         .option("inferSchema", "true").option("header", "true")
-        .load("examples/src/main/resources/people.csv");
+        .load("src/main/resources/testdata/people.csv");
+    peopleDFCsv.show();
+    System.out.println("from src/main/resources/testdata/people.csv");
     Dataset<Row> sqlDF = spark
-        .sql("SELECT * FROM parquet.`examples/src/main/resources/users.parquet`");
-    peopleDF.write().bucketBy(42, "name").sortBy("age").saveAsTable("people_bucketed");
-    usersDF.write().partitionBy("favorite_color").format("parquet")
-        .save("namesPartByColor.parquet");
-    peopleDF.write().partitionBy("favorite_color").bucketBy(42, "name")
+        .sql("SELECT * FROM parquet.`src/main/resources/testdata/users.parquet`");
+    sqlDF.show();
+    System.out.println("from SELECT * FROM parquet.`src/main/resources/testdata/users.parquet`");
+    peopleDF.write().mode(SaveMode.Overwrite).bucketBy(42, "name").sortBy("age").saveAsTable("people_bucketed");
+    peopleDF.show();
+    usersDF.write().mode(SaveMode.Overwrite).partitionBy("favorite_color").format("parquet")
+        .save("tmp/namesPartByColor.parquet");
+    peopleDF.show();
+    peopleDF.write().mode(SaveMode.Overwrite).partitionBy("age").bucketBy(42, "name")
         .saveAsTable("people_partitioned_bucketed");
-
+    peopleDF.show();
     spark.sql("DROP TABLE IF EXISTS people_bucketed");
     spark.sql("DROP TABLE IF EXISTS people_partitioned_bucketed");
   }
 
   public void runBasicParquetExample(SparkSession spark) {
-    Dataset<Row> peopleDF = spark.read().json("examples/src/main/resources/people.json");
+    Dataset<Row> peopleDF = spark.read().json("src/main/resources/testdata/people.json");
 
+    peopleDF.show();
+    peopleDF.show();
+    peopleDF.show();
     // DataFrames can be saved as Parquet files, maintaining the schema
     // information
-    peopleDF.write().parquet("people.parquet");
+    peopleDF.write().mode(SaveMode.Overwrite).parquet("people.parquet");
 
     // Read in the Parquet file created above.
     // Parquet files are self-describing so the schema is preserved
     // The result of loading a parquet file is also a DataFrame
     Dataset<Row> parquetFileDF = spark.read().parquet("people.parquet");
-
+    parquetFileDF.show();
     // Parquet files can also be used to create a temporary view and then used
     // in SQL statements
     parquetFileDF.createOrReplaceTempView("parquetFile");
+    parquetFileDF.show();
     Dataset<Row> namesDF = spark.sql("SELECT name FROM parquetFile WHERE age BETWEEN 13 AND 19");
+    namesDF.show();
     Dataset<String> namesDS = namesDF
         .map((MapFunction<Row, String>) row -> "Name: " + row.getString(0), Encoders.STRING());
     namesDS.show();
@@ -129,8 +144,8 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
 
     // Create a simple DataFrame, store into a partition directory
     Dataset<Row> squaresDF = spark.createDataFrame(squares, Square.class);
-    squaresDF.write().parquet("data/test_table/key=1");
-
+    squaresDF.write().mode(SaveMode.Overwrite).parquet("data/test_table/key=1");
+    squaresDF.show();
     List<Cube> cubes = new ArrayList<>();
     for (int value = 6; value <= 10; value++) {
       Cube cube = new Cube();
@@ -142,12 +157,14 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
     // Create another DataFrame in a new partition directory,
     // adding a new column and dropping an existing column
     Dataset<Row> cubesDF = spark.createDataFrame(cubes, Cube.class);
-    cubesDF.write().parquet("data/test_table/key=2");
-
+    cubesDF.show();
+    cubesDF.write().mode(SaveMode.Overwrite).parquet("data/test_table/key=2");
+    cubesDF.show();
+    
     // Read the partitioned table
     Dataset<Row> mergedDF = spark.read().option("mergeSchema", true).parquet("data/test_table");
     mergedDF.printSchema();
-
+    mergedDF.show();
     // The final schema consists of all 3 columns in the Parquet files together
     // with the partitioning column appeared in the partition directory paths
     // root
@@ -155,17 +172,17 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
     // |-- square: int (nullable = true)
     // |-- cube: int (nullable = true)
     // |-- key: int (nullable = true)
-    // $example off:schema_merging$
   }
 
   public void runJsonDatasetExample(SparkSession spark) {
     // A JSON dataset is pointed to by path.
     // The path can be either a single text file or a directory storing text
     // files
-    Dataset<Row> people = spark.read().json("examples/src/main/resources/people.json");
+    Dataset<Row> people = spark.read().json("src/main/resources/testdata/people.json");
 
     // The inferred schema can be visualized using the printSchema() method
     people.printSchema();
+    people.show();
     // root
     // |-- age: long (nullable = true)
     // |-- name: string (nullable = true)
@@ -188,6 +205,8 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
     List<String> jsonData = Arrays
         .asList("{\"name\":\"Yin\",\"address\":{\"city\":\"Columbus\",\"state\":\"Ohio\"}}");
     Dataset<String> anotherPeopleDataset = spark.createDataset(jsonData, Encoders.STRING());
+    anotherPeopleDataset.show();
+    
     Dataset<Row> anotherPeople = spark.read().json(anotherPeopleDataset);
     anotherPeople.show();
     // +---------------+----+
@@ -231,7 +250,8 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
     runBasicParquetExample(spark);
     runParquetSchemaMergingExample(spark);
     runJsonDatasetExample(spark);
-    runJdbcDatasetExample(spark);
+    //runJdbcDatasetExample(spark);
     spark.stop();
+    System.exit(0);
   }
 }

@@ -252,6 +252,11 @@ public class IndexController {
         null, //
         "GVP (Gitee Most Valuable Projects) - 码云最有价值开源项目计划是码云综合评定出的优秀开源项目的展示平台"));
 
+    index.getList().add(make("Apache Spark 2.2.0中文文档", //
+        "https://gitee.com/explore/recommend", //
+        null, //
+        "Apache Spark 2.2.0中文文档"));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());
@@ -262,6 +267,7 @@ public class IndexController {
     return "index";
   }
 
+  @SuppressWarnings("static-method")
   private Dashboard make(String text, String url, String src, String desc) {
     Dashboard dashboard = new Dashboard();
     dashboard.setText(text);

@@ -232,6 +232,21 @@ public class IndexController {
         null, //
         "Spark官方文档-Spark编程指南。"));
 
+    index.getList().add(make("Spark SQL, DataFrames以及 Datasets 编程指南", //
+        "http://ifeve.com/spark-sql-dataframes/", //
+        null, //
+        "《Spark 官方文档》Spark SQL, DataFrames 以及 Datasets 编程指南"));
+
+    index.getList().add(make("Spark快速入门", //
+        "http://ifeve.com/spark-quick-start/", //
+        null, //
+        "《Spark 官方文档》Spark快速入门"));
+
+    index.getList().add(make("Spark Streaming编程指南", //
+        "http://ifeve.com/spark-streaming-2/", //
+        null, //
+        "《Spark官方文档》Spark Streaming编程指南"));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

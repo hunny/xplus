@@ -102,4 +102,40 @@ Spark session available as 'spark'.
   - [How to start Spark applications on Windows (aka Why Spark fails with NullPointerException)?](https://stackoverflow.com/questions/32721647/how-to-start-spark-applications-on-windows-aka-why-spark-fails-with-nullpointer)
   - [windows 运行spark或者hadoop程序报winutils.exe错误](http://blog.csdn.net/zhouyan8603/article/details/51873345)
 
+## 问题
+
+### 问题1
+
+对于报错：
+
+```
+Exception in thread "main" java.net.BindException: 无法指定被请求的地址: Service ‘sparkMaster‘ failed after 16 retries (starting from 7077)! Consider explicitly setting the appropriate port for the service ‘sparkMaster‘ (for example spark.ui.port for SparkUI) to an available port or increasing spark.port.maxRetries.
+```
+解决办法，在spark-env.sh中配置：
+
+```
+export  SPARK_MASTER_HOST=127.0.0.1
+export  SPARK_LOCAL_IP=127.0.0.1
+```
+
+### 问题2
+
+mac下安装
+
+```
+vi .bash_profile
+```
+
+启动:
+
+```
+./sbin/start-master.sh
+```
+
+停止：
+
+```
+./sbin/stop-master.sh
+```
+
 

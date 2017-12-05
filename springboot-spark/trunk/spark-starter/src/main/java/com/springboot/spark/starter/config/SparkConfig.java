@@ -31,7 +31,10 @@ public class SparkConfig {
         // Port for application's dashboard, which shows memory and workload
         // data.
         .set("spark.ui.port", "7077") //
-
+        
+        // override the SPARK_LOCAL_IP at runtime by setting the "spark.driver.bindAddress":export  SPARK_LOCAL_IP=127.0.0.1
+        .set("spark.driver.bindAddress", "127.0.0.1")//
+        
         // Which scales the number of executors registered with this application
         // up and down based on the workload
         .set("dynamicAllocation.enabled", "false") //
@@ -40,7 +43,7 @@ public class SparkConfig {
         // be cached in serialized form.
         .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer") //
         
-        .set("spark.local.dir", "D:/spark") //work with -Dspark.local.dir=D:/spark
+        //.set("spark.local.dir", "D:/spark") //work with -Dspark.local.dir=D:/spark
 
         .set("spark.driver.allowMultipleContexts", "true");
 

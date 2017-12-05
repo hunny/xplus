@@ -247,6 +247,11 @@ public class IndexController {
         null, //
         "《Spark官方文档》Spark Streaming编程指南"));
 
+    index.getList().add(make("Gitee Most Valuable Projects", //
+        "https://gitee.com/explore/recommend", //
+        null, //
+        "GVP (Gitee Most Valuable Projects) - 码云最有价值开源项目计划是码云综合评定出的优秀开源项目的展示平台"));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

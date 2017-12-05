@@ -221,6 +221,11 @@ public class IndexController {
         "http://projects.spring.io/spring-cloud/", //
         null, //
         "Spring Cloud 微服务架构集大成者，云计算最佳业务实践。"));
+    
+    index.getList().add(make("Apache Spark官方示例", //
+        "https://github.com/apache/spark", //
+        null, //
+        "Apache Spark官方示例。"));
 
     model.addAttribute("data", index);
 

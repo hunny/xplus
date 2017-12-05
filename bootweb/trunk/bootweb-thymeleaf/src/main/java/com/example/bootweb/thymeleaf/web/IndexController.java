@@ -227,6 +227,11 @@ public class IndexController {
         null, //
         "Apache Spark官方示例。"));
 
+    index.getList().add(make("Spark官方文档-Spark编程指南", //
+        "http://coredumper.cn/index.php/2017/10/16/spark-programming-guide-3/", //
+        null, //
+        "Spark官方文档-Spark编程指南。"));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

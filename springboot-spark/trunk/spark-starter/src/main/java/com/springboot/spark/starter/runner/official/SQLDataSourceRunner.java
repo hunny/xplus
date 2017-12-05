@@ -220,10 +220,15 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
     // Note: JDBC loading and saving can be achieved via either the load/save or
     // jdbc methods
     // Loading data from a JDBC source
-    Dataset<Row> jdbcDF = spark.read().format("jdbc").option("url", "jdbc:postgresql:dbserver")
-        .option("dbtable", "schema.tablename").option("user", "username")
-        .option("password", "password").load();
-
+    Dataset<Row> jdbcDF = spark.read().format("jdbc") // 
+        .option("url", "jdbc:postgresql://172.17.10.52:6545/hdb") // 
+        .option("driver", "org.postgresql.Driver") // 
+        .option("dbtable", "LOGSTASH_TEST_QFDPOS") // database:hdb, schema:dev, table:LOGSTASH_TEST_QFDPOS, not (dev.LOGSTASH_TEST_QFDPOS)
+        .option("user", "dev") // 
+        .option("password", "hawq5432") // 
+        .load();
+    jdbcDF.show(10);
+    
     Properties connectionProperties = new Properties();
     connectionProperties.put("user", "username");
     connectionProperties.put("password", "password");
@@ -246,11 +251,11 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
   public void run(String... args) throws Exception {
     SparkSession spark = SparkSession.builder().appName("Java Spark SQL data sources example")
         .config("spark.some.config.option", "some-value").getOrCreate();
-    runBasicDataSourceExample(spark);
-    runBasicParquetExample(spark);
-    runParquetSchemaMergingExample(spark);
-    runJsonDatasetExample(spark);
-    //runJdbcDatasetExample(spark);
+//    runBasicDataSourceExample(spark);
+//    runBasicParquetExample(spark);
+//    runParquetSchemaMergingExample(spark);
+//    runJsonDatasetExample(spark);
+    runJdbcDatasetExample(spark);
     spark.stop();
     System.exit(0);
   }

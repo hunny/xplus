@@ -15,6 +15,7 @@
     <java.version>1.8</java.version>
     <scala.binary.version>2.11</scala.binary.version>
     <spark.version>2.2.0</spark.version>
+    <postgresql.version>42.1.4</postgresql.version>
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
     <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
   </properties>
@@ -52,6 +53,12 @@
         <groupId>org.codehaus.janino</groupId>
         <artifactId>commons-compiler</artifactId>
         <version>2.7.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${postgresql.version}</version>
       </dependency>
 
     </dependencies>

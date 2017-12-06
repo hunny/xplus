@@ -9,13 +9,13 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Run with <code>spring.profiles.active=SparkPi</code>
+ * Run with <code>spring.profiles.active=PageRank</code>
  */
 @Target({
     ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Profile("PageRank")
-public @interface SparkPiProfile {
+public @interface PageRankProfile {
 
 }

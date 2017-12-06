@@ -18,6 +18,7 @@
     <postgresql.version>42.1.4</postgresql.version>
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
     <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+    <mysql.version>5.1.24</mysql.version>
   </properties>
 
   <modules>
@@ -59,6 +60,11 @@
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>${postgresql.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.version}</version>
       </dependency>
 
     </dependencies>

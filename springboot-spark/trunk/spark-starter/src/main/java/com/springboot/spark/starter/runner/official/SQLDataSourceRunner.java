@@ -223,39 +223,66 @@ public class SQLDataSourceRunner implements CommandLineRunner, Serializable {
     Dataset<Row> jdbcDF = spark.read().format("jdbc") // 
         .option("url", "jdbc:postgresql://172.17.10.52:6545/hdb") // 
         .option("driver", "org.postgresql.Driver") // 
-        .option("dbtable", "LOGSTASH_TEST_QFDPOS") // database:hdb, schema:dev, table:LOGSTASH_TEST_QFDPOS, not (dev.LOGSTASH_TEST_QFDPOS)
+        .option("dbtable", "LOGSTASH_TEST_QFDPOS") // database:hdb, schema:dev, 
+        // table:LOGSTASH_TEST_QFDPOS, 
+        // not (dev.LOGSTASH_TEST_QFDPOS)
         .option("user", "dev") // 
         .option("password", "hawq5432") // 
         .load();
+    jdbcDF.limit(5);
     jdbcDF.show(10);
     
     Properties connectionProperties = new Properties();
-    connectionProperties.put("user", "username");
-    connectionProperties.put("password", "password");
-    Dataset<Row> jdbcDF2 = spark.read().jdbc("jdbc:postgresql:dbserver", "schema.tablename",
+    connectionProperties.put("user", "dev");
+    connectionProperties.put("password", "hawq5432");
+    Dataset<Row> jdbcDF2 = spark.read().jdbc("jdbc:postgresql://172.17.10.52:6545/hdb", "LOGSTASH_TEST_QFDPOS",
         connectionProperties);
-
+    jdbcDF2.show(10);
+    
+    Dataset<Row> jdbcDF3 = spark.read() //
+        .format("jdbc") // 
+        .option("url", "jdbc:mysql://localhost:3306/points?useUnicode=yes&characterEncoding=utf-8&useSSL=no") // 
+        .option("driver", "com.mysql.jdbc.Driver") // 
+        .option("dbtable", "transaction")
+        .option("user", "points") // 
+        .option("password", "points") // 
+        .load();//
+    jdbcDF3.show();
+    
     // Saving data to a JDBC source
-    jdbcDF.write().format("jdbc").option("url", "jdbc:postgresql:dbserver")
-        .option("dbtable", "schema.tablename").option("user", "username")
-        .option("password", "password").save();
+    jdbcDF3.write() //
+        .format("jdbc") //
+        .option("url", "jdbc:mysql://localhost:3306/mbr?useUnicode=yes&characterEncoding=utf-8&useSSL=no") //
+//        .option("driver", "com.mysql.jdbc.Driver") // 
+        .option("dbtable", "transaction2") //
+        .option("user", "mbr") //
+        .option("password", "mbr") //
+        .mode(SaveMode.Overwrite)
+        .save();//
 
-    jdbcDF2.write().jdbc("jdbc:postgresql:dbserver", "schema.tablename", connectionProperties);
-
+    Properties connectionProperties4 = new Properties();
+    connectionProperties4.put("user", "mbr");
+    connectionProperties4.put("password", "mbr");
+    Dataset<Row> jdbcDF4 = spark.read().jdbc("jdbc:mysql://localhost:3306/mbr?useUnicode=yes&characterEncoding=utf-8&useSSL=no", "transaction2",
+        connectionProperties4);
+    jdbcDF4.show(10);
+    
     // Specifying create table column data types on write
-    jdbcDF.write().option("createTableColumnTypes", "name CHAR(64), comments VARCHAR(1024)")
-        .jdbc("jdbc:postgresql:dbserver", "schema.tablename", connectionProperties);
+    jdbcDF4.write()//
+        .mode(SaveMode.Overwrite) //
+//        .option("createTableColumnTypes", "name CHAR(64), comments VARCHAR(1024)") //
+        .jdbc("jdbc:mysql://localhost:3306/mbr?useUnicode=yes&characterEncoding=utf-8&useSSL=no", "transaction3", connectionProperties4);
   }
 
   @Override
   public void run(String... args) throws Exception {
     SparkSession spark = SparkSession.builder().appName("Java Spark SQL data sources example")
         .config("spark.some.config.option", "some-value").getOrCreate();
-//    runBasicDataSourceExample(spark);
-//    runBasicParquetExample(spark);
-//    runParquetSchemaMergingExample(spark);
-//    runJsonDatasetExample(spark);
-    runJdbcDatasetExample(spark);
+    runBasicDataSourceExample(spark);
+    runBasicParquetExample(spark);
+    runParquetSchemaMergingExample(spark);
+    runJsonDatasetExample(spark);
+//    runJdbcDatasetExample(spark);
     spark.stop();
     System.exit(0);
   }

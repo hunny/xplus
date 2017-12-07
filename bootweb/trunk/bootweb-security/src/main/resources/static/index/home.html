@@ -1,0 +1,29 @@
+<div class="panel panel-default" ng-controller="HomeController">
+  <div class="panel-heading">
+    <h3 class="panel-title">Spring Boot & Spring Security AngularJS Login Success.</h3>
+  </div>
+  <div class="panel-body">
+    <div class="list-group">
+      <div class="list-group-item">登录成功</div>
+      <div class="list-group-item">
+        <div class="input-group">
+          <span class="input-group-addon">信息　@</span>
+          <input type="text" ng-model="hello" class="form-control" placeholder="hello" aria-describedby="hello">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="about()">About</button>
+            <button class="btn btn-default" type="button" ng-click="back()">Back</button>
+          </span>
+        </div>
+      </div>
+      <div class="list-group-item">
+        <div class="input-group">
+          <span class="input-group-addon">HttpStatus　@</span>
+          <input type="text" ng-model="http.status" class="form-control" placeholder="HttpStatusCode" aria-describedby="HttpStatus">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="check()">Check</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

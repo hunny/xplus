@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spring Security AngularJS Demo</title>
+  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/index.css" rel="stylesheet">
+</head>
+<body>
+<noscript>
+  <h2 style="color: #ff0000">
+  Seems your browser doesn't support Javascript! 
+  Please enable Javascript and reload this page!
+  </h2>
+</noscript>
+<div class="container">
+  <div ng-view></div>
+</div>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/angularjs/angular.min.js"></script>
+<script src="/webjars/angularjs/angular-route.min.js"></script>
+<script src="/index.js"></script>
+<script src="/index/login.js"></script>
+<script src="/index/home.js"></script>
+</body>
+</html>

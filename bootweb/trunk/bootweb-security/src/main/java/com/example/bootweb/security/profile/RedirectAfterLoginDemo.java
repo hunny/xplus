@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * 演示使用SpringSecurity登录后跳转。
+ * 
+ * http://www.devglan.com/spring-security/spring-boot-security-redirect-after-login
+ * 
  * 运行时配置<code>spring.profiles.active=RedirectAfterLogin</code>时使用。
  */
 @Target({

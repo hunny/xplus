@@ -62,7 +62,12 @@ function($scope, $location, $http, $q, homeService) {
 		});
 	}
 	$scope.check = function() {
-		homeService.getAboutById($scope.http.status) //
+	  if ($scope.status == '' //
+	    || $scope.status == null
+	    || $scope.status == undefined) {
+	    $scope.status = 200;
+	  }
+		homeService.getAboutById($scope.status) //
 		.then(function(data) {
 			console.log('请求成功');
 			console.log(data);

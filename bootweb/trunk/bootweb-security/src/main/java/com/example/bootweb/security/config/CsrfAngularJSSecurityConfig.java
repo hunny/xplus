@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import com.example.bootweb.security.handler.CsrfLoginAuthenticationSuccessHandler;
 import com.example.bootweb.security.profile.CsrfAngularJSDemo;
 
 @Configuration
@@ -15,6 +16,9 @@ import com.example.bootweb.security.profile.CsrfAngularJSDemo;
 @CsrfAngularJSDemo
 public class CsrfAngularJSSecurityConfig extends WebSecurityConfigurerAdapter {
 
+  @Autowired
+  private CsrfLoginAuthenticationSuccessHandler successHandler;
+  
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
@@ -46,7 +50,8 @@ public class CsrfAngularJSSecurityConfig extends WebSecurityConfigurerAdapter {
         // 即当认证失败的时候，重定向到/login-error，无情告诉用户登录失败
         // loginProcessingUrl指定处理认证请求的url。即前端的登录请求需要传到"login"，才会得到spring security的处理
         .loginProcessingUrl("/login") //
-        .successForwardUrl("/app/home/home.html") //
+        .successHandler(successHandler)
+//        .successForwardUrl("/index.html") //
         .loginPage("/app/login/login.html") //
         .failureUrl("/login-error"); //
   }

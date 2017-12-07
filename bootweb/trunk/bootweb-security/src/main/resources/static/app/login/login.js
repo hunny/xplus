@@ -9,7 +9,7 @@ angular.module('myApp.login', ['ngRoute','ngResource'])
   });
 }])
 
-.controller('LoginCtrl', ['$scope', '$http', function($scope, $http) {
+.controller('LoginCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
   $scope.user = {
     name:"user",
     password:"password"
@@ -20,39 +20,19 @@ angular.module('myApp.login', ['ngRoute','ngResource'])
           url: '/login',
           //data需要以字符串的形式定义，不要定义成对象
           data:'username='+$scope.user.name+'&password='+$scope.user.password,
-            /*
-            {
-              username:$scope.user.name,
-              password:$scope.user.password
-          },*/
           headers: {
               //发送表单数据，默认发的是json，spring security的登录不处理
               'Content-Type': 'application/x-www-form-urlencoded'
           }
-      }).then(function successCallback(response) {
+      }).then(function(response) {
           //请求成功回调函数
-          console.log(response)
-      }, function errorCallback(response) {
+        console.log('请求成功回调函数');
+        console.log(response);
+        $location.path('/home');
+      }, function(response) {
+        console.log('请求失败回调函数');
           //请求失败回调函数
-          console.log(response)
+          console.log(response);
       });
-      /*
-      $http.post('/login', {username:$scope.user.name,password:$scope.user.password}).then(
-          function successCallback(response) {
-              console.log(response)
-              // this callback will be called asynchronously
-              // when the response is available
-          }, function errorCallback(response) {
-              // called asynchronously if an error occurs
-              // or server returns response with an error status.
-              console.log(response)
-          });
-      */
-      /*
-      var Login=$resource('/login', {}, {post:{method:'POST', params:{username:$scope.user.name,password:$scope.user.password}}});
-      Login.post(function (data) {
-        console.log(data)
-      })
-      */
   };
 }]);

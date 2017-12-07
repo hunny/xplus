@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * 演示使用SpringSecurity CSRF配合AngularJS。
+ * 
+ * 参考https://github.com/codeboytj/spring-security-csrf/
+ * 
  * 运行时配置<code>spring.profiles.active=CsrfAngularJSDemo</code>时使用。
  */
 @Target({

@@ -257,6 +257,21 @@ public class IndexController {
         null, //
         "Apache Spark 2.2.0中文文档"));
 
+    index.getList().add(make("Apache Spark 官方文档中文版", //
+        "https://github.com/apachecn/spark-doc-zh", //
+        null, //
+        "Apache Spark 官方文档中文版"));
+
+    index.getList().add(make("Git（win／Linux／Mac）图形化界面", //
+        "https://www.cnblogs.com/tyxa/p/6135896.html", //
+        null, //
+        "Git各大平台（win／Linux／Mac）图形化界面客户端大汇总"));
+
+    index.getList().add(make("VSCode（Visual Studio Code）", //
+        "https://github.com/apachecn/spark-doc-zh/blob/master/help/vscode-windows-usage.md", //
+        null, //
+        "VSCode（Visual Studio Code）Windows 平台入门使用指南"));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

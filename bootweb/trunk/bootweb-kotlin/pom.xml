@@ -40,8 +40,8 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>${project.basedir}/src/main/kotlin, ${project.basedir}/src/main/java</sourceDirectory>
-    <testSourceDirectory>${project.basedir}/src/test/kotlin, ${project.basedir}/src/test/java</testSourceDirectory>
+    <sourceDirectory>${project.basedir}/src/main/kotlin,src/main/java</sourceDirectory>
+    <testSourceDirectory>${project.basedir}/src/test/kotlin,src/test/java</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>

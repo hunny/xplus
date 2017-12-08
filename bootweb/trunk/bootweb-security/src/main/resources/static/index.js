@@ -43,7 +43,7 @@ angular.module("myApp", [ "ngRoute", //
       console.log('HeaderInterceptor responseError:');
       console.log(response);
       if (response.status === 401) {
-      	$location.path('/login');
+      	  $location.path('/login');
       }
     	return $q.reject(response);//忽略请求向成功的地方传播
     }

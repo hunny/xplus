@@ -49,6 +49,26 @@ function($scope, $location, $http, $q, homeService) {
 		});
 		return deferred.promise;
 	}
+	function logout() {
+	  var deferred = $q.defer();
+	  $http({
+	    method : 'GET',
+	    url : '/logout'
+	  }).then(function success(response) {
+	    console.log(response);
+	    deferred.resolve(response.data);
+	  }, function error(response) {
+	    deferred.reject(response);
+	  });
+	  return deferred.promise;
+	}
+	$scope.logout = function() {
+	  logout().then(function() {
+	    console.log('logout ok.');
+	  }, function() {
+      console.log('logout error.');
+	  });
+	}
 	$scope.about = function() {
 //		myAbout().then(function(data) {
 //			$scope.hello = data.data;

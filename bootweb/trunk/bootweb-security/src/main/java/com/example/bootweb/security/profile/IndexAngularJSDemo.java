@@ -9,17 +9,15 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Profile;
 
 /**
- * 演示使用SpringSecurity CSRF配合AngularJS。
+ * 演示使用SpringSecurity CSRF Index配合AngularJS。
  * 
- * 参考https://github.com/codeboytj/spring-security-csrf/
- * 
- * 运行时配置<code>spring.profiles.active=CsrfAngularJS</code>时使用。
+ * 运行时配置<code>spring.profiles.active=IndexAngularJS</code>时使用。
  */
 @Target({
     ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Profile("CsrfAngularJS")
-public @interface CsrfAngularJSDemo {
+@Profile("IndexAngularJS")
+public @interface IndexAngularJSDemo {
 
 }

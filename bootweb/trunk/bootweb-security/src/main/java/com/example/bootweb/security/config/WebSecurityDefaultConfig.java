@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 import com.example.bootweb.security.profile.OnNoProfileCondition;
 
+/**
+ * 中文参考手册{@link https://springcloud.cc/spring-security-zhcn.html}
+ */
 @Configuration
 @EnableWebSecurity
 @OnNoProfileCondition

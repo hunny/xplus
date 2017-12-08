@@ -14,4 +14,6 @@ import org.springframework.context.annotation.Conditional;
 @Conditional(OnNoProfileConditionHandler.class)
 public @interface OnNoProfileCondition {
 
+  // Do Nothing.
+  
 }

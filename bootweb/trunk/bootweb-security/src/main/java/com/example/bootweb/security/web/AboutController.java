@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bootweb.security.about.ApplicationAbout;
+
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AboutController {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
-  
+
   @GetMapping("/about")
-  public ResponseEntity<Map> getAbout() {
+  public ResponseEntity<ApplicationAbout> getAbout() {
     logger.info("Receive about request.");
-    Map<String, String> map = new HashMap<String, String>();
-    map.put("data", "Spring Boot & Security & AngularJS demo.");
-    return new ResponseEntity<Map>(map, HttpStatus.OK);
+    return new ResponseEntity<ApplicationAbout>(ApplicationAbout.get(getClass()), HttpStatus.OK);
   }
-  
+
   @GetMapping("/about/{id}")
   public ResponseEntity<Map> getAboutId(@PathVariable("id") Integer id) {
     logger.info("Receive about request id {}.", id);
@@ -34,5 +34,5 @@ public class AboutController {
     map.put("id", String.valueOf(id));
     return new ResponseEntity<Map>(map, HttpStatus.valueOf(id));
   }
-  
+
 }

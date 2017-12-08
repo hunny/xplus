@@ -89,6 +89,7 @@ public class MarkdownThymeleafController {
     return "markdownThymeleaf";
   }
 
+  @SuppressWarnings("static-method")
   private String renderFile(File file) throws IOException, FileNotFoundException {
     MutableDataSet options = new MutableDataSet();
 

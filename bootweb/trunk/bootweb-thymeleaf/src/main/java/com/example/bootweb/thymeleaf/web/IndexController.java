@@ -271,6 +271,21 @@ public class IndexController {
         "https://github.com/apachecn/spark-doc-zh/blob/master/help/vscode-windows-usage.md", //
         null, //
         "VSCode（Visual Studio Code）Windows 平台入门使用指南"));
+    
+    index.getList().add(make("码云 Gitee.com", //
+        "https://gitee.com/", //
+        null, //
+        "码云 Gitee.com, http://git.oschina.net源码托管。"));
+
+    index.getList().add(make("iBase4J的SpringBoot版本", //
+        "https://gitee.com/iBase4J/iBase4J-SpringBoot", //
+        null, //
+        "iBase4J是Java语言的分布式系统架构。 使用Spring整合开源框架。"));
+
+    index.getList().add(make("Spring Cloud可参考中文资料", //
+        "https://gitee.com/didispace/SpringCloud-Learning", //
+        null, //
+        "Spring Cloud构建微服务架构的可参考中文资料。"));
 
     model.addAttribute("data", index);
 

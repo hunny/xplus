@@ -51,10 +51,8 @@ function($scope, $location, $http, $q, homeService) {
 	}
 	function logout() {
 	  var deferred = $q.defer();
-	  $http({
-	    method : 'GET',
-	    url : '/logout'
-	  }).then(function success(response) {
+	  $http.post('/logout')
+	  .then(function success(response) {
 	    console.log(response);
 	    deferred.resolve(response.data);
 	  }, function error(response) {
@@ -63,8 +61,9 @@ function($scope, $location, $http, $q, homeService) {
 	  return deferred.promise;
 	}
 	$scope.logout = function() {
-	  logout().then(function() {
+	  logout().then(function(response) {
 	    console.log('logout ok.');
+	    console.log(response);
 	  }, function() {
       console.log('logout error.');
 	  });

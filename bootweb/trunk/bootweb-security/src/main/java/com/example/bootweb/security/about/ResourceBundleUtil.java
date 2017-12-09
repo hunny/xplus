@@ -21,7 +21,7 @@ public class ResourceBundleUtil {
    * @throws MissingResourceException
    *           如果未找到指定名称的资源包
    */
-  public static ResourceBundle getBundle(Class baseClass, String baseName)
+  public static ResourceBundle getBundle(Class<?> baseClass, String baseName)
       throws MissingResourceException {
     return getBundle(baseClass, baseName, null);
   }
@@ -40,7 +40,7 @@ public class ResourceBundleUtil {
    * @throws MissingResourceException
    *           如果未找到指定名称的资源包
    */
-  public static ResourceBundle getBundle(Class baseClass, String baseName, Locale locale)
+  public static ResourceBundle getBundle(Class<?> baseClass, String baseName, Locale locale)
       throws MissingResourceException {
     if (baseName == null) {
       throw new MissingResourceException("baseName", ResourceBundleUtil.class.getName(), baseName);

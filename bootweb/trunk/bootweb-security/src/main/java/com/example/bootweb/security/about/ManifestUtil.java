@@ -26,7 +26,7 @@ public class ManifestUtil {
    * @return 若找不到将返回null。
    * @throws IOException
    */
-  public static Manifest getManifest(Class clazz) throws IOException {
+  public static Manifest getManifest(Class<?> clazz) throws IOException {
     if (clazz == null) {
       return null;
     }
@@ -46,7 +46,7 @@ public class ManifestUtil {
    * @return 若取不到，例如指定类不位于jar中，将返回null。
    * @throws IOException
    */
-  private static Manifest getManifestFromJar(Class clazz) throws IOException {
+  private static Manifest getManifestFromJar(Class<?> clazz) throws IOException {
     assert clazz != null;
     String resource = "/" + clazz.getName().replace('.', '/') + ".class";
     URL url = clazz.getResource(resource);
@@ -65,7 +65,7 @@ public class ManifestUtil {
    * @return 若找不到将返回null。
    * @throws IOException
    */
-  private static Manifest getManifestFromFile(Class clazz) throws IOException {
+  private static Manifest getManifestFromFile(Class<?> clazz) throws IOException {
     assert clazz != null;
     String resource = "/" + clazz.getName().replace('.', '/') + ".class";
     URL url = clazz.getResource(resource);

@@ -66,7 +66,7 @@ import org.springframework.util.Assert;
  */
 public class ApplicationAbout {
 
-  private static final Map<Class, ApplicationAbout> abouts = new HashMap<Class, ApplicationAbout>();
+  private static final Map<Class<?>, ApplicationAbout> abouts = new HashMap<Class<?>, ApplicationAbout>();
 
   /**
    * 取得应用程序关于对象。
@@ -77,7 +77,7 @@ public class ApplicationAbout {
    *           当参数indicatoryClass为null时抛出。
    * @since 1.16
    */
-  public static ApplicationAbout get(Class indicatoryClass) throws IllegalArgumentException {
+  public static ApplicationAbout get(Class<?> indicatoryClass) throws IllegalArgumentException {
     Assert.notNull(indicatoryClass, "indicatoryClass");
     ApplicationAbout about = abouts.get(indicatoryClass);
     if (about != null) {
@@ -121,7 +121,7 @@ public class ApplicationAbout {
    *          作为应用程序的指向性类。传入null等价于传入当前类。
    */
   protected ApplicationAbout(Class<?> indicatoryClass) {
-    Class icls = indicatoryClass == null ? getClass() : indicatoryClass;
+    Class<?> icls = indicatoryClass == null ? getClass() : indicatoryClass;
 
     loadFromManifest(icls);
     loadFromResources(icls);
@@ -197,7 +197,7 @@ public class ApplicationAbout {
     return copyright;
   }
 
-  private void loadFromManifest(Class icls) {
+  private void loadFromManifest(Class<?> icls) {
     assert icls != null;
     try {
       Manifest mf = ManifestUtil.getManifest(icls);
@@ -235,7 +235,7 @@ public class ApplicationAbout {
     }
   }
 
-  private void loadFromResources(Class icls) {
+  private void loadFromResources(Class<?> icls) {
     assert icls != null;
     try {
       ResourceBundle res = ResourceBundleUtil.getBundle(icls, icls.getSimpleName());

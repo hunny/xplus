@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bootweb.security.about.ApplicationAbout;
@@ -36,23 +35,24 @@ public class AboutController {
   }
 
   @GetMapping("/about/{id}")
-  public ResponseEntity<Map> getAboutId(@PathVariable("id") Integer id) {
+  public ResponseEntity<Map<String, String>> getAboutId(@PathVariable("id") Integer id) {
     logger.info("Receive about request id {}.", id);
     Map<String, String> map = new HashMap<String, String>();
     map.put("id", String.valueOf(id));
-    return new ResponseEntity<Map>(map, HttpStatus.valueOf(id));
+    return new ResponseEntity<Map<String, String>>(map, HttpStatus.valueOf(id));
   }
-  
-  @RequestMapping(value="/logout", method = RequestMethod.GET)
-  public void logoutPage (HttpServletRequest request, HttpServletResponse response) throws IOException {
-      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-      if (auth != null){    
-          new SecurityContextLogoutHandler().logout(request, response, auth);
-      }
-      response.setStatus(401);
-      response.getWriter().write("{status:401}");
-      response.getWriter().flush();
-//      return "redirect:/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+
+  // @RequestMapping(value="/logout", method = RequestMethod.GET)
+  public void logoutPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth != null) {
+      new SecurityContextLogoutHandler().logout(request, response, auth);
+    }
+    response.setStatus(401);
+    response.getWriter().write("{status:401}");
+    response.getWriter().flush();
+    // return "redirect:/login?logout";//You can redirect wherever you want, but
+    // generally it's a good practice to show login screen again.
   }
 
 }

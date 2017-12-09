@@ -12,8 +12,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import com.example.bootweb.security.handler.IndexLoginAuthenticationSuccessHandler;
@@ -54,7 +56,10 @@ public class IndexAngularJSSecurityConfig extends WebSecurityConfigurerAdapter {
         // requests matched against /user/** require a user to be authenticated
         // and must
         // be associated to the USER role，访问以/user/开头的url，需要拥有“USER"角色
-        .antMatchers("/index/home.html").hasRole("USER") //
+        .antMatchers("/index/home.html")
+        .hasRole("USER") //
+        .anyRequest() //
+        .authenticated() //
         .and() //
         .formLogin() //
         // form-based authentication is enabled with a custom login page and
@@ -71,8 +76,29 @@ public class IndexAngularJSSecurityConfig extends WebSecurityConfigurerAdapter {
         .usernameParameter("username") //
         .passwordParameter("password") //
         .successHandler(successHandler) //
-        .loginPage("/#/login") //
-        .failureUrl("/login-error")//
+        .loginPage("/index.html") //
+        //.failureUrl("/login-error")//
+        .failureHandler(new AuthenticationFailureHandler() {
+          @Override
+          public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+              AuthenticationException exception) throws IOException, ServletException {
+            response.setStatus(401);
+          }
+        }) //
+        .and() //
+        .logout() //
+        //.deleteCookies("remove") //
+        .invalidateHttpSession(false) //
+        .logoutUrl("/logout") //
+//        .logoutSuccessUrl("/logout-success") //
+        .logoutSuccessHandler(new LogoutSuccessHandler() {
+          @Override
+          public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+              Authentication authentication) throws IOException, ServletException {
+            response.setStatus(401);
+          }
+        })
+        .permitAll() //
 //        .failureHandler(new AuthenticationFailureHandler() {
 //          @Override
 //          public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,

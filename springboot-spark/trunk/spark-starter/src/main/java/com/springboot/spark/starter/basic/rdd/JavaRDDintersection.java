@@ -21,7 +21,7 @@ public class JavaRDDintersection implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingIntersection() {
+  public void using() {
     JavaRDD<Integer> rdd1 = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5));
     JavaRDD<Integer> rdd2 = sc.parallelize(Arrays.asList(5, 6, 7, 8, 9, 10));
     // 返回两个RDD的交集
@@ -30,7 +30,7 @@ public class JavaRDDintersection implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDintersection().usingIntersection();
+    new JavaRDDintersection().using();
     sc.close();
   }
 

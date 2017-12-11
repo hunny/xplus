@@ -21,7 +21,7 @@ public class JavaRDDsubtract implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingUnion() {
+  public void using() {
     JavaRDD<Integer> rdd1 = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5));
     JavaRDD<Integer> rdd2 = sc.parallelize(Arrays.asList(4, 5, 6, 7, 8, 9, 10));
     // 集合rdd1减掉集合rdd2中的元素。
@@ -30,7 +30,7 @@ public class JavaRDDsubtract implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDsubtract().usingUnion();
+    new JavaRDDsubtract().using();
     sc.close();
   }
 

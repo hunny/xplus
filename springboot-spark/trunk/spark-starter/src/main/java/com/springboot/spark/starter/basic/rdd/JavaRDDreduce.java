@@ -19,7 +19,7 @@ public class JavaRDDreduce implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingReduce() {
+  public void using() {
     JavaRDD<String> rdd = sc.parallelize(Arrays.asList("1", "2", "3", "4", "5"));
     rdd.cache();
     //对RDD中的元素进行二元计算，返回计算结果。
@@ -37,7 +37,7 @@ public class JavaRDDreduce implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDreduce().usingReduce();
+    new JavaRDDreduce().using();
     sc.close();
   }
 

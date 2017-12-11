@@ -22,7 +22,7 @@ public class JavaRDDglom implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingGlom() {
+  public void using() {
     JavaRDD<Integer> rdd1 = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5));
     // 将RDD的每个分区中的类型为T的元素转换换数组Array[T]
     JavaRDD<List<Integer>> rdd2 = rdd1.glom();
@@ -32,7 +32,7 @@ public class JavaRDDglom implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDglom().usingGlom();
+    new JavaRDDglom().using();
     sc.close();
   }
 

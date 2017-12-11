@@ -22,7 +22,7 @@ public class JavaRDDcartesian implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingCartesian() {
+  public void using() {
     JavaRDD<Integer> rdd1 = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5));
     JavaRDD<Integer> rdd2 = sc.parallelize(Arrays.asList(5, 6, 7, 8, 9, 10));
     // 对两个RDD中的所有元素进行笛卡尔积操作
@@ -31,7 +31,7 @@ public class JavaRDDcartesian implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDcartesian().usingCartesian();
+    new JavaRDDcartesian().using();
     sc.close();
   }
 

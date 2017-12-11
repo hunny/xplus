@@ -28,7 +28,7 @@ public class JavaRDDmap implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingMap() {
+  public void using() {
     JavaRDD<String> rdd = sc.parallelize(Arrays.asList("1", "2", "3", "4", "5"));
 
     testMap(rdd);
@@ -155,7 +155,7 @@ public class JavaRDDmap implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDmap().usingMap();
+    new JavaRDDmap().using();
     sc.close();
   }
 

@@ -21,7 +21,7 @@ public class JavaRDDgroupBy implements Serializable {
   
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingGroupBy() {
+  public void using() {
     JavaRDD<String> rdd = sc.parallelize(Arrays.asList("1", "2", "3", "4", "5"));
     JavaPairRDD<Integer, Iterable<String>> pairRDD = rdd.groupBy(new Function<String, Integer>() {
       private static final long serialVersionUID = -4295106396514429535L;
@@ -44,7 +44,7 @@ public class JavaRDDgroupBy implements Serializable {
   }
   
   public static void main(String[] args) {
-    new JavaRDDgroupBy().usingGroupBy();
+    new JavaRDDgroupBy().using();
     sc.close();
   }
 

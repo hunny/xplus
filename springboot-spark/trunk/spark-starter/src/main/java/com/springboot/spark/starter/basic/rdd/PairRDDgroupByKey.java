@@ -26,7 +26,7 @@ public class PairRDDgroupByKey implements Serializable {
   
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void createPairRDD() {
+  public void using() {
     // Create PairRDD
     JavaRDD<String> rdd = sc.parallelize(Arrays.asList("1", "2", "3", "4", "5", "3", "4"));
     // A function that returns key-value pairs (Tuple2<K, V>), and can be used to construct PairRDDs.
@@ -57,7 +57,7 @@ public class PairRDDgroupByKey implements Serializable {
   }
   
   public static void main(String[] args) {
-    new PairRDDgroupByKey().createPairRDD();
+    new PairRDDgroupByKey().using();
     sc.close();
   }
 

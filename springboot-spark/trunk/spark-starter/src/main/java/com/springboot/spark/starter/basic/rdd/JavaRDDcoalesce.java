@@ -26,7 +26,7 @@ public class JavaRDDcoalesce implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingCoalesce() {
+  public void using() {
     JavaRDD<String> rdd = sc.parallelize(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
 
     mapPartationWithIndex(rdd);
@@ -65,7 +65,7 @@ public class JavaRDDcoalesce implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDcoalesce().usingCoalesce();
+    new JavaRDDcoalesce().using();
     sc.close();
   }
 

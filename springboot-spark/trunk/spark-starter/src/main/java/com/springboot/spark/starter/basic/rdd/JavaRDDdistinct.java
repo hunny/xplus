@@ -21,7 +21,7 @@ public class JavaRDDdistinct implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingDistinct() {
+  public void using() {
     JavaRDD<Integer> rdd1 = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 5, 6, 7, 8, 9, 10));
     // 对RDD中的元素进行去重
     JavaRDD<Integer> rdd2 = rdd1.distinct();
@@ -30,7 +30,7 @@ public class JavaRDDdistinct implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDdistinct().usingDistinct();
+    new JavaRDDdistinct().using();
     sc.close();
   }
 

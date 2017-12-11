@@ -21,7 +21,7 @@ public class JavaRDDrandomSplit implements Serializable {
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-  public void usingUnion() {
+  public void using() {
     JavaRDD<Integer> rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16));
     // 根据weight权重值将一个RDD划分成多个RDD,权重越高划分得到的元素较多的几率就越大
     JavaRDD<Integer>[] rdds = rdd.randomSplit(new double[]{
@@ -37,7 +37,7 @@ public class JavaRDDrandomSplit implements Serializable {
   }
 
   public static void main(String[] args) {
-    new JavaRDDrandomSplit().usingUnion();
+    new JavaRDDrandomSplit().using();
     sc.close();
   }
 

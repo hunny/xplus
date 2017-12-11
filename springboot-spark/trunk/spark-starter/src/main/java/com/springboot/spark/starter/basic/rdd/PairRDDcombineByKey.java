@@ -52,7 +52,7 @@ public class PairRDDcombineByKey implements Serializable {
       @Override
       public String call(Integer v1) throws Exception {
         System.err.println(MessageFormat.format("createCombiner->{0}", v1));
-        return "createCombiner->" + v1;
+        return v1 + "_";
       }
     };
 
@@ -63,7 +63,7 @@ public class PairRDDcombineByKey implements Serializable {
       @Override
       public String call(String v1, Integer v2) throws Exception {//未执行,原因暂时未知
         System.err.println(MessageFormat.format("mergeValue->Key:{0}|Value:{1}", v1, v2));
-        return "mergeValue->Key:" + v1 + "|Value:" + v2;
+        return v1 + "@" + v2;
       }
     };
 
@@ -74,7 +74,7 @@ public class PairRDDcombineByKey implements Serializable {
       @Override
       public String call(String v1, String v2) throws Exception {//未执行,原因暂时未知
         System.err.println(MessageFormat.format("mergeCombiners->Key:{0}|Key:{1}", v1, v2));
-        return "mergeCombiners->Key:" + v1 + "|Key:" + v2;
+        return v1 + "+" + v2;
       }
 
     };

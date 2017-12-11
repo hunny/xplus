@@ -8,18 +8,19 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 
 import scala.Tuple2;
 
 /**
  */
-public class PairRDDgroupByKey implements Serializable {
+public class PairRDDreduceByKey implements Serializable {
 
   private static final long serialVersionUID = 5924321403879655951L;
 
   private final static SparkConf sparkConf = new SparkConf() //
-      .setAppName(PairRDDgroupByKey.class.getName()) //
+      .setAppName(PairRDDreduceByKey.class.getName()) //
       .setMaster("local") //
   ; //
 
@@ -45,34 +46,24 @@ public class PairRDDgroupByKey implements Serializable {
     System.err.println("javaPairRDD.mapToPair()=>");
     System.err.println(map);
 
-    // 该函数用于将RDD[K,V]中每个K对应的V值，合并到一个集合Iterable[V]中
-    JavaPairRDD<String, Iterable<Integer>> groupByKey = javaPairRDD.groupByKey();
-    Map<String, Iterable<Integer>> collectAsMap = groupByKey.collectAsMap();
-    System.err.println("groupByKey.groupByKey()=>");
-    for (Map.Entry<String, Iterable<Integer>> m : collectAsMap.entrySet()) {
-      System.err.println("+  " + m.getKey());
-      Iterable<Integer> value = m.getValue();
-      for (Integer v : value) {
-        System.err.println(" - " + v);
-      }
-    }
-    // groupByKey.groupByKey()=>
-    // + 2
-    // - 2
-    // + 5
-    // - 5
-    // + 1
-    // - 1
-    // + 4
-    // - 4
-    // - 4
-    // + 3
-    // - 3
-    // - 3
+    JavaPairRDD<String, Integer> javaPairRDD2 = javaPairRDD
+        .reduceByKey(new Function2<Integer, Integer, Integer>() {
+          private static final long serialVersionUID = -7954451885217698351L;
+
+          @Override
+          public Integer call(Integer v1, Integer v2) throws Exception {
+            return v1 + v2;
+          }
+        });
+    map = javaPairRDD2.collectAsMap();
+    System.err.println("javaPairRDD.reduceByKey()=>");
+    System.err.println(map);
+    // javaPairRDD.reduceByKey()=>
+    // {2=2, 5=5, 1=1, 4=8, 3=6}
   }
 
   public static void main(String[] args) {
-    new PairRDDgroupByKey().using();
+    new PairRDDreduceByKey().using();
     sc.close();
   }
 

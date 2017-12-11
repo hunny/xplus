@@ -22,6 +22,7 @@ public class JavaRDDreduce implements Serializable {
   public void usingReduce() {
     JavaRDD<String> rdd = sc.parallelize(Arrays.asList("1", "2", "3", "4", "5"));
     rdd.cache();
+    //对RDD中的元素进行二元计算，返回计算结果。
     String str = rdd.reduce(new Function2<String, String, String>() {
       private static final long serialVersionUID = 1L;
 

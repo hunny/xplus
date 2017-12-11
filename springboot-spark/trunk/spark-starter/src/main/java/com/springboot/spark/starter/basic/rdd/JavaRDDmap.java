@@ -23,7 +23,7 @@ public class JavaRDDmap implements Serializable {
 
   private final static SparkConf sparkConf = new SparkConf() //
       .setAppName("JavaRDDmap") //
-      .setMaster("local") //
+      .setMaster("local[2]") //
   ; //
 
   public final static JavaSparkContext sc = new JavaSparkContext(sparkConf);

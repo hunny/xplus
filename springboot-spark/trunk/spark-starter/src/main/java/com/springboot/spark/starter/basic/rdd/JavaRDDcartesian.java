@@ -16,7 +16,7 @@ public class JavaRDDcartesian implements Serializable {
   private static final long serialVersionUID = 5924321403879655951L;
 
   private final static SparkConf sparkConf = new SparkConf() //
-      .setAppName("JavaRDDcartesian") //
+      .setAppName(JavaRDDcartesian.class.getName()) //
       .setMaster("local") //
   ; //
 

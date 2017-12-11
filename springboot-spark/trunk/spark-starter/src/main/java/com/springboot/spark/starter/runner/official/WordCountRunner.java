@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -44,6 +45,14 @@ public class WordCountRunner implements CommandLineRunner, Serializable {
 
     JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
 
+    counts = ones.reduceByKey(new Function2<Integer, Integer, Integer>() {
+      private static final long serialVersionUID = 2886042633121305237L;
+      @Override
+      public Integer call(Integer v1, Integer v2) throws Exception {
+        return v1 + v2;
+      }
+    });
+    
     List<Tuple2<String, Integer>> output = counts.collect();
     for (Tuple2<?, ?> tuple : output) {
       System.out.println(tuple._1() + ": " + tuple._2());

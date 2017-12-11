@@ -22,7 +22,7 @@ public class JavaRDDmap implements Serializable {
   private static final long serialVersionUID = 5924321403879655951L;
 
   private final static SparkConf sparkConf = new SparkConf() //
-      .setAppName("JavaRDDmap") //
+      .setAppName(JavaRDDmap.class.getName()) //
       .setMaster("local[2]") //
   ; //
 

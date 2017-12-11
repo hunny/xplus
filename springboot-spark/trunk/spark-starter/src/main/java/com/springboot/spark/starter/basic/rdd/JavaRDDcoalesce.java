@@ -20,7 +20,7 @@ public class JavaRDDcoalesce implements Serializable {
   private static final long serialVersionUID = 5924321403879655951L;
 
   private final static SparkConf sparkConf = new SparkConf() //
-      .setAppName("JavaRDDcoalesce") //
+      .setAppName(JavaRDDcoalesce.class.getName()) //
       .setMaster("local[1]") //默认时，分区分配一个
   ; //
 

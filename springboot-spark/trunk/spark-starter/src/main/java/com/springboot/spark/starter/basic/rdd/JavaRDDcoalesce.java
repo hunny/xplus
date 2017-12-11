@@ -34,7 +34,8 @@ public class JavaRDDcoalesce implements Serializable {
     //[分区：0|值为：1, 分区：0|值为：2, 分区：0|值为：3, 分区：0|值为：4, 分区：0|值为：5, 分区：0|值为：6, 分区：0|值为：7, 分区：0|值为：8, 分区：0|值为：9, 分区：0|值为：10]
     System.out.println("分区个数：" + rdd.getNumPartitions());
     System.out.println("RDD依赖关系:" + rdd.toDebugString());
-    
+    // Persist this RDD with the default storage level (`MEMORY_ONLY`).
+    rdd.cache();
     // 对RDD的分区进行重新分区，shuffle默认值为false,当shuffle=false时，不能增加分区数目,但不会报错，只是分区个数还是原来的
     JavaRDD<String> rdd2 = rdd.coalesce(3, true);//与rdd.repartition(numPartitions)作用相同
     

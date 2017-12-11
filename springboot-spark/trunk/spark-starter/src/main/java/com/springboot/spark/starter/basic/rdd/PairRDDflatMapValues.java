@@ -46,6 +46,7 @@ public class PairRDDflatMapValues implements Serializable {
     System.err.println(javaPairRDD.collect());
     // [(1,10), (2,20), (3,30), (4,40), (5,50), (30,300), (42,420)]
 
+    //同基本转换操作中的flatMap，只不过flatMapValues是针对[K,V]中的V值进行flatMap操作。
     JavaPairRDD<String, String> flatMapValues = javaPairRDD
         .flatMapValues(new Function<Integer, Iterable<String>>() {
           private static final long serialVersionUID = 968359175366832488L;

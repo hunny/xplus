@@ -43,6 +43,7 @@ public class PairRDDmapValues implements Serializable {
     System.err.println(javaPairRDD.collect());
     // [(1,10), (2,20), (3,30), (4,40), (5,50), (30,300), (42,420)]
 
+    // 同基本转换操作中的map，只不过mapValues是针对[K,V]中的V值进行map操作。
     JavaPairRDD<String, String> mapValues = javaPairRDD.mapValues(new Function<Integer, String>() {
       private static final long serialVersionUID = -5028810986485230014L;
 

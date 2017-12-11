@@ -287,6 +287,11 @@ public class IndexController {
         null, //
         "Spring Cloud构建微服务架构的可参考中文资料。"));
 
+    index.getList().add(make("Apache Spark 2.2.0 官方文档中文版", //
+        "http://blog.csdn.net/u012185296/article/details/76855770", //
+        null, //
+        "Apache Spark 2.2.0 官方文档中文版（翻译完成 98%. 除 MLib 外） | ApacheCN。"));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

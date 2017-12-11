@@ -6,8 +6,8 @@
 * 统计RDD分区中的元素及数量 
 * RDD基本转换操作(1)–map、flagMap、distinct
 * RDD基本转换操作(2)–coalesce、repartition
-* RDD基本转换操作(3)–randomSplit、glom
-* RDD基本转换操作(4)–union、intersection、subtract
+* RDD基本转换操作(3)–randomSplit、glom（转换为数组）
+* RDD基本转换操作(4)–union、intersection、subtract、cartesian（笛卡尔积）
 * RDD基本转换操作(5)–mapPartitions、mapPartitionsWithIndex
 * RDD基本转换操作(6)–zip、zipPartitions
 * RDD基本转换操作(7)–zipWithIndex、zipWithUniqueId

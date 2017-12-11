@@ -32,13 +32,17 @@ public class JavaRDDcoalesce implements Serializable {
     mapPartationWithIndex(rdd);
     //输出一个分区
     //[分区：0|值为：1, 分区：0|值为：2, 分区：0|值为：3, 分区：0|值为：4, 分区：0|值为：5, 分区：0|值为：6, 分区：0|值为：7, 分区：0|值为：8, 分区：0|值为：9, 分区：0|值为：10]
+    System.out.println("分区个数：" + rdd.getNumPartitions());
+    System.out.println("RDD依赖关系:" + rdd.toDebugString());
     
     // 对RDD的分区进行重新分区，shuffle默认值为false,当shuffle=false时，不能增加分区数目,但不会报错，只是分区个数还是原来的
-    JavaRDD<String> rdd2 = rdd.coalesce(3, true);
+    JavaRDD<String> rdd2 = rdd.coalesce(3, true);//与rdd.repartition(numPartitions)作用相同
     
     mapPartationWithIndex(rdd2);
     //输出三个分区
     //[分区：0|值为：3, 分区：0|值为：6, 分区：0|值为：9, 分区：1|值为：1, 分区：1|值为：4, 分区：1|值为：7, 分区：1|值为：10, 分区：2|值为：2, 分区：2|值为：5, 分区：2|值为：8]
+    System.out.println("分区个数：" + rdd2.getNumPartitions());
+    System.out.println("RDD依赖关系:" + rdd2.toDebugString());
   }
 
   private void mapPartationWithIndex(JavaRDD<String> rdd) {

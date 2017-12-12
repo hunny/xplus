@@ -1,4 +1,4 @@
-package com.springboot.spark.starter.runner.official;
+package com.springboot.spark.starter.runner.official.sql;
 
 import java.io.Serializable;
 import java.util.ArrayList;

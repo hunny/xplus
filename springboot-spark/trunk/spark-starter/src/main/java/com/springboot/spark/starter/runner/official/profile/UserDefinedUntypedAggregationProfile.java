@@ -9,13 +9,13 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Run with <code>spring.profiles.active=SparkSQL</code>
+ * Run with <code>spring.profiles.active=UserDefinedUntypedAggregationProfile</code>
  */
 @Target({
     ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Profile("SparkSQL")
-public @interface SparkSQLProfile {
+@Profile("UserDefinedUntypedAggregationProfile")
+public @interface UserDefinedUntypedAggregationProfile {
 
 }

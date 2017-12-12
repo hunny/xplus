@@ -1,22 +1,21 @@
 package com.springboot.spark.starter.basic.dataframe;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
 @SuppressWarnings("static-method")
-public class DatasetAgg implements Serializable {
+public class DatasetSql implements Serializable {
 
   private static final long serialVersionUID = 5924321403879655951L;
 
   private final static SparkConf sparkConf = new SparkConf() //
-      .setAppName(DatasetAgg.class.getName()) //
+      .setAppName(DatasetSql.class.getName()) //
       .setMaster("local") //
   ; //
 
@@ -25,19 +24,15 @@ public class DatasetAgg implements Serializable {
   public void using() {
 
     SparkSession sparkSession = SparkSession.builder().sparkContext(sc.sc())
-        .appName(DatasetAgg.class.getName()).getOrCreate();
+        .appName(DatasetSql.class.getName()).getOrCreate();
     Dataset<Row> dataset = sparkSession.read()
         .json("src/main/java/com/springboot/spark/starter/basic/dataframe/people.json");
     // Persist this Dataset with the default storage level (`MEMORY_AND_DISK`).
     dataset.cache();
-    // Prints the physical plan to the console for debugging purposes.
-    System.err.println("Prints the physical plan to the console for debugging purposes.");
-    dataset.explain();
-    agg(dataset);
+    sql(dataset);
   }
 
-
-  private void agg(Dataset<Row> dataset) {
+  private void sql(Dataset<Row> dataset) {
     System.err.println("Original Output:");
     dataset.show();
     // Original Output:
@@ -49,24 +44,49 @@ public class DatasetAgg implements Serializable {
     // | Justin| 2|
     // | Jack| 5|
     // +-------+-----+
+
+    Dataset<Row> select = dataset.select("key");
+    System.err.println("select Output:");
+    select.show();
+    // select Output:
+    // +-------+
+    // | key|
+    // +-------+
+    // |Michael|
+    // | Andy|
+    // | Justin|
+    // | Jack|
+    // +-------+
+
+    select = dataset.select(new Column("key"), new Column("value").plus(Integer.valueOf(10)));
+    System.err.println("select Output:");
+    select.show();
+    // +-------+------------+
+    // | key|(value + 10)|
+    // +-------+------------+
+    // |Michael| 11|
+    // | Andy| 13|
+    // | Justin| 12|
+    // | Jack| 15|
+    // +-------+------------+
     
-    System.err.println("agg Output:");
-    Map<String, String> exprs = new HashMap<>();
-    exprs.put("key", "count");
-    exprs.put("value", "sum");
-    Dataset<Row> agg = dataset.agg(exprs);
-    agg.show();
-    // agg Output:
-    // +----------+----------+
-    // |sum(value)|count(key)|
-    // +----------+----------+
-    // | 11| 4|
-    // +----------+----------+
-    
+    Dataset<Row> filter = select.filter(new Column("(value + 10)").gt(Integer.valueOf(12)));
+    System.err.println("filter Output:");
+    filter.printSchema();
+    // root
+    // |-- key: string (nullable = true)
+    // |-- (value + 10): long (nullable = true)
+    filter.show();
+    // +----+------------+
+    // | key|(value + 10)|
+    // +----+------------+
+    // |Andy| 13|
+    // |Jack| 15|
+    // +----+------------+
   }
-  
+
   public static void main(String[] args) {
-    new DatasetAgg().using();
+    new DatasetSql().using();
     sc.close();
   }
 

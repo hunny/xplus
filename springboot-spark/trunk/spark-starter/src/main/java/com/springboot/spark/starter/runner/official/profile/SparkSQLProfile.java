@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
     ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Profile("SparkPi")
-public @interface SparkPiProfile {
+@Profile("SparkSQL")
+public @interface SparkSQLProfile {
 
 }

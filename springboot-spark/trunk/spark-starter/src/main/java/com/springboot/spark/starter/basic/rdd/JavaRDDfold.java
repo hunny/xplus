@@ -21,6 +21,7 @@ public class JavaRDDfold implements Serializable {
 
   public void using() {
     JavaRDD<Integer> rdd1 = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5));
+    // fold是aggregate的简化，将aggregate中的seqOp和combOp使用同一个函数op。
     Integer fold = rdd1.fold(0, new Function2<Integer, Integer, Integer>() {
       private static final long serialVersionUID = -3049080982645160523L;
 

@@ -1,4 +1,4 @@
-package com.springboot.spark.starter.runner.official;
+package com.springboot.spark.starter.runner.official.sql;
 
 //$example on:typed_custom_aggregation$
 import java.io.Serializable;

@@ -292,6 +292,26 @@ public class IndexController {
         null, //
         "Apache Spark 2.2.0 官方文档中文版（翻译完成 98%. 除 MLib 外） | ApacheCN。"));
 
+    index.getList().add(make("机器学习博文", //
+        "http://www.cnblogs.com/LeftNotEasy/tag/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/", //
+        null, //
+        "关注于 机器学习、数据挖掘、并行计算、数学。"));
+
+    index.getList().add(make("最小二乘估计(Least Squares Estimator)的公式的推导", //
+        "http://www.qiujiawei.com/linear-algebra-15/", //
+        null, //
+        "图形学、机器学习，以及各种有趣的数学。"));
+
+    index.getList().add(make("Videos answering a \"what is _?\"", //
+        "https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw", //
+        null, //
+        "Videos answering a \"what is _?\" style question about Math."));
+    
+    index.getList().add(make("youtube-dl", //
+        "https://github.com/rg3/youtube-dl", //
+        null, //
+        "Videos downloader."));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

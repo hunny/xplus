@@ -1,26 +1,18 @@
-<h2 class="page-header">Markdown文件</h2>
+<h2 class="page-header">MP4文件</h2>
 <div class="panel panel-default">
   <div class="panel-heading">说明</div>
   <div class="panel-body">
     <ul class="list-group">
       <li class="list-group-item">
         <div class="input-group">
-          <span class="input-group-addon">文件目录</span>
-          <input type="text" class="form-control" placeholder="输入markdown文件路径" ng-model="path">
+          <span class="input-group-addon">视频目录</span>
+          <input type="text" class="form-control" placeholder="输入MP4视频目录" ng-model="path">
           <span class="input-group-btn">
             <button class="btn btn-default" type="button" ng-click="list()">
               <span class="glyphicon glyphicon-search"></span>
             </button>
           </span>
         </div>
-      </li>
-      <li class="list-group-item">
-        <a href="http://v3.bootcss.com/components/"
-            target="_blank">组件</a>：无数可复用的组件，包括字体图标、下拉菜单、导航、警告框、弹出框等更多功能。
-      </li>
-      <li class="list-group-item">
-        <a href="http://v3.bootcss.com/css/"
-            target="_blank">全局CSS样式</a>：设置全局 CSS 样式；基本的 HTML 元素均可以通过 class 设置样式并得到增强效果；还有先进的栅格系统。
       </li>
     </ul>
   </div>
@@ -50,7 +42,14 @@
       <tbody>
         <tr ng-repeat="item in items | filter:test"> <!-- | orderBy:'name':reverse -->
           <td>{{$index + 1}}</td>
-          <td title="{{item.path}}"><a href="{{item.path}}" target="_blank">{{item.name}}</a></td>
+          <td title="{{item.path}}"><a href="{{item.path}}" target="_blank">{{item.name}}</a>
+            <div class="thumbnail">
+              <video controls="controls" title="{{item.path}}">
+                <!-- <source src="/video/play?path={{item.path}}" type="video/mp4" /> -->
+                您的浏览器不支持 video 标签。
+              </video>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

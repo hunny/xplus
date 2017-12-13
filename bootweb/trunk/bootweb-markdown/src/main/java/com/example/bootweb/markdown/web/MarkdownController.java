@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bootweb.markdown.service.FileService;
 import com.example.bootweb.markdown.service.MarkdownService;
 import com.ibm.icu.text.MessageFormat;
 
@@ -26,6 +27,9 @@ public class MarkdownController {
 
   @Autowired
   private MarkdownService markdownService;
+  
+  @Autowired
+  private FileService fileService;
 
   @RequestMapping(value = "html", method = RequestMethod.GET)
   public Map<String, Object> text(@RequestParam(name = "filePath", required = false) String filePath)
@@ -57,7 +61,7 @@ public class MarkdownController {
       return Collections.emptyList();
     }
     List<FileBean> result = new ArrayList<>();
-    List<String> list = markdownService.list(path, true);
+    List<String> list = fileService.list(path, true, ".md");
     for (String str : list) {
       File file = new File(str);
       String p = file.getAbsolutePath().replaceAll("\\\\", "/");

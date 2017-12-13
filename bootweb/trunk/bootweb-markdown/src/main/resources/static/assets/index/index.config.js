@@ -17,6 +17,10 @@ app.config(function($routeProvider, $locationProvider) {
     templateUrl: 'assets/index/tpl/md-file-search.html',
     controller: 'fileListController'
   }) //
+  .when('/video', {
+    templateUrl: 'assets/index/tpl/video.html',
+    controller: 'videoController'
+  }) //
   .otherwise({
     redirectTo: '/tool'
   });

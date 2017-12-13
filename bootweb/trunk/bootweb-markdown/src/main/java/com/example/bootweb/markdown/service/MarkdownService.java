@@ -1,15 +1,11 @@
 package com.example.bootweb.markdown.service;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,44 +54,6 @@ public class MarkdownService {
 
     Node document = parser.parseReader(new InputStreamReader(inputStream));
     return renderer.render(document);
-  }
-
-  public List<String> list(String path, boolean absolute) {
-    List<String> result = getMarkdownFiles(path);
-    if (absolute) {
-      return result;
-    }
-    List<String> tmp = new LinkedList<>();
-    for (String p : result) {
-      tmp.add(p.replaceFirst(path, ""));
-    }
-    return tmp;
-  }
-
-  public List<String> getMarkdownFiles(String rootPath) {
-    List<String> result = new LinkedList<>();
-    File file = new File(rootPath);
-    File[] files = file.listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File f) {
-        if (f.isDirectory()) {
-          return true;
-        } else {
-          if (f.getName().endsWith(".md")) {
-            return true;
-          }
-          return false;
-        }
-      }
-    });
-    for (int i = 0; i < files.length; i++) {
-      if (files[i].isDirectory()) {
-        result.addAll(getMarkdownFiles(files[i].getPath()));
-      } else {
-        result.add(files[i].getAbsolutePath());
-      }
-    }
-    return result;
   }
   
 }

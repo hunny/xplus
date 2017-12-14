@@ -321,6 +321,26 @@ public class IndexController {
         "http://www.ityouknow.com/springcloud/2017/11/02/framework-and-springcloud.html", //
         null, //
         "从架构演进的角度聊聊Spring Cloud都做了些什么？"));
+    
+    index.getList().add(make("Spring Boot相关的学习资料", //
+        "http://www.ityouknow.com/springboot/2015/12/30/springboot-collect.html", //
+        null, //
+        "收集Spring Boot相关的学习资料"));
+    
+    index.getList().add(make("Spring Cloud相关的学习资料", //
+        "http://www.ityouknow.com/springcloud/2016/12/30/springcloud-collect.html", //
+        null, //
+        "收集Spring Cloud相关的学习资料"));
+    
+    index.getList().add(make("使用Jenkins部署Spring Boot", //
+        "http://www.ityouknow.com/springboot/2017/11/11/springboot-jenkins.html", //
+        null, //
+        "使用Jenkins部署Spring Boot"));
+    
+    index.getList().add(make("不错的博文", //
+        "http://www.ityouknow.com/blog", //
+        null, //
+        "不错的博文"));
 
     model.addAttribute("data", index);
 

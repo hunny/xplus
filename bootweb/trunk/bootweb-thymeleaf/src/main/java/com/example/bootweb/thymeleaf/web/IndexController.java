@@ -311,6 +311,16 @@ public class IndexController {
         "https://github.com/rg3/youtube-dl", //
         null, //
         "Videos downloader."));
+    
+    index.getList().add(make("spring-cloud-examples", //
+        "https://github.com/ityouknow/spring-cloud-examples", //
+        null, //
+        "spring-cloud-examples, 大话Spring Cloud."));
+    
+    index.getList().add(make("Spring Cloud都做了些什么？", //
+        "http://www.ityouknow.com/springcloud/2017/11/02/framework-and-springcloud.html", //
+        null, //
+        "从架构演进的角度聊聊Spring Cloud都做了些什么？"));
 
     model.addAttribute("data", index);
 

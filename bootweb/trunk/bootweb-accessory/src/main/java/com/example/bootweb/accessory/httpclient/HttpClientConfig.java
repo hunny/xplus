@@ -7,17 +7,15 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 /**
  * 描述：HttpClient客户端封装
  */
-//@Component("httpClient")
-public class HttpClientManagerFactoryBen
-    implements FactoryBean<CloseableHttpClient>, InitializingBean, DisposableBean {
+//@Configuration
+public class HttpClientConfig {
 
   /**
    * FactoryBean生成的目标对象
@@ -40,7 +38,6 @@ public class HttpClientManagerFactoryBen
   private RequestConfig config;
 
   // 销毁上下文时，销毁HttpClient实例
-  @Override
   public void destroy() throws Exception {
     /*
      * 调用httpClient.close()会先shut down connection
@@ -54,8 +51,9 @@ public class HttpClientManagerFactoryBen
     }
   }
 
-  @Override // 初始化实例
-  public void afterPropertiesSet() throws Exception {
+  @Bean(name = "httpClient")//, destroyMethod = "close()"
+  @Scope(value = "singleton")
+  public CloseableHttpClient client() throws Exception {
     /*
      * 建议此处使用HttpClients.custom的方式来创建HttpClientBuilder，而不要使用HttpClientBuilder.
      * create()方法来创建HttpClientBuilder
@@ -65,23 +63,7 @@ public class HttpClientManagerFactoryBen
     this.client = HttpClients.custom().setConnectionManager(poolHttpcConnManager)
         .setRetryHandler(httpRequestRetryHandler).setKeepAliveStrategy(connectionKeepAliveStrategy)
         .setRoutePlanner(proxyRoutePlanner).setDefaultRequestConfig(config).build();
-  }
-
-  // 返回实例的类型
-  @Override
-  public CloseableHttpClient getObject() throws Exception {
     return this.client;
-  }
-
-  @Override
-  public Class<?> getObjectType() {
-    return (this.client == null ? CloseableHttpClient.class : this.client.getClass());
-  }
-
-  // 构建的实例为单例
-  @Override
-  public boolean isSingleton() {
-    return true;
   }
 
 }

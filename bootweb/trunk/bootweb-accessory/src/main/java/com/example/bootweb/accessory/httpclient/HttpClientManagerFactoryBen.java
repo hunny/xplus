@@ -11,11 +11,12 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 描述：HttpClient客户端封装
  */
-//@Component("httpClient")
+@Component("httpClient")
 public class HttpClientManagerFactoryBen
     implements FactoryBean<CloseableHttpClient>, InitializingBean, DisposableBean {
 

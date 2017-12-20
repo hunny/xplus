@@ -19,9 +19,16 @@ public class ProxyRouteConfig {
   // 代理的端口号
   @Value("${httpclient.config.proxyPort}")
   private int proxyPort = 80;
+  
+  // 代理的端口号
+  @Value("${httpclient.config.proxy:false}")
+  private boolean proxy;
 
   @Bean
   public DefaultProxyRoutePlanner defaultProxyRoutePlanner() {
+    if (!proxy) {
+      return null;
+    }
     HttpHost proxy = new HttpHost(this.proxyHost, this.proxyPort);
     return new DefaultProxyRoutePlanner(proxy);
   }

@@ -55,6 +55,7 @@
     <module>bootweb-kotlin</module>
     <module>bootweb-accessory</module>
     <module>bootweb-httpclient</module>
+    <module>bootweb-jpa</module>
   </modules>
 
   <dependencyManagement>

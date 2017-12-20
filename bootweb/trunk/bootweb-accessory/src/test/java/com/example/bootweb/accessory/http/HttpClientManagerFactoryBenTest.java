@@ -15,14 +15,18 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class HttpClientManagerFactoryBenTest {
+  
+  public static final String BASE_URL = "http://localhost:8081/about";
   
   // 注入HttpClient实例
   @Resource(name = "httpClient")
@@ -40,9 +44,10 @@ public class HttpClientManagerFactoryBenTest {
           System.out.println("the current thread is:" + Thread.currentThread().getName());
           HttpEntity entity = null;
           try {
-            HttpGet get = new HttpGet("http://localhost:8080/about");
+            HttpGet get = new HttpGet(BASE_URL);
             // 通过httpclient的execute提交 请求 ，并用CloseableHttpResponse接受返回信息
             CloseableHttpResponse response = client.execute(get);
+            Assert.assertEquals("相同", response.getStatusLine().getStatusCode(), HttpStatus.OK.value());
             System.out.println("client object:" + client);
             entity = response.getEntity();
             System.out.println(

@@ -8,10 +8,10 @@
     <artifactId>bootweb-parent</artifactId>
     <version>0.0.1-SHAPSHOT</version>
   </parent>
-  <artifactId>bootweb-accessory</artifactId>
+  <artifactId>bootweb-jpa</artifactId>
   <packaging>jar</packaging>
-  <name>bootweb-accessory</name>
-  <description>Booweb accessory project</description>
+  <name>bootweb-jpa</name>
+  <description>Booweb JPA demo project</description>
   <url>http://maven.apache.org</url>
 
   <dependencies>
@@ -30,16 +30,16 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-rest</artifactId>
     </dependency>
   </dependencies>
 

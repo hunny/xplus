@@ -54,6 +54,7 @@
     <module>bootweb-security</module>
     <module>bootweb-kotlin</module>
     <module>bootweb-accessory</module>
+    <module>bootweb-httpclient</module>
   </modules>
 
   <dependencyManagement>

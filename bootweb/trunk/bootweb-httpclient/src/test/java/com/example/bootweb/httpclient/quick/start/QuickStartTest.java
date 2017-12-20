@@ -6,6 +6,9 @@ import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.fluent.Content;
+import org.apache.http.client.fluent.Form;
+import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -41,7 +44,8 @@ public class QuickStartTest {
     // by the connection manager.
     try {
       System.out.println(getResponse.getStatusLine());
-      Assert.assertEquals("GET返回状态码相同", HttpStatus.OK.value(), getResponse.getStatusLine().getStatusCode());
+      Assert.assertEquals("GET返回状态码相同", HttpStatus.OK.value(),
+          getResponse.getStatusLine().getStatusCode());
       HttpEntity entity1 = getResponse.getEntity();
       // do something useful with the response body
       // and ensure it is fully consumed
@@ -68,6 +72,29 @@ public class QuickStartTest {
     } finally {
       postResponse.close();
     }
+  }
+
+  @Test
+  public void testFluentAPI() throws Exception {
+    // The fluent API relieves the user from having to deal with manual
+    // deallocation of system
+    // resources at the cost of having to buffer response content in memory in
+    // some cases.
+
+    Content getReturnContent = Request.Get(BASE_URL + "about") //
+        .execute() //
+        .returnContent(); //
+    System.out.println(getReturnContent);
+    Content postReturnContent = Request.Post(BASE_URL + "login") //
+        .bodyForm( //
+            Form.form() //
+                .add("username", "vip") //
+                .add("password", "secret") //
+                .build()) //
+        .execute() //
+        .returnContent(); //
+    System.out.println(postReturnContent);
+    System.out.println("TestFluentAPI over.");
   }
 
 }

@@ -23,16 +23,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.example.bootweb.httpclient.quick.Constants;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class QuickStartTest {
 
-  public static final String BASE_URL = "http://localhost:8081/";
-
   @Test
   public void testNativeAPI() throws Exception {
     CloseableHttpClient httpclient = HttpClients.createDefault();
-    HttpGet httpGet = new HttpGet(BASE_URL + "about");
+    HttpGet httpGet = new HttpGet(Constants.URL_ABOUT);
     CloseableHttpResponse getResponse = httpclient.execute(httpGet);
     // The underlying HTTP connection is still held by the response object
     // to allow the response content to be streamed directly from the network
@@ -54,7 +54,7 @@ public class QuickStartTest {
       getResponse.close();
     }
 
-    HttpPost httpPost = new HttpPost(BASE_URL + "login");
+    HttpPost httpPost = new HttpPost(Constants.URL_LOGIN);
     List<NameValuePair> nvps = new ArrayList<NameValuePair>();
     nvps.add(new BasicNameValuePair("username", "vip"));
     nvps.add(new BasicNameValuePair("password", "secret"));
@@ -81,11 +81,11 @@ public class QuickStartTest {
     // resources at the cost of having to buffer response content in memory in
     // some cases.
 
-    Content getReturnContent = Request.Get(BASE_URL + "about") //
+    Content getReturnContent = Request.Get(Constants.URL_ABOUT) //
         .execute() //
         .returnContent(); //
     System.out.println(getReturnContent);
-    Content postReturnContent = Request.Post(BASE_URL + "login") //
+    Content postReturnContent = Request.Post(Constants.URL_LOGIN) //
         .bodyForm( //
             Form.form() //
                 .add("username", "vip") //

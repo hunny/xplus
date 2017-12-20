@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.bootweb.httpclient.api.AboutService;
 
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class AboutController {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -29,6 +28,7 @@ public class AboutController {
   private Optional<AboutService> aboutService;
   
   @GetMapping("/about")
+  @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> getAbout() {
 
     logger.info("Receive about request.");

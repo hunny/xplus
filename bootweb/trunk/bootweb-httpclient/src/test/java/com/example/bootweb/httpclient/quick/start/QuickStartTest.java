@@ -33,6 +33,7 @@ public class QuickStartTest {
   public void testNativeAPI() throws Exception {
     CloseableHttpClient httpclient = HttpClients.createDefault();
     HttpGet httpGet = new HttpGet(Constants.URL_ABOUT);
+    httpGet.setHeader("Accept-Type", "application/json, text/javascript, */*; q=0.01, text/plain, */*; q=0.01");
     CloseableHttpResponse getResponse = httpclient.execute(httpGet);
     // The underlying HTTP connection is still held by the response object
     // to allow the response content to be streamed directly from the network

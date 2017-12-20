@@ -1,5 +1,7 @@
 # HttpClient Examples
 
+[Reference](https://hc.apache.org/httpcomponents-client-4.5.x/examples.html)
+
 ## Response handling
 This example demonstrates how to process HTTP responses using a response handler. This is the recommended way of executing HTTP requests and processing HTTP responses. This approach enables the caller to concentrate on the process of digesting HTTP responses and to delegate the task of system resource deallocation to HttpClient. The use of an HTTP response handler guarantees that the underlying HTTP connection will be released back to the connection manager automatically in all cases.
 

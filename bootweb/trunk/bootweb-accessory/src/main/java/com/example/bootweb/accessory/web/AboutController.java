@@ -1,5 +1,8 @@
 package com.example.bootweb.accessory.web;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ public class AboutController {
   
   @Autowired
   private Httpable<String> httpable;
+
+  private Elements select;
   
   @GetMapping("/about")
   public ResponseEntity<String> getAbout() {
@@ -34,8 +39,10 @@ public class AboutController {
 //    String url = "https://www.baidu.com";
 //    String url = "http://localhost:8081/about";
     String url = "https://m.tianyancha.com/";
-    String text = httpable.get(url);
-    return new ResponseEntity<String>(text, HttpStatus.OK);
+    String html = httpable.get(url);
+    Document document = Jsoup.parse(html);
+    Elements select = document.select("a");
+    return new ResponseEntity<String>(select.toString(), HttpStatus.OK);
   }
   
 }

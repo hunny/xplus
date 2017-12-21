@@ -14,6 +14,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <jjwt.version>0.9.0</jjwt.version>
+    <jsoup.version>1.11.2</jsoup.version>
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     <!-- <kotlin-stdlib.version>1.2.0</kotlin-stdlib.version> -->
     <kotlin.version>1.1.61</kotlin.version>
@@ -106,6 +107,11 @@
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-reflect</artifactId>
         <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jsoup</groupId>
+        <artifactId>jsoup</artifactId>
+        <version>${jsoup.version}</version>
       </dependency>
       <!-- PostgreSQL -->
       <dependency>

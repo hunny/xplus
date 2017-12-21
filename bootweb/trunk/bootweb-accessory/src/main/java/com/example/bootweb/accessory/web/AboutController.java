@@ -24,8 +24,6 @@ public class AboutController {
   @Autowired
   private Httpable<String> httpable;
 
-  private Elements select;
-  
   @GetMapping("/about")
   public ResponseEntity<String> getAbout() {
     
@@ -41,6 +39,7 @@ public class AboutController {
     String url = "https://m.tianyancha.com/";
     String html = httpable.get(url);
     Document document = Jsoup.parse(html);
+    //How to use select with https://jsoup.org/cookbook/extracting-data/selector-syntax
     Elements select = document.select("a");
     return new ResponseEntity<String>(select.toString(), HttpStatus.OK);
   }

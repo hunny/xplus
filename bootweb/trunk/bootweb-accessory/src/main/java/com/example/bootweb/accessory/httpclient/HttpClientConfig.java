@@ -8,6 +8,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 
@@ -52,7 +53,7 @@ public class HttpClientConfig {
   }
 
   @Bean(name = "httpClient")//, destroyMethod = "close()"
-  @Scope(value = "singleton")
+  @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
   public CloseableHttpClient client() throws Exception {
     /*
      * 建议此处使用HttpClients.custom的方式来创建HttpClientBuilder，而不要使用HttpClientBuilder.

@@ -59,6 +59,7 @@
     <module>bootweb-httpclient</module>
     <module>bootweb-jpa</module>
     <module>bootweb-task</module>
+    <module>bootweb-netty</module>
   </modules>
 
   <dependencyManagement>

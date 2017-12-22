@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.bootweb.accessory.api.Httpable;
+import com.example.bootweb.accessory.api.Http;
 
 @Service
-public class ListHttpableImpl implements Httpable<String> {
+public class HttpClientHttpImpl implements Http<String> {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 

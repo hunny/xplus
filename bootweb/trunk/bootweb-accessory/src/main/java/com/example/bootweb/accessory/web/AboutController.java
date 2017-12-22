@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.bootweb.accessory.api.Httpable;
+import com.example.bootweb.accessory.api.Http;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -26,7 +26,7 @@ public class AboutController {
   private final Logger logger = LoggerFactory.getLogger(getClass());
   
   @Autowired
-  private Httpable<String> httpable;
+  private Http<String> httpable;
 
   @GetMapping("/about")
   public ResponseEntity<String> getAbout() {

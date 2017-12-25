@@ -61,6 +61,7 @@
     <module>bootweb-task</module>
     <module>bootweb-netty</module>
     <module>bootweb-jersey</module>
+    <module>bootweb-aop</module>
   </modules>
 
   <dependencyManagement>

@@ -60,6 +60,7 @@
     <module>bootweb-jpa</module>
     <module>bootweb-task</module>
     <module>bootweb-netty</module>
+    <module>bootweb-jersey</module>
   </modules>
 
   <dependencyManagement>

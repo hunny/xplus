@@ -1,4 +1,4 @@
-package com.example.bootweb.aop;
+package com.example.bootweb.activemq;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

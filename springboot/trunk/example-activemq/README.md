@@ -1,2 +1,2 @@
-# Example AOP project.
+# Example ActiveMQ project.
 

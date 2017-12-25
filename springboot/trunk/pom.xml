@@ -20,6 +20,7 @@
     <module>example-aop</module>
     <module>example-starter</module>
     <module>example-activemq</module>
+    <module>example-actuator</module>
   </modules>
 
   <dependencyManagement>

@@ -43,7 +43,10 @@ public class EndpointsPropertiesSampleActuatorApplicationTests {
 
   @Test
   public void testCustomContextPath() throws Exception {
-    ResponseEntity<String> entity = this.restTemplate.withBasicAuth("user", getPassword())
+    // Shows application health information (when the application is secure, a
+    // simple ‘status’ when accessed over an unauthenticated connection or full
+    // message details when authenticated).
+    ResponseEntity<String> entity = this.restTemplate.withBasicAuth("actuator", getPassword())
         .getForEntity("/admin/health", String.class);
     System.out.println(entity.getBody());
     Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);

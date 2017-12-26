@@ -26,8 +26,7 @@ import com.example.springboot.actuator.Application;
     properties = {
         "management.server.port=0", //
         "management.server.address=127.0.0.1", //
-        "management.server.context-path=/admin" //
-//        "endpoints.health.path=/admin" //
+        "management.context-path=/admin" //
     })
 @DirtiesContext
 public class ManagementAddressActuatorApplicationTests {
@@ -49,7 +48,7 @@ public class ManagementAddressActuatorApplicationTests {
   @Test
   public void testHealth() throws Exception {
     ResponseEntity<String> entity = new TestRestTemplate().withBasicAuth("actuator", getPassword())
-        .getForEntity("http://localhost:" + this.managementPort + "/admin/application/health",
+        .getForEntity("http://localhost:" + this.managementPort + "/admin/health",
             String.class);
     System.out.println(entity.getBody());
     Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);

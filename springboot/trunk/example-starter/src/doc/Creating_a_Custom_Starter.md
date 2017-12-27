@@ -228,4 +228,4 @@ public class Application implements CommandLineRunner {
 ```
 
 ## Conclusion
-In this quick tutorial, we focused on rolling out a custom Spring Boot starter, and on how these starters, together with the autoconfigure mechanism – work in the background to eliminate a lot of manual configuration.
+In this quick tutorial, we focused on rolling out a custom Spring Boot starter, and on how these starters, together with the autoconfigure mechanism – work in the background to eliminate a lot of manual configuration. [Reference check here](http://www.baeldung.com/spring-boot-custom-starter).

@@ -1,6 +1,5 @@
 package com.example.springboot.actuator.runner;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;

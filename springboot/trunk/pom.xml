@@ -18,9 +18,9 @@
 
   <modules>
     <module>example-aop</module>
-    <module>example-starter</module>
     <module>example-activemq</module>
     <module>example-actuator</module>
+    <module>example-starter-greeter</module>
   </modules>
 
   <dependencyManagement>

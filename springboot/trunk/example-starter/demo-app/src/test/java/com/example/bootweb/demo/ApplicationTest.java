@@ -1,4 +1,4 @@
-package com.example.bootweb.aop;
+package com.example.bootweb.demo;
 
 import static org.junit.Assert.assertEquals;
 

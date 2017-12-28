@@ -17,38 +17,38 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.example.springboot.actuator.Application;
 
 /**
- * Integration tests for endpoints configuration.
+ * Integration tests for switching off management endpoints.
  * {@link https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html}
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, //
     webEnvironment = WebEnvironment.RANDOM_PORT, //
     properties = {
-        "management.context-path=/admin" //
-    })
+        "management.port=-1" })
 @DirtiesContext
-public class ManagementPathSampleActuatorApplicationTests {
+public class NoManagementSampleActuatorApplicationTests {
 
   @Autowired
   private TestRestTemplate restTemplate;
 
   @Test
-  public void testHealth() throws Exception {
-    ResponseEntity<String> entity = this.restTemplate.withBasicAuth("user", getPassword())
-        .getForEntity("/admin/health", String.class);
+  public void testHome() throws Exception {
+    @SuppressWarnings("rawtypes")
+    ResponseEntity<Map> entity = this.restTemplate.withBasicAuth("user", getPassword())
+        .getForEntity("/", Map.class);
     Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-    Assertions.assertThat(entity.getBody()).contains("\"status\":\"UP\"");
+    @SuppressWarnings("unchecked")
+    Map<String, Object> body = entity.getBody();
+    Assertions.assertThat(body.get("message")).isEqualTo("Hello Hello");
   }
 
   @Test
-  @SuppressWarnings(value = {
-      "rawtypes", "unchecked" })
-  public void testHomeIsSecure() throws Exception {
-    ResponseEntity<Map> entity = this.restTemplate.getForEntity("/", Map.class);
-    Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-    Map<String, Object> body = entity.getBody();
-    Assertions.assertThat(body.get("error")).isEqualTo("Unauthorized");
-    Assertions.assertThat(entity.getHeaders()).doesNotContainKey("Set-Cookie");
+  public void testMetricsNotAvailable() throws Exception {
+    testHome(); // makes sure some requests have been made
+    @SuppressWarnings("rawtypes")
+    ResponseEntity<Map> entity = this.restTemplate.withBasicAuth("actuator", getPassword())
+        .getForEntity("/metrics", Map.class);
+    Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
   @SuppressWarnings("static-method")

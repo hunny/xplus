@@ -20,6 +20,7 @@
     <module>example-aop</module>
     <module>example-activemq</module>
     <module>example-actuator</module>
+    <module>example-actuator-custom-security</module>
     <module>example-starter-greeter</module>
   </modules>
 

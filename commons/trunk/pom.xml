@@ -126,6 +126,7 @@
   <modules>
     <module>commons-batch</module>
     <module>commons-canal</module>
+    <module>commons-compiler</module>
     <module>commons-cmdb</module>
     <module>commons-guava</module>
     <module>commons-http</module>

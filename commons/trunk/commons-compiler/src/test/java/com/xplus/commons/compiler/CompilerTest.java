@@ -8,18 +8,26 @@ import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import abc.test.BeanProxy;
 import abc.test.User;
 
 public class CompilerTest {
-  JavaStringCodeCompiler compiler;
+  private static JavaStringCodeCompiler compiler;
 
-  @Before
-  public void setUp() throws Exception {
+  @BeforeClass
+  public static void setUp() throws Exception {
     compiler = new JavaStringCodeCompiler();
+    System.out.println("测试开始。");
+  }
+  
+  @AfterClass
+  public static void setDown() throws Exception {
+    compiler.close();
+    System.out.println("测试结束。");
   }
 
   static final String SINGLE_JAVA = "/* a single java class to one file */  "

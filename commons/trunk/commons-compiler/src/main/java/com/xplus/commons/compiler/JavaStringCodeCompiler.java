@@ -120,4 +120,12 @@ public class JavaStringCodeCompiler {
     classLoader.close();
     return clazz;
   }
+  
+  public void close() {
+    try {
+      this.stdManager.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

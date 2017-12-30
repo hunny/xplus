@@ -15,11 +15,11 @@ import abc.test.BeanProxy;
 import abc.test.User;
 
 public class CompilerTest {
-  JavaStringCompiler compiler;
+  JavaStringCodeCompiler compiler;
 
   @Before
   public void setUp() throws Exception {
-    compiler = new JavaStringCompiler();
+    compiler = new JavaStringCodeCompiler();
   }
 
   static final String SINGLE_JAVA = "/* a single java class to one file */  "
@@ -112,5 +112,44 @@ public class CompilerTest {
     // try instance:
     Object obj = clzMul.newInstance();
     assertNotNull(obj);
+  }
+  
+  static final String MY_JAVA_SRC = ""
+      + "package ok.test;                                               "
+      + "public class OkTest {     "
+      + "    public boolean showMsg() {                                 "
+      + "        System.err.println(\"动态编译的类测试\");                 "
+      + "        return true;                                           "
+      + "    }                                                          "
+      + "}                                                              "; 
+
+  static final String MY_JAVA_SRC1 = ""
+      + "package ok.test;                                               "
+      + "public class OkTest {     "
+      + "    public boolean showMsg() {                                 "
+      + "        System.out.println(\"动态编译的类测试\");                 "
+      + "        return false;                                           "
+      + "    }                                                          "
+      + "}                                                              "; 
+  
+  @Test
+  public void testMyClass() throws Exception {
+    Map<String, byte[]> results = compiler.compile("OkTest.java", MY_JAVA_SRC);
+    assertTrue(results.containsKey("ok.test.OkTest"));
+    Class<?> clazz = compiler.loadClass("ok.test.OkTest", results);
+    Object obj = clazz.newInstance();
+    assertNotNull(obj);
+    Method showMsg = clazz.getMethod("showMsg");
+    boolean result = (boolean)showMsg.invoke(obj);
+    assertEquals(result, true);
+    
+    Map<String, byte[]> results1 = compiler.compile("OkTest.java", MY_JAVA_SRC1);
+    assertTrue(results1.containsKey("ok.test.OkTest"));
+    Class<?> clazz1 = compiler.loadClass("ok.test.OkTest", results1);
+    Object obj1 = clazz1.newInstance();
+    assertNotNull(obj1);
+    Method showMsg1 = clazz1.getMethod("showMsg");
+    boolean result1 = (boolean)showMsg1.invoke(obj1);
+    assertEquals(result1, false);
   }
 }

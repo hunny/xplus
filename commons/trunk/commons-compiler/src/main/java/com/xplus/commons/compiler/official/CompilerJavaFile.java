@@ -25,7 +25,8 @@ public class CompilerJavaFile {
 
     StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
-    Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(files));
+    Iterable<? extends JavaFileObject> compilationUnits = //
+        fileManager.getJavaFileObjectsFromFiles(Arrays.asList(files));
     Boolean result1 = compiler.getTask(null, //
         fileManager, //
         null, null, null, //

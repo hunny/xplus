@@ -684,6 +684,302 @@ If the JVM is launched with the JPDA (Java Platform Debugger Architecture) enabl
 Javassist provides a convenient class for reloading a class at runtime. For more information, see the API documentation of javassist.tools.HotSwapper.
 Javassist为在运行时重新加载类提供了一个方便的类。 有关更多信息，请参阅javassist.tools.HotSwapper的API文档。
 
+## Introspection and customization (自我检查和定制)
+
+CtClass provides methods for introspection. The introspective ability of Javassist is compatible with that of the Java reflection API. CtClass provides getName(), getSuperclass(), getMethods(), and so on. CtClass also provides methods for modifying a class definition. It allows adding a new field, constructor, and method. Instrumenting a method body is also possible.
+CtClass提供了自我检查的方法。 Javassist的自我检查能力与Java反射API兼容。 CtClass提供了getName（），getSuperclass（），getMethods（）等。 CtClass还提供了修改类定义的方法。 它允许添加一个新的字段，构造函数和方法。 检测方法体也是可能的。
+
+Methods are represented by CtMethod objects. CtMethod provides several methods for modifying the definition of the method. Note that if a method is inherited from a super class, then the same CtMethod object that represents the inherited method represents the method declared in that super class. A CtMethod object corresponds to every method declaration.
+方法由CtMethod对象表示。 CtMethod提供了几种修改方法定义的方法。 请注意，如果方法是从超类继承的，则表示继承方法的相同CtMethod对象表示在该超类中声明的方法。 CtMethod对象对应于每个方法声明。
+
+For example, if class Point declares method move() and a subclass ColorPoint of Point does not override move(), the two move() methods declared in Point and inherited in ColorPoint are represented by the identical CtMethod object. If the method definition represented by this CtMethod object is modified, the modification is reflected on both the methods. If you want to modify only the move() method in ColorPoint, you first have to add to ColorPoint a copy of the CtMethod object representing move() in Point. A copy of the the CtMethod object can be obtained by CtNewMethod.copy().
+例如，如果类Point声明方法move（）并且Point的子类ColorPoint不覆盖move（），则在Point中声明并在ColorPoint中继承的两个move（）方法由相同的CtMethod对象表示。 如果修改了此CtMethod对象表示的方法定义，则修改将反映在这两个方法上。 如果只想修改ColorPoint中的move（）方法，则首先必须向ColorPoint添加表示Point中的move（）的CtMethod对象的副本。 CtMethod对象的副本可以通过CtNewMethod.copy（）获得。
+
+Javassist does not allow removing a method or field, but it allows changing the name. So if a method is not necessary any more, it should be renamed and changed to be a private method by calling setName() and setModifiers() declared in CtMethod.
+Javassist不允许删除方法或字段，但它允许更改名称。 所以如果一个方法不再是必需的，应该通过调用在CtMethod中声明的setName（）和setModifiers（）来重命名并更改为私有方法。
+
+Javassist does not allow adding an extra parameter to an existing method, either. Instead of doing that, a new method receiving the extra parameter as well as the other parameters should be added to the same class. For example, if you want to add an extra int parameter newZ to a method:
+Javassist不允许向现有方法添加额外的参数。如果要实现这种功能，一个新的方法接收额外的参数以及其他参数应该被添加到同一个类。 例如，如果你想添加一个额外的int参数newZ到一个方法：
+
+```java
+void move(int newX, int newY) { x = newX; y = newY; }
+```
+
+in a Point class, then you should add the following method to the Point class:
+在Point类中，则应该将以下方法添加到Point类中：
+
+```
+void move(int newX, int newY, int newZ) {
+    // do what you want with newZ.
+    move(newX, newY);
+}
+```
+
+Javassist also provides low-level API for directly editing a raw class file. For example, getClassFile() in CtClass returns a ClassFile object representing a raw class file. getMethodInfo() in CtMethod returns a MethodInfo object representing a method_info structure included in a class file. The low-level API uses the vocabulary from the Java Virtual machine specification. The users must have the knowledge about class files and bytecode. For more details, the users should see the javassist.bytecode package.
+Javassist还提供低级API以直接编辑原始类文件。 例如，CtClass中的getClassFile（）返回表示原始类文件的ClassFile对象。 CtMethod中的getMethodInfo（）返回一个MethodInfo对象，表示一个包含在类文件中的method_info结构。低级API使用Java虚拟机规范中的词汇表。用户必须具有关于类文件和字节码的知识。 有关更多详细信息，用户应该看到javassist.bytecode包。
+
+The class files modified by Javassist requires the javassist.runtime package for runtime support only if some special identifiers starting with $ are used. Those special identifiers are described below. The class files modified without those special identifiers do not need the javassist.runtime package or any other Javassist packages at runtime. For more details, see the API documentation of the javassist.runtime package.
+由Javassist修改的类文件只有在使用以$开头的特殊标识符时才需要javassist.runtime包来支持运行时。 这些特殊的标识符如下所述。 在没有这些特殊标识符的情况下修改的类文件在运行时不需要javassist.runtime包或任何其他Javassist包。 有关更多详细信息，请参阅javassist.runtime包的API文档。
+
+### Inserting source text at the beginning/end of a method body (在方法主体的开始/结尾处插入源文本)
+
+CtMethod and CtConstructor provide methods insertBefore(), insertAfter(), and addCatch(). They are used for inserting a code fragment into the body of an existing method. The users can specify those code fragments with source text written in Java. Javassist includes a simple Java compiler for processing source text. It receives source text written in Java and compiles it into Java bytecode, which will be inlined into a method body.
+CtMethod和CtConstructor提供了insertBefore（），insertAfter（）和addCatch（）方法。 它们用于将代码片段插入到现有方法的主体中。 用户可以用Java编写的源文本指定这些代码片段。 Javassist包含一个用于处理源文本的简单Java编译器。 它接收用Java编写的源文本并将其编译为Java字节码，该字节码将被内联到方法体中。
+
+Inserting a code fragment at the position specified by a line number is also possible (if the line number table is contained in the class file). insertAt() in CtMethod and CtConstructor takes source text and a line number in the source file of the original class definition. It compiles the source text and inserts the compiled code at the line number.
+在由行号指定的位置插入代码片段也是可能的（如果行号表包含在类文件中）。 CtMethod和CtConstructor中的insertAt（）将原始类定义的源文件中的源文本和行号取回。 它编译源文本并在行号处插入编译的代码。
+
+The methods insertBefore(), insertAfter(), addCatch(), and insertAt() receive a String object representing a statement or a block. A statement is a single control structure like if and while or an expression ending with a semi colon (;). A block is a set of statements surrounded with braces {}. Hence each of the following lines is an example of valid statement or block:
+insertBefore（），insertAfter（），addCatch（）和insertAt（）方法接收表示语句或块的String对象。 声明是一个单一的控制结构，如if和while或以分号（;）结尾的表达式。 块是用大括号{}包围的一组语句。 因此，以下每行都是有效语句或块的示例：
+
+```java
+System.out.println("Hello");
+{ System.out.println("Hello"); }
+if (i < 0) { i = -i; }
+```
+
+The statement and the block can refer to fields and methods. They can also refer to the parameters to the method that they are inserted into if that method was compiled with the -g option (to include a local variable attribute in the class file). Otherwise, they must access the method parameters through the special variables $0, $1, $2, ... described below. Accessing local variables declared in the method is not allowed although declaring a new local variable in the block is allowed. However, insertAt() allows the statement and the block to access local variables if these variables are available at the specified line number and the target method was compiled with the -g option.
+语句和块可以参考字段和方法。 如果使用-g选项编译该方法（在类文件中包括本地变量属性），则也可以将参数引用到插入的方法中。 否则，他们必须通过下面描述的特殊变量$ 0，$ 1，$ 2，...来访问方法参数。 访问方法中声明的局部变量是不允许的，但是允许在块中声明一个新的局部变量。 但是，insertAt（）允许语句和块访问本地变量（如果这些变量在指定行号可用并且目标方法是使用-g选项编译的）。
+
+The String object passed to the methods `insertBefore()`, `insertAfter()`, `addCatch()`, and `insertAt()` are compiled by the compiler included in Javassist. Since the compiler supports language extensions, several identifiers starting with $ have special meaning:
+传递给方法`insertBefore（）`，`insertAfter（）`，`addCatch（）`和`insertAt（）`的String对象由Javassist中包含的编译器编译。 由于编译器支持语言扩展，因此以`$`开头的几个标识符具有特殊含义：
+
+| $0, $1, $2, ... &nbsp &nbsp | this and actual parameters |
+| $args | An array of parameters. The type of $args is Object[]. |
+| $$ | All actual parameters. |
+| &nbsp | For example, m($$) is equivalent to m($1,$2,...) |
+| $cflow(...) | cflow variable |
+| $r | The result type. It is used in a cast expression. |
+| $w | The wrapper type. It is used in a cast expression. |
+| $_ | The resulting value |
+| $sig | An array of java.lang.Class objects representing the formal parameter types. |
+| $type | A java.lang.Class object representing the formal result type. |
+| $class | A java.lang.Class object representing the class currently edited. |
+
+#### $0, $1, $2, ...
+
+The parameters passed to the target method are accessible with $1, $2, ... instead of the original parameter names. $1 represents the first parameter, $2 represents the second parameter, and so on. The types of those variables are identical to the parameter types. $0 is equivalent to this. If the method is static, $0 is not available.
+传递给目标方法的参数可以用$ 1，$ 2 ...来访问，而不是原始的参数名称。 $ 1表示第一个参数，$ 2表示第二个参数，依此类推。 这些变量的类型与参数类型相同。 $ 0相当于这个。 如果该方法是静态的，则$ 0不可用。
+
+These variables are used as following. Suppose that a class Point:
+这些变量的用法如下。 假设一个类Point：
+
+```java
+class Point {
+    int x, y;
+    void move(int dx, int dy) { x += dx; y += dy; }
+}
+```
+
+To print the values of dx and dy whenever the method move() is called, execute this program:
+要调用move（）方法时，要打印dx和dy的值，请执行以下程序：
+
+```java
+ClassPool pool = ClassPool.getDefault();
+CtClass cc = pool.get("Point");
+CtMethod m = cc.getDeclaredMethod("move");
+m.insertBefore("{ System.out.println($1); System.out.println($2); }");
+cc.writeFile();
+```
+
+Note that the source text passed to insertBefore() is surrounded with braces {}. insertBefore() accepts only a single statement or a block surrounded with braces.
+请注意，传递给insertBefore（）的源文本被大括号{}包围。 insertBefore（）只接受单个语句或用大括号包围的块。
+
+The definition of the class Point after the modification is like this:
+修改后的类Point的定义如下：
+
+```java
+class Point {
+    int x, y;
+    void move(int dx, int dy) {
+        { System.out.println(dx); System.out.println(dy); }
+        x += dx; y += dy;
+    }
+}
+```
+
+$1 and $2 are replaced with dx and dy, respectively.
+$1, $2, $3 ... are updatable. If a new value is assigend to one of those variables, then the value of the parameter represented by that variable is also updated.
+
+$ 1和$ 2分别替换为dx和dy。
+$ 1，$ 2，$ 3 ...是可更新的。 如果一个新值被分配给这些变量之一，那么由该变量表示的参数的值也被更新。
+
+#### $args
+
+The variable $args represents an array of all the parameters. The type of that variable is an array of class Object. If a parameter type is a primitive type such as int, then the parameter value is converted into a wrapper object such as java.lang.Integer to store in $args. Thus, $args[0] is equivalent to $1 unless the type of the first parameter is a primitive type. Note that $args[0] is not equivalent to $0; $0 represents `this`.
+变量$args表示所有参数的数组。 该变量的类型是一个Object类的数组。 如果参数类型是基本类型（如int），那么将参数值转换为包装对象（如java.lang.Integer）以存储在$ args中。 因此，$args[0]相当于$ 1，除非第一个参数的类型是基本类型。 请注意，$args[0]不等于$ 0; $0表示`this`。
+
+If an array of Object is assigned to $args, then each element of that array is assigned to each parameter. If a parameter type is a primitive type, the type of the corresponding element must be a wrapper type. The value is converted from the wrapper type to the primitive type before it is assigned to the parameter.
+如果一个Object数组被分配给$args，那么该数组的每个元素都被分配给每个参数。 如果参数类型是基本类型，则相应元素的类型必须是包装类型。 在将值分配给参数之前，该值将从包装器类型转换为基元类型。
+
+#### $$
+
+The variable $$ is abbreviation of a list of all the parameters separated by commas. For example, if the number of the parameters to method move() is three, then
+变量$$是以逗号分隔的所有参数的列表的缩写。 例如，如果方法move（）的参数数量是3，那么
+
+```java
+move($$)
+```
+
+is equivalent to this:
+相当于这个：
+
+```java
+move($1, $2, $3)
+```
+
+If move() does not take any parameters, then move($$) is equivalent to move().
+如果move（）不带任何参数，那么move（$$）等同于move（）。
+
+$$ can be used with another method. If you write an expression:
+$$可以与其他方法一起使用。 如果你写一个表达式：
+
+```java
+exMove($$, context)
+```
+
+then this expression is equivalent to:
+那么这个表达式相当于：
+
+```java
+exMove($1, $2, $3, context)
+```
+
+Note that $$ enables generic notation of method call with respect to the number of parameters. It is typically used with $proceed shown later.
+请注意，$$允许方法调用的通用符号表示参数的数量。 它通常与稍后显示的$proceed一起使用。
+
+#### $cflow
+
+$cflow means "control flow". This read-only variable returns the depth of the recursive calls to a specific method.
+$cflow表示“控制流”。 此只读变量将递归调用的深度返回给特定的方法。
+
+Suppose that the method shown below is represented by a CtMethod object cm:
+假设下面显示的方法由CtMethod对象cm表示：
+
+```java
+int fact(int n) {
+    if (n <= 1)
+        return n;
+    else
+        return n * fact(n - 1);
+}
+```
+
+To use $cflow, first declare that $cflow is used for monitoring calls to the method fact():
+要使用$cflow，首先声明$cflow用于监视方法fact（）的调用：
+
+```java
+CtMethod cm = ...;
+cm.useCflow("fact");
+```
+
+The parameter to useCflow() is the identifier of the declared $cflow variable. Any valid Java name can be used as the identifier. Since the identifier can also include . (dot), for example, "my.Test.fact" is a valid identifier.
+useCflow（）的参数是声明的$cflow变量的标识符。 任何有效的Java名称都可以用作标识符。 由于标识符也可以包含`.`（点），例如，“my.Test.fact”是一个有效的标识符。
+
+Then, $cflow(fact) represents the depth of the recursive calls to the method specified by cm. The value of $cflow(fact) is 0 (zero) when the method is first called whereas it is 1 when the method is recursively called within the method. For example,
+然后，$ cflow（fact）表示对由cm指定的方法的递归调用的深度。 当方法被第一次调用时，$ cflow（fact）的值是0（零），而当方法在方法中被递归调用时，它的值是1。 例如，
+
+```java
+cm.insertBefore("if ($cflow(fact) == 0)"
+              + "    System.out.println(\"fact \" + $1);");
+```
+
+translates the method fact() so that it shows the parameter. Since the value of $cflow(fact) is checked, the method fact() does not show the parameter if it is recursively called within fact().
+翻译方法fact（），以便显示参数。 由于$ cflow（fact）的值被检查，如果在fact（）中递归调用，方法fact（）不显示参数。
+
+The value of $cflow is the number of stack frames associated with the specified method cm under the current topmost stack frame for the current thread. $cflow is also accessible within a method different from the specified method cm.
+$cflow的值是与当前线程的当前最高堆栈帧下的指定方法cm相关联的堆栈帧的数量。 $ cflow也可以在不同于指定方法cm的方法中访问。
+
+#### $r
+
+$r represents the result type (return type) of the method. It must be used as the cast type in a cast expression. For example, this is a typical use:
+$ r表示方法的结果类型（返回类型）。 它必须用作转换表达式中的转换类型。 例如，这是一个典型的用途：
+
+```java
+Object result = ... ;
+$_ = ($r)result;
+```
+
+If the result type is a primitive type, then ($r) follows special semantics. First, if the operand type of the cast expression is a primitive type, ($r) works as a normal cast operator to the result type. On the other hand, if the operand type is a wrapper type, ($r) converts from the wrapper type to the result type. For example, if the result type is int, then ($r) converts from java.lang.Integer to int.
+如果结果类型是基本类型，那么（$ r）遵循特殊的语义。 首先，如果转换表达式的操作数类型是原始类型，则（$ r）作为结果类型的普通转换运算符。 另一方面，如果操作数类型是包装类型，则（$ r）将从包装类型转换为结果类型。 例如，如果结果类型是int，则（$ r）将从java.lang.Integer转换为int。
+
+If the result type is void, then ($r) does not convert a type; it does nothing. However, if the operand is a call to a void method, then ($r) results in null. For example, if the result type is void and foo() is a void method, then
+如果结果类型是void，那么（$ r）不会转换类型; 它什么都不做。 但是，如果操作数是对void方法的调用，则（$ r）的结果为null。 例如，如果结果类型是void而foo（）是一个void方法，那么
+
+```java
+$_ = ($r)foo();
+```
+
+is a valid statement.
+是一个有效的陈述。
+
+The cast operator ($r) is also useful in a return statement. Even if the result type is void, the following return statement is valid:
+转换运算符（$ r）在返回语句中也很有用。 即使结果类型是无效的，下面的返回语句也是有效的：
+
+```java
+return ($r)result;
+```
+
+Here, result is some local variable. Since ($r) is specified, the resulting value is discarded. This return statement is regarded as the equivalent of the return statement without a resulting value:
+在这里，结果是一些局部变量。 由于（$ r）被指定，所以产生的值被丢弃。 这个返回语句被认为是没有结果值的返回语句的等价物：
+
+```java
+return;
+```
+
+#### $w
+
+$w represents a wrapper type. It must be used as the cast type in a cast expression. ($w) converts from a primitive type to the corresponding wrapper type.
+The following code is an example:
+$ w表示一个包装类型。 它必须用作演员表演中的演员类型。 （$ w）从原始类型转换为相应的包装器类型。
+下面的代码是一个例子：
+
+```java
+Integer i = ($w)5;
+```
+
+The selected wrapper type depends on the type of the expression following ($w). If the type of the expression is double, then the wrapper type is java.lang.Double.
+If the type of the expression following ($w) is not a primitive type, then ($w) does nothing.
+
+所选的包装类型取决于（$ w）后面的表达式的类型。 如果表达式的类型是double，那么包装类型是java.lang.Double。
+如果（$ w）后面的表达式的类型不是原始类型，那么（$ w）不做任何事情。
+
+#### `$_`
+
+insertAfter() in CtMethod and CtConstructor inserts the compiled code at the end of the method. In the statement given to insertAfter(), not only the variables shown above such as `$0`, `$1`, ... but also `$_` is available.
+CtMethod中的insertAfter（）和CtConstructor将编译后的代码插入到方法的末尾。 在赋给insertAfter（）的语句中，不仅上面显示的变量（如`$0`，`$1`，...还有`$_`）是可用的。
+
+The variable `$_` represents the resulting value of the method. The type of that variable is the type of the result type (the return type) of the method. If the result type is void, then the type of `$_` is Object and the value of `$_` is null.
+变量`$_`表示方法的结果值。 该变量的类型是该方法的结果类型（返回类型）的类型。 如果结果类型是void，那么`$_`的类型是Object，`$_`的值是null。
+
+Although the compiled code inserted by insertAfter() is executed just before the control normally returns from the method, it can be also executed when an exception is thrown from the method. To execute it when an exception is thrown, the second parameter asFinally to insertAfter() must be true.
+尽管insertAfter（）插入的编译代码在控件通常从方法返回之前执行，但是当方法抛出异常时也可以执行该代码。 要在引发异常时执行它，第二个参数（最后为insertAfter（））必须为true。
+
+If an exception is thrown, the compiled code inserted by insertAfter() is executed as a finally clause. The value of `$_` is 0 or null in the compiled code. After the execution of the compiled code terminates, the exception originally thrown is re-thrown to the caller. Note that the value of `$_` is never thrown to the caller; it is rather discarded.
+如果引发异常，insertAfter（）插入的编译代码将作为finally子句执行。 `$_`的值在编译的代码中为0或null。 编译后的代码执行终止后，最初抛出的异常被重新抛出给调用者。 请注意`$_`的值永远不会被抛给调用者。 这是相当丢弃。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

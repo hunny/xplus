@@ -342,6 +342,11 @@ public class IndexController {
         null, //
         "不错的博文"));
 
+    index.getList().add(make("10条", //
+        "http://www.10tiao.com/", //
+        null, //
+        "开发者公众号大全和技术文章"));
+
     model.addAttribute("data", index);
 
     model.addAttribute("handlerMethods", handlerMapping.getHandlerMethods());

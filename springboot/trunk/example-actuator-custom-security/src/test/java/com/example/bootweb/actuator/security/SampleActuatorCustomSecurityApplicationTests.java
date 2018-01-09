@@ -56,7 +56,7 @@ public class SampleActuatorCustomSecurityApplicationTests {
 
   @Test
   public void insecureActuator() throws Exception {
-    ResponseEntity<String> entity = this.restTemplate.getForEntity("/status", String.class);
+    ResponseEntity<String> entity = this.restTemplate.getForEntity("/health", String.class);
     assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(entity.getBody()).contains("\"status\":\"UP\"");
   }

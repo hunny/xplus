@@ -29,13 +29,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests() //
-        .antMatchers("/status", "/info")
+        .antMatchers("/health", "/info")
+        .permitAll() //
+        .antMatchers("/foo") //
         .permitAll() //
         .antMatchers("/*") //
         .hasRole("ACTUATOR") //
         .antMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "/**/favicon.ico") //
-        .permitAll() //
-        .antMatchers("/foo") //
         .permitAll() //
         .antMatchers("/**") //
         .hasRole("USER") //

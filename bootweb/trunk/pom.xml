@@ -62,6 +62,7 @@
     <module>bootweb-netty</module>
     <module>bootweb-jersey</module>
     <module>bootweb-aop</module>
+    <module>bootweb-google</module>
   </modules>
 
   <dependencyManagement>

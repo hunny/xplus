@@ -958,6 +958,150 @@ Although the compiled code inserted by insertAfter() is executed just before the
 If an exception is thrown, the compiled code inserted by insertAfter() is executed as a finally clause. The value of `$_` is 0 or null in the compiled code. After the execution of the compiled code terminates, the exception originally thrown is re-thrown to the caller. Note that the value of `$_` is never thrown to the caller; it is rather discarded.
 如果引发异常，insertAfter（）插入的编译代码将作为finally子句执行。 `$_`的值在编译的代码中为0或null。 编译后的代码执行终止后，最初抛出的异常被重新抛出给调用者。 请注意`$_`的值永远不会被抛给调用者。 这是相当丢弃。
 
+#### `$sig`
+
+The value of `$sig` is an array of `java.lang.Class` objects that represent the formal parameter types in declaration order.
+`$ sig`的值是一个`java.lang.Class`对象的数组，代表了声明顺序中的形式参数类型。
+
+#### `$type`
+
+The value of `$type` is an `java.lang.Class` object representing the formal type of the result value. This variable refers to Void.class if this is a constructor.
+`$ type`的值是一个`java.lang.Class`对象，表示结果值的形式类型。 如果这是一个构造函数，这个变量引用Void.class。
+
+#### `$class`
+
+The value of $class is an java.lang.Class object representing the class in which the edited method is declared. This represents the type of $0.
+`$ class`的值是一个`java.lang.Class`对象，表示声明编辑方法的类。 这代表“$ 0”的类型。
+
+#### `addCatch()`
+
+`addCatch()` inserts a code fragment into a method body so that the code fragment is executed when the method body throws an exception and the control returns to the caller. In the source text representing the inserted code fragment, the exception value is referred to with the special variable `$e`.
+addCatch（）将代码片段插入到方法体中，以便在方法体引发异常时执行代码片段，并返回给调用者。 在表示插入的代码段的源文本中，异常值用特殊变量“$ e”引用。
+
+For example, this program:
+
+```java
+CtMethod m = ...;
+CtClass etype = ClassPool.getDefault().get("java.io.IOException");
+m.addCatch("{ System.out.println($e); throw $e; }", etype);
+```
+
+translates the method body represented by m into something like this:
+
+```java
+try {
+  // the original method body
+} catch (java.io.IOException e) {
+  System.out.println(e);
+  throw e;
+}
+```
+
+Note that the inserted code fragment must end with a `throw` or `return` statement.
+请注意，插入的代码段必须以a throw或return语句结尾 。
+
+## Altering a method body(改变一个方法体)
+
+`CtMethod` and `CtConstructor` provide setBody() for substituting a whole method body. They compile the given source text into Java bytecode and substitutes it for the original method body. If the given source text is null, the substituted body includes only a return statement, which returns zero or null unless the result type is void.
+`CtMethod`和`CtConstructor`提供 setBody()替换整个方法体。他们将给定的源文本编译成Java字节码，并将其替换为原始方法体。如果给定的源文本是null，则替换的主体只包含一个 return语句，除非结果类型为，否则返回零或空值void。
+
+In the source text given to setBody(), the identifiers starting with $ have special meaning
+在给出的源文本中setBody()，开头的标识符`$`具有特殊的含义
+
+| 参数 | 说明 |
+| --- | --- |
+| $0, $1, $2, ... &nbsp &nbsp | this and actual parameters this 和实际参数 |
+| $args | An array of parameters. The type of $args is Object[]. 一组参数。该类型$args是Object[]。|
+| $$ | All actual parameters.所有的实际参数。 |
+| $cflow(...) | cflow variable. cflow 变量 |
+| $r | The result type. It is used in a cast expression.结果类型。它被用在一个表演中。 |
+| $w | The wrapper type. It is used in a cast expression.包装类型。它被用在一个表演中。 |
+| $sig | An array of java.lang.Class objects representing the formal parameter types.java.lang.Class表示形式参数类型的对象数组。 |
+| $type | A java.lang.Class object representing the formal result type. java.lang.Class表示正式结果类型对象。 |
+| $class &nbsp | A java.lang.Class object representing the class that declares the method
+currently edited (the type of $0). java.lang.Class表示声明
+当前编辑的方法的类的对象（$ 0的类型）。 |
+
+Note that `$_`is not available.
+请注意，`$_`不可用。
+
+### Substituting source text for an existing expression (用源文本替换现有的表达式)
+
+Javassist allows modifying only an expression included in a method body. javassist.expr.ExprEditor is a class for replacing an expression in a method body. The users can define a subclass of ExprEditor to specify how an expression is modified.
+Javassist只允许修改方法体中包含的表达式。 javassist.expr.ExprEditor是用于替换方法体中的表达式的类。用户可以定义一个子类ExprEditor 来指定如何修改表达式。
+
+To run an ExprEditor object, the users must call instrument() in CtMethod or CtClass.
+要运行的ExprEditor对象，用户必须调用instrument()的CtMethod或 CtClass。
+
+For example,
+
+```java
+CtMethod cm = ... ;
+cm.instrument(
+    new ExprEditor() {
+        public void edit(MethodCall m)
+                      throws CannotCompileException
+        {
+            if (m.getClassName().equals("Point")
+                          && m.getMethodName().equals("move"))
+                m.replace("{ $1 = 0; $_ = $proceed($$); }");
+        }
+    });
+```
+
+searches the method body represented by cm and replaces all calls to move() in class Point with a block:
+搜索由所表示的方法的身体cm并替换到的所有调用move()在类Point 与块：
+
+```java
+{ $1 = 0; $_ = $proceed($$); }
+```
+
+so that the first parameter to `move()` is always 0. Note that the substituted code is not an expression but a statement or a block. It cannot be or contain a try-catch statement.
+
+The method `instrument()` searches a method body. If it finds an expression such as a method call, field access, and object creation, then it calls `edit()` on the given `ExprEditor` object. The parameter to `edit()` is an object representing the found expression. The `edit()` method can inspect and replace the expression through that object.
+
+Calling `replace()` on the parameter to `edit()` substitutes the given statement or block for the expression. If the given block is an empty block, that is, if `replace("{}")` is executed, then the expression is removed from the method body.
+
+If you want to insert a statement (or a block) before/after the expression, a block like the following should be passed to `replace()`:
+
+所以move（）的第一个参数总是0.请注意，替换后的代码不是表达式，而是语句或块。 它不能是或包含一个try-catch语句。
+
+instrument（）方法搜索一个方法体。 如果它发现一个表达式，例如方法调用，字段访问和对象创建，那么它会在给定的ExprEditor对象上调用edit（）。 edit（）的参数是表示找到的表达式的对象。 edit（）方法可以通过该对象检查和替换表达式。
+
+调用参数的`replace（）`到`edit（）`将给定的语句或块替换为表达式。 如果给定的块是一个空块，也就是说，如果执行`replace（“{}”）`，那么该表达式将从方法主体中移除。
+
+如果你想在表达式之前/之后插入一个语句（或者一个块），那么应该把下面的块传递给`replace（）`：
+
+```java
+{ before-statements;
+  $_ = $proceed($$);
+  after-statements; }
+```
+
+whichever the expression is either a method call, field access, object creation, or others. The second statement could be:
+无论表达式是方法调用，字段访问，对象创建还是其他。 第二个陈述可能是：
+
+```java
+$_ = $proceed();
+```
+
+if the expression is read access, or
+如果表达式是读访问，或者
+
+```java
+$proceed($$);
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 

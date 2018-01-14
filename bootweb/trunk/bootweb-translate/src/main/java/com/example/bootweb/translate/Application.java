@@ -1,4 +1,4 @@
-package com.example.bootweb.google;
+package com.example.bootweb.translate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

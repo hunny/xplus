@@ -8,9 +8,9 @@
     <artifactId>bootweb-parent</artifactId>
     <version>0.0.1-SHAPSHOT</version>
   </parent>
-  <artifactId>bootweb-google</artifactId>
+  <artifactId>bootweb-translate</artifactId>
   <packaging>jar</packaging>
-  <name>bootweb-google</name>
+  <name>bootweb-translate</name>
   <description>Booweb template project</description>
   <url>http://maven.apache.org</url>
 

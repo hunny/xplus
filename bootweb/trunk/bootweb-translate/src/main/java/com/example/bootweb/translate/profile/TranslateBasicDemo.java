@@ -1,4 +1,4 @@
-package com.example.bootweb.google.profile;
+package com.example.bootweb.translate.profile;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,4 +1,4 @@
-package com.example.bootweb.google.web;
+package com.example.bootweb.translate.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

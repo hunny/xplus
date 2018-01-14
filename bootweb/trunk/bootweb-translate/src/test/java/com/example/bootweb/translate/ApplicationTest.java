@@ -1,4 +1,4 @@
-package com.example.bootweb.tpl;
+package com.example.bootweb.translate;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

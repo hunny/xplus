@@ -11,6 +11,14 @@ public class Translate implements Serializable {
   private String text;
   private String target;
 
+  public Translate() {
+    this(null);
+  }
+  
+  public Translate(String text) {
+    this(EN.class, CN.class, text);
+  }
+  
   public Translate(Class<? extends Lang> from, //
       Class<? extends Lang> to, //
       String text) {

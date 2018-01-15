@@ -1,28 +1,22 @@
 package com.example.bootweb.translate.google;
 
-import java.net.URI;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.util.Assert;
 
+import com.example.bootweb.translate.api.HttpBuilder;
 import com.example.bootweb.translate.api.Lang;
-import com.example.bootweb.translate.api.Params;
+import com.example.bootweb.translate.api.Param;
 import com.example.bootweb.translate.api.Translate;
 import com.example.bootweb.translate.api.TranslateBuilder;
+import com.example.bootweb.translate.http.StringHttpClientBuilder;
 
 public class GoogleTranslateBuilder implements TranslateBuilder<String, Translate> {
 
   private Translate translate;
+  private HttpBuilder<String, String> httpBuilder;
+  private static final String USER_AGENT_VALUE = //
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
 
   public static GoogleTranslateBuilder newBuilder() {
     return new GoogleTranslateBuilder();
@@ -36,41 +30,24 @@ public class GoogleTranslateBuilder implements TranslateBuilder<String, Translat
   @Override
   public Translate build() {
     Assert.notNull(translate, "translate");
-    List<Params> params = GoogleParamsBuilder //
+
+    List<Param> params = GoogleParamsBuilder //
         .newBuilder(translate.getFrom(), //
             translate.getTo()) //
         .setText(translate.getText()) //
         .build();//
-    CloseableHttpClient httpclient = HttpClients.custom() //
-        .build();
-    CloseableHttpResponse response = null;
-    HttpEntity entity = null;
-    try {
-      RequestBuilder builder = RequestBuilder.post() //
-          .setHeader(HttpHeaders.REFERER, //
-              "http://translate.google.cn/") //
-          .setHeader(HttpHeaders.USER_AGENT, //
-              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36")
-          .setUri(new URI("http://translate.google.cn/translate_a/single")); //
-      for (Params param : params) {
-        builder.addParameter(param.getKey(), param.getValue());
-      }
-      HttpUriRequest request = builder.build();
-      response = httpclient.execute(request);
-      StatusLine statusLine = response.getStatusLine();
-      if (HttpStatus.SC_OK == statusLine.getStatusCode()) {
-        entity = response.getEntity();
-        String respstr = null == entity ? "" : EntityUtils.toString(entity);
-        translate.setTarget(GoogleResultParser //
-            .newParser() //
-            .parse(respstr));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new RuntimeException(e.getMessage());
-    } finally {
-      closeQuiet(httpclient, response, entity);
-    }
+
+    getHttpBuilder() //
+        .uri(Googles.TRANSLATE_URL) //
+        .params(params) //
+        .addHeader(HttpBuilder.REFERER, //
+            Googles.TRANSLATE_REFERER) //
+        .addHeader(HttpBuilder.USER_AGENT, //
+            USER_AGENT_VALUE) //
+        .parser(GoogleResultParser.newParser()) //
+    ;//
+
+    translate.setTarget(httpBuilder.build());
     return translate;
   }
 
@@ -92,31 +69,24 @@ public class GoogleTranslateBuilder implements TranslateBuilder<String, Translat
     return this;
   }
 
+  public GoogleTranslateBuilder httpBuilder(HttpBuilder<String, String> httpBuilder) {
+    this.httpBuilder = httpBuilder;
+    return this;
+  }
+
   protected Translate getTranslate() {
-    if (null == translate) {
+    if (null == translate) { // Default Translate
       translate = new Translate();
     }
     return translate;
   }
 
-  protected void closeQuiet(CloseableHttpClient httpclient, //
-      CloseableHttpResponse response, //
-      HttpEntity entity) {
-    try {
-      EntityUtils.consume(entity);
-    } catch (Exception e1) {
-      e1.printStackTrace();
+  protected HttpBuilder<String, String> getHttpBuilder() {
+    if (null == httpBuilder) {// Default Http Builder
+      httpBuilder = StringHttpClientBuilder //
+          .newBuilder(); //
     }
-    try {
-      response.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    try {
-      httpclient.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    return httpBuilder;
   }
 
 }

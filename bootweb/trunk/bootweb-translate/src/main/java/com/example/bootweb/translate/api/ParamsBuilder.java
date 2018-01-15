@@ -6,6 +6,6 @@ public interface ParamsBuilder {
   
   ParamsBuilder setText(String text);
   
-  List<Params> build();
+  List<Param> build();
   
 }

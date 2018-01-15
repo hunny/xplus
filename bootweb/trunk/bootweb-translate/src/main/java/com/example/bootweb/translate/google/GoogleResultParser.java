@@ -19,6 +19,7 @@ public class GoogleResultParser implements Parser<String, String> {
     return this;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public String parse(String result) {
     if (null == objectMapper) {

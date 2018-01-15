@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 import com.example.bootweb.translate.api.CN;
 import com.example.bootweb.translate.api.EN;
 import com.example.bootweb.translate.api.Lang;
-import com.example.bootweb.translate.api.Params;
+import com.example.bootweb.translate.api.Param;
 import com.example.bootweb.translate.api.ParamsBuilder;
 import com.example.bootweb.translate.google.tk.Tk;
 import com.example.bootweb.translate.google.tk.Tk0;
@@ -33,7 +33,7 @@ public class GoogleParamsBuilder implements ParamsBuilder {
   private Class<? extends Lang> src;
   private Class<? extends Lang> target;
   private Tk tk = new Tk0();
-  private final List<Params> params = new ArrayList<>();
+  private final List<Param> params = new ArrayList<>();
   private final Map<Class<? extends Lang>, String> LANG_MAP = new HashMap<>();
 
   private GoogleParamsBuilder(Class<? extends Lang> src, //
@@ -61,7 +61,7 @@ public class GoogleParamsBuilder implements ParamsBuilder {
   protected GoogleParamsBuilder put(String key, String value) {
     Assert.notNull(key, "key");
     Assert.notNull(value, "value");
-    params.add(new Params(key, value));
+    params.add(new Param(key, value));
     return this;
   }
   
@@ -72,7 +72,7 @@ public class GoogleParamsBuilder implements ParamsBuilder {
   }
 
   @Override
-  public List<Params> build() {
+  public List<Param> build() {
     Assert.notNull(this.text, "翻译的文本不能为null。");
     this.put("client", "t") // translation of source text
         .put("sl", LANG_MAP.get(src)) // 源语言 (auto代表自动检测) en

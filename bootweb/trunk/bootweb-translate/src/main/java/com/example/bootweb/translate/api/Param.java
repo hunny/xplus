@@ -2,14 +2,14 @@ package com.example.bootweb.translate.api;
 
 import java.io.Serializable;
 
-public class Params implements Serializable {
+public class Param implements Serializable {
 
   private static final long serialVersionUID = 2944857758964413899L;
 
   private String key;
   private String value;
 
-  public Params(String key, String value) {
+  public Param(String key, String value) {
     super();
     this.key = key;
     this.value = value;

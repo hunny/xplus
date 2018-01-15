@@ -39,9 +39,6 @@ public class TranslateBasicDemoRunner implements CommandLineRunner {
         .setText(
             "may be included more than once and specifies what to return in the reply.Here are some values for dt. If the value is set, the following data will be returned:") //
         .build();//
-    for (Params param : params) {
-      System.out.println(param);
-    }
     CloseableHttpClient httpclient = HttpClients.custom() //
         .build();
 

@@ -95,6 +95,7 @@ public class GoogleParamsBuilder implements ParamsBuilder {
     return params;
   }
 
+  @SuppressWarnings("static-method")
   private String tk(String val) {
     String script = "function tk(a) {" //
         + "var TKK = ((function() {" //

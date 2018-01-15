@@ -10,13 +10,12 @@ import com.example.bootweb.translate.api.Param;
 import com.example.bootweb.translate.api.Translate;
 import com.example.bootweb.translate.api.TranslateBuilder;
 import com.example.bootweb.translate.http.StringHttpClientBuilder;
+import com.example.bootweb.translate.http.UserAgent;
 
 public class GoogleTranslateBuilder implements TranslateBuilder<String, Translate> {
 
   private Translate translate;
   private HttpBuilder<String, String> httpBuilder;
-  private static final String USER_AGENT_VALUE = //
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
 
   public static GoogleTranslateBuilder newBuilder() {
     return new GoogleTranslateBuilder();
@@ -43,7 +42,7 @@ public class GoogleTranslateBuilder implements TranslateBuilder<String, Translat
         .addHeader(HttpBuilder.REFERER, //
             Googles.TRANSLATE_REFERER) //
         .addHeader(HttpBuilder.USER_AGENT, //
-            USER_AGENT_VALUE) //
+            UserAgent.get()) //
         .parser(GoogleResultParser.newParser()) //
     ;//
 

@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 import org.springframework.util.Assert;
 
 import com.example.bootweb.translate.api.CN;
@@ -16,6 +12,8 @@ import com.example.bootweb.translate.api.EN;
 import com.example.bootweb.translate.api.Lang;
 import com.example.bootweb.translate.api.Params;
 import com.example.bootweb.translate.api.ParamsBuilder;
+import com.example.bootweb.translate.google.tk.Tk;
+import com.example.bootweb.translate.google.tk.Tk0;
 
 /**
  * <p>
@@ -31,11 +29,10 @@ import com.example.bootweb.translate.api.ParamsBuilder;
  */
 public class GoogleParamsBuilder implements ParamsBuilder {
 
-  private static ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-
   private String text = null;
   private Class<? extends Lang> src;
   private Class<? extends Lang> target;
+  private Tk tk = new Tk0();
   private final List<Params> params = new ArrayList<>();
   private final Map<Class<? extends Lang>, String> LANG_MAP = new HashMap<>();
 
@@ -47,7 +44,7 @@ public class GoogleParamsBuilder implements ParamsBuilder {
     LANG_MAP.put(EN.class, "en");
   }
 
-  public static ParamsBuilder newBuilder(Class<? extends Lang> src, //
+  public static GoogleParamsBuilder newBuilder(Class<? extends Lang> src, //
       Class<? extends Lang> target) {
     Assert.notNull(src, "源语言不能为空。");
     Assert.notNull(target, "目标语言不能为空。");
@@ -55,13 +52,22 @@ public class GoogleParamsBuilder implements ParamsBuilder {
   }
 
   @Override
-  public ParamsBuilder setText(String text) {
+  public GoogleParamsBuilder setText(String text) {
+    Assert.notNull(text, "text");
     this.text = text;
     return this;
   }
 
   protected GoogleParamsBuilder put(String key, String value) {
+    Assert.notNull(key, "key");
+    Assert.notNull(value, "value");
     params.add(new Params(key, value));
+    return this;
+  }
+  
+  protected GoogleParamsBuilder tk(Tk tk) {
+    Assert.notNull(tk, "tk");
+    this.tk = tk;
     return this;
   }
 
@@ -90,47 +96,9 @@ public class GoogleParamsBuilder implements ParamsBuilder {
         .put("ssel", "0") //
         .put("tsel", "0") //
         .put("kc", "11") //
-        .put("tk", tk(this.text)) // 上面js加密的结果
+        .put("tk", tk.calc(this.text)) // 上面js加密的结果
         .put("q", this.text); // 要翻译的文本 记得url编码一下 你好
     return params;
-  }
-
-  @SuppressWarnings("static-method")
-  private String tk(String val) {
-    String script = "function tk(a) {" //
-        + "var TKK = ((function() {" //
-        + "var a = 561666268;" //
-        + "var b = 1526272306;" //
-        + "return 406398 + '.' + (a + b); " //
-        + "})());\n" //
-        + "function b(a, b) { " //
-        + "for (var d = 0; d < b.length - 2; d += 3) { " //
-        + "var c = b.charAt(d + 2), " //
-        + "c = 'a' <= c ? c.charCodeAt(0) - 87 : Number(c), " //
-        + "c = '+' == b.charAt(d + 1) ? a >>> c : a << c; " //
-        + "a = '+' == b.charAt(d) ? a + c & 4294967295 : a ^ c " //
-        + "} " //
-        + "return a }\n" //
-        + "for (var e = TKK.split('.'), h = Number(e[0]) || 0, g = [], d = 0, f = 0; f < a.length; f++) {" //
-        + "var c = a.charCodeAt(f);" //
-        + "128 > c ? g[d++] = c : (2048 > c ? g[d++] = c >> 6 | 192 : (55296 == (c & 64512) && f + 1 < a.length && 56320 == (a.charCodeAt(f + 1) & 64512) ? (c = 65536 + ((c & 1023) << 10) + (a.charCodeAt(++f) & 1023), g[d++] = c >> 18 | 240, g[d++] = c >> 12 & 63 | 128) : g[d++] = c >> 12 | 224, g[d++] = c >> 6 & 63 | 128), g[d++] = c & 63 | 128)"
-        + "}" //
-        + "a = h;" //
-        + "for (d = 0; d < g.length; d++) a += g[d], a = b(a, '+-a^+6');" //
-        + "a = b(a, '+-3^+b+-f');" //
-        + "a ^= Number(e[1]) || 0;" //
-        + "0 > a && (a = (a & 2147483647) + 2147483648);" //
-        + "a %= 1E6;" //
-        + "return a.toString() + '.' + (a ^ h)\n" //
-        + "}"; //
-    try {
-      engine.eval(script);
-      Invocable inv = (Invocable) engine;
-      return (String) inv.invokeFunction("tk", val);
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new RuntimeException(e.getMessage());
-    }
   }
 
 }

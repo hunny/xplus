@@ -1,6 +1,11 @@
 package com.example.bootweb.translate;
 
-import junit.framework.Test;
+import org.junit.Test;
+
+import com.example.bootweb.translate.google.tk.Tk;
+import com.example.bootweb.translate.google.tk.Tk0;
+import com.example.bootweb.translate.google.tk.Tk1;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -21,7 +26,7 @@ public class ApplicationTest extends TestCase {
   /**
    * @return the suite of tests being tested
    */
-  public static Test suite() {
+  public static junit.framework.Test suite() {
     return new TestSuite(ApplicationTest.class);
   }
 
@@ -30,5 +35,12 @@ public class ApplicationTest extends TestCase {
    */
   public void testApp() {
     assertTrue(true);
+  }
+  
+  @Test
+  public void testTk() {
+    Tk tk0 = new Tk0();
+    Tk tk1 = new Tk1();
+    assertTrue(tk0.calc("Hello World!").equals(tk1.calc("Hello World!")));
   }
 }

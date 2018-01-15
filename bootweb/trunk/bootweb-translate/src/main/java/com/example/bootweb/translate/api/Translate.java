@@ -63,4 +63,9 @@ public class Translate implements Serializable {
     this.target = target;
   }
 
+  @Override
+  public String toString() {
+    return "Translate [from=" + from + ", to=" + to + ", \ntext=" + text + ", \ntarget=" + target + "]";
+  }
+
 }

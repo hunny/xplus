@@ -1,15 +1,13 @@
 package com.example.bootweb.translate.api;
 
-public interface TranslateBuilder {
+public interface TranslateBuilder<S, T> {
 
-  TranslateBuilder setTranslate(Translate translate);
+  TranslateBuilder from(Class<? extends Lang> from);
 
-  TranslateBuilder setFrom(Class<? extends Lang> from);
+  TranslateBuilder to(Class<? extends Lang> to);
 
-  TranslateBuilder setTo(Class<? extends Lang> to);
+  TranslateBuilder source(S s);
 
-  TranslateBuilder setText(String text);
-
-  Translate build();
+  T build();
 
 }

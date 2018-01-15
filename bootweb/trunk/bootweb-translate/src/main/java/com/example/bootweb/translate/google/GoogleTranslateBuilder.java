@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
+import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -21,7 +22,7 @@ import com.example.bootweb.translate.api.TranslateBuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class GoogleTranslateBuilder implements TranslateBuilder {
+public class GoogleTranslateBuilder implements TranslateBuilder<String, Translate> {
 
   private Translate translate;
   private ObjectMapper objectMapper;
@@ -35,7 +36,6 @@ public class GoogleTranslateBuilder implements TranslateBuilder {
     return this;
   }
 
-  @Override
   public GoogleTranslateBuilder setTranslate(Translate translate) {
     this.translate = translate;
     return this;
@@ -69,8 +69,7 @@ public class GoogleTranslateBuilder implements TranslateBuilder {
       HttpUriRequest request = builder.build();
       response = httpclient.execute(request);
       StatusLine statusLine = response.getStatusLine();
-      System.out.println("Translate form get: " + response.getStatusLine());
-      if (200 == statusLine.getStatusCode()) {
+      if (HttpStatus.SC_OK == statusLine.getStatusCode()) {
         entity = response.getEntity();
         String respstr = null == entity ? "" : EntityUtils.toString(entity);
         translate.setTarget(parseResult(respstr));
@@ -79,45 +78,27 @@ public class GoogleTranslateBuilder implements TranslateBuilder {
       e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     } finally {
-      try {
-        EntityUtils.consume(entity);
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
-      try {
-        response.close();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      try {
-        httpclient.close();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      closeQuiet(httpclient, response, entity);
     }
     return translate;
   }
 
   @Override
-  public TranslateBuilder setFrom(Class<? extends Lang> from) {
-    // TODO Auto-generated method stub
+  public GoogleTranslateBuilder from(Class<? extends Lang> from) {
+    getTranslate().setFrom(from);
     return this;
   }
 
   @Override
-  public TranslateBuilder setTo(Class<? extends Lang> to) {
-    // TODO Auto-generated method stub
+  public GoogleTranslateBuilder to(Class<? extends Lang> to) {
+    getTranslate().setTo(to);
     return this;
   }
 
   @Override
-  public TranslateBuilder setText(String text) {
-    // TODO Auto-generated method stub
+  public GoogleTranslateBuilder source(String text) {
+    getTranslate().setText(text);
     return this;
-  }
-
-  protected ObjectMapper getDefaultObjectMapper() {
-    return new ObjectMapper();
   }
 
   protected String parseResult(String result) {
@@ -139,6 +120,37 @@ public class GoogleTranslateBuilder implements TranslateBuilder {
       throw new RuntimeException(e.getMessage());
     }
     return null;
+  }
+
+  protected Translate getTranslate() {
+    if (null == translate) {
+      translate = new Translate();
+    }
+    return translate;
+  }
+
+  protected ObjectMapper getDefaultObjectMapper() {
+    return new ObjectMapper();
+  }
+
+  protected void closeQuiet(CloseableHttpClient httpclient, //
+      CloseableHttpResponse response, //
+      HttpEntity entity) {
+    try {
+      EntityUtils.consume(entity);
+    } catch (Exception e1) {
+      e1.printStackTrace();
+    }
+    try {
+      response.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    try {
+      httpclient.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }

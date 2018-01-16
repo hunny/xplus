@@ -22,19 +22,19 @@ import com.example.bootweb.translate.api.HttpBuilder;
 import com.example.bootweb.translate.api.Param;
 import com.example.bootweb.translate.api.Parser;
 
-public class StringHttpClientBuilder implements HttpBuilder<String, String> {
+public class StringMultiHttpClientBuilder implements HttpBuilder<String[], String[]> {
 
   private final List<Param> params = new ArrayList<>();
   private final List<Header> headers = new ArrayList<>();
   private Parser<String, String> parser = null;
   private URI uri = null;
 
-  public static StringHttpClientBuilder newBuilder() {
-    return new StringHttpClientBuilder();
+  public static StringMultiHttpClientBuilder newBuilder() {
+    return new StringMultiHttpClientBuilder();
   }
 
   @Override
-  public HttpBuilder<String, String> params(List<Param> params) {
+  public HttpBuilder<String[], String[]> params(List<Param> params) {
     if (null != params) {
       this.params.addAll(params);
     }
@@ -42,27 +42,27 @@ public class StringHttpClientBuilder implements HttpBuilder<String, String> {
   }
 
   @Override
-  public <P extends Parser> HttpBuilder<String, String> parser(P parser) {
+  public <P extends Parser> HttpBuilder<String[], String[]> parser(P parser) {
     this.parser = parser;
     return this;
   }
 
   @Override
-  public HttpBuilder<String, String> addHeader(String key, String name) {
+  public HttpBuilder<String[], String[]> addHeader(String key, String name) {
     Assert.notNull(key, "key");
     Assert.notNull(name, "name");
     this.headers.add(new BasicHeader(key, name));
     return this;
   }
   
-  public HttpBuilder<String, String> addHeader(Header header) {
+  public HttpBuilder<String[], String[]> addHeader(Header header) {
     Assert.notNull(header, "header");
     this.headers.add(header);
     return this;
   }
 
   @Override
-  public HttpBuilder<String, String> uri(String uri) {
+  public HttpBuilder<String[], String[]> uri(String uri) {
     try {
       this.uri = new URI(uri);
     } catch (URISyntaxException e) {
@@ -72,7 +72,7 @@ public class StringHttpClientBuilder implements HttpBuilder<String, String> {
   }
 
   @Override
-  public String build() {
+  public String [] build() {
     Assert.notNull(uri, "uri");
 
     CloseableHttpClient httpclient = HttpClients.custom() //
@@ -95,10 +95,11 @@ public class StringHttpClientBuilder implements HttpBuilder<String, String> {
       if (HttpStatus.SC_OK == statusLine.getStatusCode()) {
         entity = response.getEntity();
         String respstr = null == entity ? "" : EntityUtils.toString(entity);
-        if (null != parser) {
+        /*if (null != parser) {
           return parser.parse(respstr);
         }
-        return respstr;
+        return respstr;*/
+        return null;
       }
     } catch (Exception e) {
       e.printStackTrace();

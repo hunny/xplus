@@ -9,12 +9,12 @@ public interface HttpBuilder<S, T> {
   
   HttpBuilder<S, T> params(List<Param> params);
   
-  HttpBuilder<S, T> parser(Parser<S, T> parser);
+  <P extends Parser> HttpBuilder<S, T> parser(P parser);
   
   HttpBuilder<S, T> addHeader(String key, String name);
   
   HttpBuilder<S, T> uri(String uri);
   
-  String build();
+  T build();
   
 }

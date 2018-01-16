@@ -48,6 +48,9 @@ public class GoogleParamsBuilder implements ParamsBuilder {
       Class<? extends Lang> target) {
     Assert.notNull(src, "源语言不能为空。");
     Assert.notNull(target, "目标语言不能为空。");
+    if (src == target) {
+      throw new IllegalArgumentException("源语言和目标语言不能相同。");
+    }
     return new GoogleParamsBuilder(src, target);
   }
 

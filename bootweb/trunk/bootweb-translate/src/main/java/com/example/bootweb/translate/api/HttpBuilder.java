@@ -9,6 +9,7 @@ public interface HttpBuilder<S, T> {
   
   HttpBuilder<S, T> params(List<Param> params);
   
+  @SuppressWarnings("rawtypes")
   <P extends Parser> HttpBuilder<S, T> parser(P parser);
   
   HttpBuilder<S, T> addHeader(String key, String name);

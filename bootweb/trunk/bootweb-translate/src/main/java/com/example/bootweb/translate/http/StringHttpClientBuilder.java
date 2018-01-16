@@ -41,6 +41,7 @@ public class StringHttpClientBuilder implements HttpBuilder<String, String> {
     return this;
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public <P extends Parser> HttpBuilder<String, String> parser(P parser) {
     this.parser = parser;

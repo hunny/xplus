@@ -4,6 +4,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -14,6 +18,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.springframework.util.Assert;
@@ -27,20 +32,21 @@ public class StringMultiHttpClientBuilder implements HttpBuilder<String[], Strin
   private final List<Param> params = new ArrayList<>();
   private final List<Header> headers = new ArrayList<>();
   private Parser<String, String> parser = null;
-  private URI uri = null;
+  private List<URI> uris = new ArrayList<>();
 
   public static StringMultiHttpClientBuilder newBuilder() {
     return new StringMultiHttpClientBuilder();
   }
 
   @Override
-  public HttpBuilder<String[], String[]> params(List<Param> params) {
+  public HttpBuilder<String[], String[]> params(List<Param> params) {// TODO 待解决每个请求的参数问题。
     if (null != params) {
       this.params.addAll(params);
     }
     return this;
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public <P extends Parser> HttpBuilder<String[], String[]> parser(P parser) {
     this.parser = parser;
@@ -54,7 +60,7 @@ public class StringMultiHttpClientBuilder implements HttpBuilder<String[], Strin
     this.headers.add(new BasicHeader(key, name));
     return this;
   }
-  
+
   public HttpBuilder<String[], String[]> addHeader(Header header) {
     Assert.notNull(header, "header");
     this.headers.add(header);
@@ -64,7 +70,7 @@ public class StringMultiHttpClientBuilder implements HttpBuilder<String[], Strin
   @Override
   public HttpBuilder<String[], String[]> uri(String uri) {
     try {
-      this.uri = new URI(uri);
+      this.uris.add(new URI(uri));
     } catch (URISyntaxException e) {
       throw new IllegalArgumentException(e);
     }
@@ -72,11 +78,47 @@ public class StringMultiHttpClientBuilder implements HttpBuilder<String[], Strin
   }
 
   @Override
-  public String [] build() {
-    Assert.notNull(uri, "uri");
+  public String[] build() {
+    Assert.notEmpty(this.uris, "uris");
 
+    int number = 20;
+    PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+    cm.setMaxTotal(number);
     CloseableHttpClient httpclient = HttpClients.custom() //
+        .setConnectionManager(cm) //
         .build();
+    try {
+      List<String> result = multiBuild(number, httpclient);
+      return result.toArray(new String[result.size()]);
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    } finally {
+      closeClientQuiet(httpclient);
+    }
+  }
+
+  protected List<String> multiBuild(int number, CloseableHttpClient httpclient) {
+    ExecutorService executorService = Executors.newFixedThreadPool(number);
+    List<String> result = new ArrayList<>();
+    for (final URI uri : uris) {
+      Future<String> future = executorService.submit(new Callable<String>() {
+        @Override
+        public String call() throws Exception {
+          return multiReq(httpclient, uri);
+        }
+      });
+      try {
+        result.add(future.get());
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException(e);
+      }
+    }
+    return result;
+  }
+
+  protected String multiReq(CloseableHttpClient httpclient, URI uri) {
     CloseableHttpResponse response = null;
     HttpEntity entity = null;
     try {
@@ -95,23 +137,21 @@ public class StringMultiHttpClientBuilder implements HttpBuilder<String[], Strin
       if (HttpStatus.SC_OK == statusLine.getStatusCode()) {
         entity = response.getEntity();
         String respstr = null == entity ? "" : EntityUtils.toString(entity);
-        /*if (null != parser) {
+        if (null != parser) {
           return parser.parse(respstr);
         }
-        return respstr;*/
-        return null;
+        return respstr;
       }
+      throw new IllegalArgumentException("请求异常。");
     } catch (Exception e) {
       e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     } finally {
-      closeQuiet(httpclient, response, entity);
+      closeQuiet(response, entity);
     }
-    return null;
   }
 
-  protected void closeQuiet(CloseableHttpClient httpclient, //
-      CloseableHttpResponse response, //
+  protected void closeQuiet(CloseableHttpResponse response, //
       HttpEntity entity) {
     try {
       EntityUtils.consume(entity);
@@ -123,6 +163,9 @@ public class StringMultiHttpClientBuilder implements HttpBuilder<String[], Strin
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  private void closeClientQuiet(CloseableHttpClient httpclient) {
     try {
       httpclient.close();
     } catch (Exception e) {

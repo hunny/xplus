@@ -2,9 +2,8 @@ package com.example.bootweb.translate.google;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.util.Arrays;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -39,32 +38,17 @@ public class TranslateBasicDemoRunner implements CommandLineRunner {
     System.out.println(translate.getTarget());
 
     if (args.length == 2) {// Read from file and write to file.
-      OutputStream outputStream = GoogleHybirdTranslateBuilder.newBuilder() //
+      System.out.println(Arrays.asList(args));
+      File file = new File(args[1]);
+      GoogleHybirdTranslateBuilder.newBuilder() //
           .from(EN.class) //
           .to(CN.class) //
           .source(new FileInputStream(args[0])) //
+          .target(new FileOutputStream(file)) //
           .build() //
       ; //
-      toFile(outputStream, args[1]);
     }
     System.exit(0);
-  }
-
-  protected void toFile(OutputStream outputStream, String fileName) {
-    File file = new File(fileName);
-    try {
-      byte[] buf = new byte[8192];
-      InputStream is = new FileInputStream(file);
-      int c = 0;
-      while ((c = is.read(buf, 0, buf.length)) > 0) {
-        outputStream.write(buf, 0, c);
-        outputStream.flush();
-      }
-      is.close();
-      outputStream.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
 }

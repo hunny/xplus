@@ -9,7 +9,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -21,10 +22,12 @@ import com.example.bootweb.translate.api.TranslateBuilder;
 import com.example.bootweb.translate.http.StringHttpClientBuilder;
 import com.example.bootweb.translate.http.UserAgent;
 
-public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStream, OutputStream> {
+public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStream, Void> {
 
-  private HttpBuilder<String, String> httpBuilder = null;
+  private final Logger logger = LoggerFactory.getLogger(GoogleHybirdTranslateBuilder.class);
+  
   private InputStream inputStream = null;
+  private OutputStream outputStream = null;
   private Class<? extends Lang> from = null;
   private Class<? extends Lang> to = null;
   private long start = 0;
@@ -34,24 +37,25 @@ public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStrea
   }
 
   @Override
-  public OutputStream build() {
+  public Void build() {
     Assert.notNull(from, "from");
     Assert.notNull(to, "to");
     Assert.notNull(inputStream, "inputStream");
+    Assert.notNull(outputStream, "outputStream");
 
     try {
-      return translate();
+      translate();
+      return null;
     } catch (IOException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
     }
   }
 
-  protected OutputStream translate() throws IOException {
-    OutputStream outputStream = new ByteArrayOutputStream();
+  protected void translate() throws IOException {
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-    BufferedWriter br = new BufferedWriter(new OutputStreamWriter(outputStream));
+    BufferedWriter br = new BufferedWriter(new OutputStreamWriter(this.outputStream));
     String line = null;
     while ((line = reader.readLine()) != null) {
       if (StringUtils.isEmpty(line)) {
@@ -60,11 +64,16 @@ public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStrea
       Translate translate = new Translate(from, to, line);
       act(translate);
       br.write(line);
-      br.write(translate.getTarget());
+      br.write("\n");
+      logger.info(line);
+      if (null != translate.getTarget()) {
+        br.write(translate.getTarget());
+        br.write("\n\n");
+        logger.info(translate.getTarget());
+      }
       br.flush();
     }
     closeQuiet(reader, br);
-    return outputStream;
   }
 
   protected void closeQuiet(BufferedReader reader, BufferedWriter br) throws IOException {
@@ -79,7 +88,8 @@ public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStrea
         .setText(translate.getText()) //
         .build();//
 
-    getHttpBuilder() //
+    HttpBuilder<String, String> httpBuilder = StringHttpClientBuilder //
+        .newBuilder() //
         .uri(Googles.TRANSLATE_URL) //
         .params(params) //
         .addHeader(HttpBuilder.REFERER, //
@@ -108,23 +118,15 @@ public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStrea
     this.inputStream = inputStream;
     return this;
   }
+  
+  public GoogleHybirdTranslateBuilder target(OutputStream outputStream) {
+    this.outputStream = outputStream;
+    return this;
+  }
 
   public GoogleHybirdTranslateBuilder start(long start) {
     this.start = start;
     return this;
-  }
-
-  public GoogleHybirdTranslateBuilder httpBuilder(HttpBuilder<String, String> httpBuilder) {
-    this.httpBuilder = httpBuilder;
-    return this;
-  }
-
-  protected HttpBuilder<String, String> getHttpBuilder() {
-    if (null == httpBuilder) {// Default Http Builder
-      httpBuilder = StringHttpClientBuilder //
-          .newBuilder(); //
-    }
-    return httpBuilder;
   }
 
 }

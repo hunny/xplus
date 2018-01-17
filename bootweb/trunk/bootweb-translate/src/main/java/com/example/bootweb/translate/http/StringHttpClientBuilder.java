@@ -2,6 +2,7 @@ package com.example.bootweb.translate.http;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.example.bootweb.translate.api.HttpBuilder;
@@ -24,6 +27,7 @@ import com.example.bootweb.translate.api.Parser;
 
 public class StringHttpClientBuilder implements HttpBuilder<String, String> {
 
+  private final Logger logger = LoggerFactory.getLogger(StringHttpClientBuilder.class);
   private final List<Param> params = new ArrayList<>();
   private final List<Header> headers = new ArrayList<>();
   private Parser<String, String> parser = null;
@@ -101,13 +105,16 @@ public class StringHttpClientBuilder implements HttpBuilder<String, String> {
         }
         return respstr;
       }
+      String reps = EntityUtils.toString(response.getEntity());
+      logger.info("Request Status: {}, Response Html:{}", statusLine, reps);
+      throw new IllegalArgumentException( //
+          MessageFormat.format("请求返回结果不正确：{0}, {1}", statusLine, reps));
     } catch (Exception e) {
       e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     } finally {
       closeQuiet(httpclient, response, entity);
     }
-    return null;
   }
 
   protected void closeQuiet(CloseableHttpClient httpclient, //

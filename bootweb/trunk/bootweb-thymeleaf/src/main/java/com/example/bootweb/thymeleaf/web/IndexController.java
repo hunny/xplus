@@ -38,6 +38,11 @@ public class IndexController {
         "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==", //
         "Git中文版（第二版）是一本详细的Git指南，主要介绍了Git的使用基础和原理，让你从Git初学者成为Git专家。"));
 
+    index.getDashboards().add(make("Git 通俗易懂", //
+        "https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000", //
+        "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==", //
+        "Git中文版浅显易懂的Git教程。"));
+
     index.getDashboards().add(make("Metro 风格的 Bootstrap", //
         "http://www.bootcss.com/p/flat-ui/", //
         "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==", //

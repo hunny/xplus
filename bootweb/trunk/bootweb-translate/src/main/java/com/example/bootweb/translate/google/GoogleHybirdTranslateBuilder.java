@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStrea
   private OutputStream outputStream = null;
   private Class<? extends Lang> from = null;
   private Class<? extends Lang> to = null;
+  private int sleep = 0;
   private long start = 0;
 
   public static GoogleHybirdTranslateBuilder newBuilder() {
@@ -72,6 +74,13 @@ public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStrea
         logger.info(translate.getTarget());
       }
       br.flush();
+      if (sleep > 0) {
+        try {
+          Thread.sleep(new Random().nextInt(sleep) * 1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
     }
     closeQuiet(reader, br);
   }
@@ -126,6 +135,15 @@ public class GoogleHybirdTranslateBuilder implements TranslateBuilder<InputStrea
 
   public GoogleHybirdTranslateBuilder start(long start) {
     this.start = start;
+    return this;
+  }
+  
+  /**
+   * 
+   * @param sleep ms
+   */
+  public GoogleHybirdTranslateBuilder sleep(int sleep) {
+    this.sleep = sleep;
     return this;
   }
 

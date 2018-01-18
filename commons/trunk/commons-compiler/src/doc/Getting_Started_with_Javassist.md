@@ -1091,6 +1091,374 @@ if the expression is read access, or
 ```java
 $proceed($$);
 ```
+if the expression is write access.
+如果表达式是写入权限的话。
+
+Local variables available in the target expression is also available in the source text passed to replace() if the method searched by instrument() was compiled with the -g option (the class file includes a local variable attribute).
+如果`instrument（）`搜索的方法是使用`-g`选项（类文件包含本地变量属性）编译的，那么在传递给`replace（）`的源文本中也可以使用目标表达式中可用的局部变量。
+
+### javassist.expr.MethodCall
+
+A `MethodCall` object represents a method call. The method replace() in MethodCall substitutes a statement or a block for the method call. It receives source text representing the substitued statement or block, in which the identifiers starting with $ have special meaning as in the source text passed to insertBefore().
+MethodCall对象表示一个方法调用。 MethodCall中的方法`replace（）`用于替换方法调用的语句或块。它接收表示替代语句或块的源文本，其中以$开头的标识符具有与传递给insertBefore（）的源文本中一样的特殊含义。
+
+TOBE https://github.com/jboss-javassist/javassist/wiki/Tutorial-2
+
+| - | - |
+| --- | --- |
+| $0 | The target object of the method call. |
+| $0 | 方法调用的目标对象。|
+| - | This is not equivalent to this, which represents the caller-side this object.这不等于这个，代表了这个对象的调用方。$0 is null if the method is static.如果方法是静态的，则$0为null。|
+
+&nbsp
+＆NBSP
+
+&nbsp
+＆NBSP
+
+$1, $2, ... &nbsp &nbsp	The parameters of the method call.
+$ 1，$ 2，...＆nbsp方法调用的参数。
+
+$_	The resulting value of the method call.
+$_ 方法调用的结果值。
+
+$r	The result type of the method call.
+$r 方法调用的结果类型。
+
+$class &nbsp &nbsp	A java.lang.Class object representing the class declaring the method.
+$ class＆nbsp一个表示声明方法的类的java.lang.Class对象。
+
+$sig &nbsp &nbsp	An array of java.lang.Class objects representing the formal parameter types.
+$ sig＆nbsp一个代表形式参数类型的java.lang.Class对象数组。
+
+$type &nbsp &nbsp	A java.lang.Class object representing the formal result type.
+$ type＆nbsp一个代表正式结果类型的java.lang.Class对象。
+
+$proceed &nbsp &nbsp	The name of the method originally called in the expression.
+$ proceed＆nbsp最初在表达式中调用的方法的名称。
+
+Here the method call means the one represented by the MethodCall object.
+这里的方法调用是指由MethodCall对象表示的方法。
+
+The other identifiers such as $w, $args and $$ are also available.
+其他标识符如$ w，$ args和$$也可用。
+
+Unless the result type of the method call is void, a value must be assigned to $_ in the source text and the type of $_ is the result type. If the result type is void, the type of $_ is Object and the value assigned to $_ is ignored.
+除非方法调用的结果类型是无效的，否则必须在源文本中为$ _赋值，$ _的类型是结果类型。如果结果类型为void，则$ _的类型为Object，而忽略分配给$_ 的值。
+
+$proceed is not a String value but special syntax. It must be followed by an argument list surrounded by parentheses ( ).
+$ proceed不是一个字符串值，而是特殊的语法。它必须后跟一个由圆括号（）括起来的参数列表。
+
+javassist.expr.ConstructorCall
+javassist.expr.ConstructorCall
+
+A ConstructorCall object represents a constructor call such as this() and super included in a constructor body. The method replace() in ConstructorCall substitutes a statement or a block for the constructor call. It receives source text representing the substituted statement or block, in which the identifiers starting with $ have special meaning as in the source text passed to insertBefore().
+一个ConstructorCall对象代表构造函数体中包含this（）和super的构造函数调用。 ConstructorCall中的replace（）方法将构造函数调用替换为语句或块。它接收代表替换语句或块的源文本，其中以$开头的标识符具有特殊的含义，如在传递给insertBefore（）的源文本中。
+
+$0	The target object of the constructor call. This is equivalent to this.
+$ 0构造函数调用的目标对象。这相当于这个。
+
+$1, $2, ... &nbsp &nbsp	The parameters of the constructor call.
+$ 1，$ 2，...＆nbsp构造函数调用的参数。
+
+$class &nbsp &nbsp	A java.lang.Class object representing the class declaring the constructor.
+$ class＆nbsp一个表示声明构造函数的类的java.lang.Class对象。
+
+$sig &nbsp &nbsp	An array of java.lang.Class objects representing the formal parameter types.
+$ sig＆nbsp一个代表形式参数类型的java.lang.Class对象数组。
+
+$proceed &nbsp &nbsp	The name of the constructor originally called in the expression.
+$ proceed＆nbsp最初在表达式中调用的构造函数的名称。
+
+Here the constructor call means the one represented by the ConstructorCall object.
+这里构造函数调用意味着由ConstructorCall对象表示的构造函数调用。
+
+The other identifiers such as $w, $args and $$ are also available.
+其他标识符如$ w，$ args和$$也可用。
+
+Since any constructor must call either a constructor of the super class or another constructor of the same class, the substituted statement must include a constructor call, normally a call to $proceed().
+由于任何构造函数都必须调用超类的构造函数或同一类的另一个构造函数，所以替换语句必须包含构造函数调用，通常调用$ proceed（）。
+
+$proceed is not a String value but special syntax. It must be followed by an argument list surrounded by parentheses ( ).
+$ proceed不是一个字符串值，而是特殊的语法。它必须后跟一个由圆括号（）括起来的参数列表。
+
+javassist.expr.FieldAccess
+javassist.expr.FieldAccess
+
+A FieldAccess object represents field access. The method edit() in ExprEditor receives this object if field access is found. The method replace() in FieldAccess receives source text representing the substitued statement or block for the field access.
+FieldAccess对象表示字段访问。如果找到字段访问，ExprEditor中的edit（）方法会收到这个对象。 FieldAccess中的replace（）方法将接收代表字段访问的替代语句或块的源文本。
+
+In the source text, the identifiers starting with $ have special meaning:
+在源文本中，以$开头的标识符具有特殊含义：
+
+$0	The object containing the field accessed by the expression. This is not equivalent to this.
+$ 0包含由表达式访问的字段的对象。这不等于这个。
+
+this represents the object that the method including the expression is invoked on.
+这表示包含该表达式的方法被调用的对象。
+
+$0 is null if the field is static.
+如果该字段是静态的，则$ 0为空。
+
+$1	The value that would be stored in the field if the expression is write access. 
+$ 1如果表达式是写入权限，则将存储在字段中的值。
+
+Otherwise, $1 is not available.
+否则，$ 1不可用。
+
+&nbsp
+＆NBSP
+
+$_	The resulting value of the field access if the expression is read access. 
+$_ 如果表达式是读访问，字段访问的结果值。
+
+Otherwise, the value stored in $_ is discarded.
+否则，存储在$_ 中的值将被丢弃。
+
+&nbsp
+＆NBSP
+
+$r	The type of the field if the expression is read access. 
+$ r表达式是读访问的字段的类型。
+
+Otherwise, $r is void.
+否则，$ r是无效的。
+
+&nbsp
+＆NBSP
+
+$class &nbsp &nbsp	A java.lang.Class object representing the class declaring the field.
+$ class＆nbsp一个表示声明字段的类的java.lang.Class对象。
+
+$type	A java.lang.Class object representing the field type.
+$ type表示字段类型的java.lang.Class对象。
+
+$proceed &nbsp &nbsp	The name of a virtual method executing the original field access. .
+$ proceed＆nbsp执行原始字段访问的虚拟方法的名称。 。
+
+The other identifiers such as $w, $args and $$ are also available.
+其他标识符如$ w，$ args和$$也可用。
+
+If the expression is read access, a value must be assigned to $_ in the source text. The type of $_ is the type of the field.
+如果表达式是读取访问，则必须在源文本中将值分配给$ _。 $_ 的类型是字段的类型。
+
+javassist.expr.NewExpr
+javassist.expr.NewExpr
+
+A NewExpr object represents object creation with the new operator (not including array creation). The method edit() in ExprEditor receives this object if object creation is found. The method replace() in NewExpr receives source text representing the substitued statement or block for the object creation.
+NewExpr对象用new运算符表示对象的创建（不包括数组创建）。如果找到对象创建，ExprEditor中的edit（）方法将接收此对象。 NewExpr中的replace（）方法接收代表替代语句的源文本或者创建对象的块。
+
+In the source text, the identifiers starting with $ have special meaning:
+在源文本中，以$开头的标识符具有特殊含义：
+
+$0	null.
+$ 0空。
+
+$1, $2, ... &nbsp &nbsp	The parameters to the constructor.
+$ 1，$ 2，...＆nbsp＆nbsp参数给构造函数。
+
+$_	The resulting value of the object creation. 
+$_ 对象创建的结果值。
+
+A newly created object must be stored in this variable.
+新创建的对象必须存储在这个变量中。
+
+&nbsp
+＆NBSP
+
+$r	The type of the created object.
+$ r创建的对象的类型。
+
+$sig &nbsp &nbsp	An array of java.lang.Class objects representing the formal parameter types.
+$ sig＆nbsp一个代表形式参数类型的java.lang.Class对象数组。
+
+$type &nbsp &nbsp	A java.lang.Class object representing the class of the created object.
+$ type＆代表创建对象的类的java.lang.Class对象。
+
+$proceed &nbsp &nbsp	The name of a virtual method executing the original object creation. .
+$ proceed＆nbsp执行原始对象创建的虚拟方法的名称。 。
+
+The other identifiers such as $w, $args and $$ are also available.
+其他标识符如$ w，$ args和$$也可用。
+
+javassist.expr.NewArray
+javassist.expr.NewArray
+
+A NewArray object represents array creation with the new operator. The method edit() in ExprEditor receives this object if array creation is found. The method replace() in NewArray receives source text representing the substitued statement or block for the array creation.
+NewArray对象表示使用new运算符创建数组。如果发现数组创建，ExprEditor中的edit（）方法将接收此对象。 NewArray中的replace（）方法接收表示代替语句或代码块的源文本以创建数组。
+
+In the source text, the identifiers starting with $ have special meaning:
+在源文本中，以$开头的标识符具有特殊含义：
+
+$0	null.
+$ 0空。
+
+$1, $2, ... &nbsp &nbsp	The size of each dimension.
+$ 1，$ 2，...＆nbsp每个维度的大小。
+
+$_	The resulting value of the array creation. 
+$_ 数组创建的结果值。
+
+A newly created array must be stored in this variable.
+新创建的数组必须存储在这个变量中。
+
+&nbsp
+＆NBSP
+
+$r	The type of the created array.
+$ r创建的数组的类型。
+
+$type &nbsp &nbsp	A java.lang.Class object representing the class of the created array.
+$ type＆nbsp一个表示创建数组的类的java.lang.Class对象。
+
+$proceed &nbsp &nbsp	The name of a virtual method executing the original array creation. .
+$ proceed＆nbsp执行原始数组创建的虚拟方法的名称。 。
+
+The other identifiers such as $w, $args and $$ are also available.
+其他标识符如$ w，$ args和$$也可用。
+
+For example, if the array creation is the following expression,
+例如，如果数组创建是下面的表达式，
+
+`String[][] s = new String[3][4];`
+
+then the value of $1 and $2 are 3 and 4, respectively. $3 is not available.
+那么$ 1和$ 2的值分别是3和4。 $ 3不可用。
+
+If the array creation is the following expression,
+如果数组创建是以下表达式，
+
+`String[][] s = new String[3][];`
+
+then the value of $1 is 3 but $2 is not available.
+那么$ 1的值是3，但$ 2不可用。
+
+javassist.expr.Instanceof
+javassist.expr.Instanceof
+
+A Instanceof object represents an instanceof expression. The method edit() in ExprEditor receives this object if an instanceof expression is found. The method replace() in Instanceof receives source text representing the substitued statement or block for the expression.
+Instanceof对象表示一个表达式的instanceof。如果找到表达式的instanceof，ExprEditor中的edit（）方法会收到这个对象。 Instanceof中的replace（）方法接收表示代替语句或代码块的源文本。
+
+In the source text, the identifiers starting with $ have special meaning:
+在源文本中，以$开头的标识符具有特殊含义：
+
+$0	null.
+$ 0空。
+
+$1	The value on the left hand side of the original instanceof operator.
+$ 1原始instanceof运算符左侧的值。
+
+$_	The resulting value of the expression. The type of $_ is boolean.
+$_ 表达式的结果值。 $_ 的类型是布尔值。
+
+$r	The type on the right hand side of the instanceof operator.
+$ r instanceof操作符右侧的类型。
+
+$type	A java.lang.Class object representing the type on the right hand side of the instanceof operator.
+$ type一个表示instanceof操作符右侧类型的java.lang.Class对象。
+
+$proceed &nbsp &nbsp	The name of a virtual method executing the original instanceof expression. 
+$ proceed＆nbsp执行原始instanceof表达式的虚拟方法的名称。
+
+It takes one parameter (the type is java.lang.Object) and returns true 
+它接受一个参数（类型是java.lang.Object）并返回true
+
+if the parameter value is an instance of the type on the right hand side of 
+如果参数值是右侧的类型的一个实例
+
+the original instanceof operator. Otherwise, it returns false.
+原来的instanceof操作符。否则，它返回false。
+
+&nbsp
+＆NBSP
+
+&nbsp
+＆NBSP
+
+&nbsp
+＆NBSP
+
+The other identifiers such as $w, $args and $$ are also available.
+其他标识符如$ w，$ args和$$也可用。
+
+javassist.expr.Cast
+javassist.expr.Cast
+
+A Cast object represents an expression for explicit type casting. The method edit() in ExprEditor receives this object if explicit type casting is found. The method replace() in Cast receives source text representing the substitued statement or block for the expression.
+Cast对象表示显式类型转换的表达式。如果找到明确的类型转换，则ExprEditor中的edit（）方法将接收此对象。 Cast中的replace（）方法接收表示替代语句或表达式块的源文本。
+
+In the source text, the identifiers starting with $ have special meaning:
+在源文本中，以$开头的标识符具有特殊含义：
+
+$0	null.
+$ 0空。
+
+$1	The value the type of which is explicitly cast.
+$ 1明确强制类型的值。
+
+$_	The resulting value of the expression. The type of $_ is the same as the type 
+$ _表达式的结果值。 $ _的类型与该类型相同
+
+after the explicit casting, that is, the type surrounded by ( ).
+显式转换后，即由（）包围的类型。
+
+&nbsp
+＆NBSP
+
+$r	the type after the explicit casting, or the type surrounded by ( ).
+$ r是显式转换后的类型，或者是由（）包围的类型。
+
+$type	A java.lang.Class object representing the same type as $r.
+$ type表示与$ r相同类型的java.lang.Class对象。
+
+$proceed &nbsp &nbsp	The name of a virtual method executing the original type casting. 
+$进行＆nbsp执行原始类型转换的虚拟方法的名称。
+
+It takes one parameter of the type java.lang.Object and returns it after 
+它接受一个java.lang.Object类型的参数并在之后返回
+
+the explicit type casting specified by the original expression.
+由原始表达式指定的显式类型转换。
+
+&nbsp
+＆NBSP
+
+&nbsp
+＆NBSP
+
+The other identifiers such as $w, $args and $$ are also available.
+其他标识符如$ w，$ args和$$也可用。
+
+javassist.expr.Handler
+javassist.expr.Handler
+
+A Handler object represents a catch clause of try-catch statement. The method edit() in ExprEditor receives this object if a catch is found. The method insertBefore() in Handler compiles the received source text and inserts it at the beginning of the catch clause.
+Handler对象表示try-catch语句的catch子句。如果发现catch，ExprEditor中的edit（）方法会收到这个对象。 Handler中的insertBefore（）方法编译接收到的源文本并将其插入到catch子句的开头。
+
+In the source text, the identifiers starting with $ have meaning:
+在源文本中，以$开头的标识符具有以下含义：
+
+$1	The exception object caught by the catch clause.
+$ 1 catch子句捕获的异常对象。
+
+$r	the type of the exception caught by the catch clause. It is used in a cast expression.
+$ r catch子句捕获的异常的类型。它被用在一个表演中。
+
+$w	The wrapper type. It is used in a cast expression.
+$ w包装类型。它被用在一个表演中。
+
+$type &nbsp &nbsp	A java.lang.Class object representing 
+$ type＆表示一个java.lang.Class对象
+
+the type of the exception caught by the catch clause.
+catch子句捕获的异常的类型。
+
+&nbsp
+＆NBSP
+
+If a new exception object is assigned to $1, it is passed to the original catch clause as the caught exception.
+如果一个新的异常对象被赋值给$ 1，它会被捕获的异常传递给原来的catch子句。
+
 
 
 

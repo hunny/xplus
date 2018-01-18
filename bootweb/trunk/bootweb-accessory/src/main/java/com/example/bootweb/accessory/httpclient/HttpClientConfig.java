@@ -52,6 +52,11 @@ public class HttpClientConfig {
     }
   }
 
+  /**
+   * 选择一种方式{@link HttpClientManagerFactoryBen}来封装httpClient。
+   * @return
+   * @throws Exception
+   */
   @Bean(name = "httpClient")//, destroyMethod = "close()"
   @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
   public CloseableHttpClient client() throws Exception {
@@ -61,9 +66,13 @@ public class HttpClientConfig {
      * 从官方文档可以得出，HttpClientBuilder是非线程安全的，但是HttpClients确实Immutable的，immutable
      * 对象不仅能够保证对象的状态不被改变， 而且还可以不使用锁机制就能被其他线程共享
      */
-    this.client = HttpClients.custom().setConnectionManager(poolHttpcConnManager)
-        .setRetryHandler(httpRequestRetryHandler).setKeepAliveStrategy(connectionKeepAliveStrategy)
-        .setRoutePlanner(proxyRoutePlanner).setDefaultRequestConfig(config).build();
+    this.client = HttpClients.custom() //
+        .setConnectionManager(poolHttpcConnManager) //
+        .setRetryHandler(httpRequestRetryHandler) //
+        .setKeepAliveStrategy(connectionKeepAliveStrategy) //
+        .setRoutePlanner(proxyRoutePlanner) //
+        .setDefaultRequestConfig(config) //
+        .build();
     return this.client;
   }
 

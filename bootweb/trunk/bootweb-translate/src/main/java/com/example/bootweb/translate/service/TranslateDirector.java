@@ -1,4 +1,4 @@
-package com.example.bootweb.translate.profile;
+package com.example.bootweb.translate.service;
 
 import com.example.bootweb.translate.api.TranslateBuilder;
 

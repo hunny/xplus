@@ -1,5 +1,7 @@
 package com.xplus.commons.compiler.javassist;
 
+import java.lang.reflect.Method;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -7,6 +9,7 @@ import org.junit.Test;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
+import javassist.CtNewMethod;
 
 public class JavassistTest {
 
@@ -16,7 +19,7 @@ public class JavassistTest {
     pool.makeClass("test.Point");
     pool.get("test.Point").toClass();
   }
-  
+
   @Test
   public void testBasic() throws Exception {
     ClassPool pool = ClassPool.getDefault();
@@ -38,7 +41,7 @@ public class JavassistTest {
     Class<?> c = cc.toClass();
     Assert.assertEquals("相同", "my.test.Point", c.getName());
   }
-  
+
   @Test
   public void testModifyMethod() throws Exception {
     ClassPool cp = ClassPool.getDefault();
@@ -49,6 +52,22 @@ public class JavassistTest {
     Hello h = (Hello) c.newInstance();
     Assert.assertEquals("相同", "Hello.say()", h.say());
     Assert.assertEquals("相同", "Hello.say()", new Hello().say());
+  }
+
+//  @Test
+  public void testCreateMethod() throws Exception {
+    ClassPool cp = ClassPool.getDefault();
+//    cp.makeClass("my.test.PointOk");
+//    CtClass cc = cp.get("my.test.PointOk");
+    CtClass cc = cp.get("com.xplus.commons.compiler.javassist.Hello");
+    cc.defrost();
+    CtMethod m = CtNewMethod.make("public int xmove(int dx) { return dx + 10; }", cc);
+    cc.addMethod(m);
+    Class mClass = cc.toClass();
+    cc.writeFile();
+    for (Method me : mClass.getDeclaredMethods()) { // test print, ok
+      System.out.println(me.getName());
+    }
   }
 
 }

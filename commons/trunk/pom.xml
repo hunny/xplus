@@ -141,6 +141,7 @@
     <module>commons-util</module>
     <module>commons-zookeeper</module>
     <module>commons-spark</module>
+    <module>commons-thread</module>
   </modules>
 
   <properties>

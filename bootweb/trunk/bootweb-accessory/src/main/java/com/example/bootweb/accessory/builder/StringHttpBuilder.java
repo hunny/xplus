@@ -88,7 +88,7 @@ public class StringHttpBuilder implements HttpBuilder<List<Param>, String> {
       HttpResponse resp = httpClient.execute(httpGet);
       logger.info("Status Code [{}], URL[{}]", resp.getStatusLine(), uri);
       HttpEntity entity = resp.getEntity();
-      String str = EntityUtils.toString(entity);
+      String str = EntityUtils.toString(entity, "UTF-8");
       logger.info("Response[{}]", str);
       EntityUtils.consume(entity);
       return str;

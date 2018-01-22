@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bootweb.accessory.api.Http;
 import com.example.bootweb.accessory.api.Param;
+import com.example.bootweb.accessory.api.fiveone.FiveOneService;
+import com.example.bootweb.accessory.builder.CustomHeaderBuilder;
 import com.example.bootweb.accessory.builder.StringHttpBuilder;
 
 @RestController
@@ -33,6 +35,9 @@ public class AboutController {
 
   @Autowired
   private Http<String> httpable;
+  
+  @Autowired
+  private FiveOneService fiveOneService;
 
   @Autowired
   private Optional<CloseableHttpClient> httpClientService;
@@ -56,17 +61,7 @@ public class AboutController {
     List<Param> params = new ArrayList<>();
     params.add(new Param("key", name));
     params.add(new Param("checkFrom", "searchBox"));
-    List<Param> headers = new ArrayList<>();
-    headers.add(new Param("Accept", //
-        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"));
-    headers.add(new Param("Accept-Encoding", //
-        "gzip, deflate, br"));
-    headers.add(new Param("Accept-Language", //
-        "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-TW;q=0.6"));
-    headers.add(new Param("Connection", //
-        "keep-alive"));
-    headers.add(new Param("User-Agent", //
-        "ozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Mobile Safari/537.36"));
+    List<Param> headers = CustomHeaderBuilder.newBuilder().build();
 
     StringHttpBuilder.newBuilder()//
         .httpClient(httpClient) //
@@ -75,6 +70,12 @@ public class AboutController {
         .header(headers) //
         .build(); //
     return new ResponseEntity<String>("OK", HttpStatus.OK);
+  }
+  
+  @GetMapping("/fiveone/list/{keyword}")
+  public ResponseEntity<List<String>> fiveOneList(@PathVariable String keyword) throws Exception {
+    List<String> result = fiveOneService.listBy(keyword);
+    return new ResponseEntity<List<String>>(result, HttpStatus.OK);
   }
 
   @GetMapping("/tianyancha/list/{name}")

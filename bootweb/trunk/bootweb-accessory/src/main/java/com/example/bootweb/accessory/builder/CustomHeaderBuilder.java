@@ -20,7 +20,7 @@ public class CustomHeaderBuilder implements HeaderBuilder {
         "ozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Mobile Safari/537.36"));
   }
   
-  public CustomHeaderBuilder newBuilder() {
+  public static CustomHeaderBuilder newBuilder() {
     return new CustomHeaderBuilder();
   }
 

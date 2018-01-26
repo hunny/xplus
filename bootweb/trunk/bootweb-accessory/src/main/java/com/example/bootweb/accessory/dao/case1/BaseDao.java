@@ -8,13 +8,20 @@ import java.util.List;
  * @author huzexiong
  *
  */
-public interface BaseDao<T> {
+public interface BaseDao<K, T> {
   /**
    * 插入一条记录
    *
    * @param entity
    */
-  Long insert(T entity);
+  K insert(T entity);
+  
+  /**
+   * 插入一条记录
+   *
+   * @param entity
+   */
+  Long insertAutoId(T entity);
 
   /**
    * 更新记录
@@ -28,7 +35,7 @@ public interface BaseDao<T> {
    *
    * @param id
    */
-  void delete(Long id);
+  boolean delete(Long id);
 
   /**
    * 删除所有记录

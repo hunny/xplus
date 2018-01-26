@@ -1,14 +1,13 @@
 package com.example.bootweb.accessory.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.util.Assert;
 
-public class InsertBuilder {
+public class InsertBuilder implements SqlBuilder {
 
   private StringBuffer sql = new StringBuffer();
   private String table = null;
@@ -29,10 +28,11 @@ public class InsertBuilder {
     return this;
   }
 
-  public Insert build() {
+  @Override
+  public SqlResult build() {
     Assert.notNull(table, "table");
     Assert.notEmpty(values, "values");
-    
+
     StringBuilder fields = new StringBuilder();
     StringBuilder holders = new StringBuilder();
     for (Map.Entry<String, Object> map : values.entrySet()) {
@@ -49,48 +49,9 @@ public class InsertBuilder {
     sql.append(") VALUES (");
     sql.append(holders.toString().replaceFirst(",$", ""));
     sql.append(")");
-    return new Insert(sql.toString(), //
-        list.toArray(new Object[] {}));
-  }
 
-  public static class Insert {
-
-    private String sql;
-    private Object[] values;
-
-    public Insert(String sql, Object[] values) {
-      super();
-      this.sql = sql;
-      this.values = values;
-    }
-
-    public String getSql() {
-      return sql;
-    }
-
-    public void setSql(String sql) {
-      this.sql = sql;
-    }
-
-    public Object[] getValues() {
-      return values;
-    }
-
-    public void setValues(Object[] values) {
-      this.values = values;
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder builder = new StringBuilder();
-      builder.append("Insert [sql=");
-      builder.append(sql);
-      builder.append(", values=");
-      builder.append(Arrays.toString(values));
-      builder.append("]");
-      return builder.toString();
-    }
-
+    return new SqlResult(sql.toString(), //
+        list);
   }
 
 }

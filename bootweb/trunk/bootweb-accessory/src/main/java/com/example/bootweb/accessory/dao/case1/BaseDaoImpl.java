@@ -19,7 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
  * @author huzexiong
  *
  */
-public abstract class BaseDaoImpl<T> implements BaseDao<T> {
+public abstract class BaseDaoImpl<K, T> implements BaseDao<K, T> {
 
   /** 具体操作的实体类对象 */
   private Class<T> entityClass;
@@ -44,7 +44,7 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
    * @param entity
    */
   @Override
-  public Long insert(T entity) {
+  public Long insertAutoId(T entity) {
     final SqlContext sqlContext = SqlUtils.buildInsertSql(entity);
     KeyHolder keyHolder = new GeneratedKeyHolder();
     jdbcTemplate.update(new PreparedStatementCreator() {
@@ -79,11 +79,11 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
    * @param id
    */
   @Override
-  public void delete(Long id) {
+  public boolean delete(Long id) {
     String tableName = entityClass.getSimpleName();
     String primaryName = entityClass.getSimpleName();
     String sql = "DELETE FROM " + tableName + " WHERE " + primaryName + " = ?";
-    jdbcTemplate.update(sql, id);
+    return jdbcTemplate.update(sql, id) == 1;
   }
 
   /**

@@ -1,5 +1,8 @@
 package com.xplus.commons.thread.senior.volatiledemo;
 
+/**
+ * 演示volatile关键字修改变量，在多个线程间传值。
+ */
 public class UseVolatileThread extends Thread {
 
   private volatile boolean running = true;

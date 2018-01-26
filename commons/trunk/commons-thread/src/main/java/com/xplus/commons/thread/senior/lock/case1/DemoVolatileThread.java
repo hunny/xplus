@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class DemoThread {
+/**
+ * 演示volatile关键字的使用。
+ */
+public class DemoVolatileThread {
 
+  // list使用volatile修饰，使多个线程实时都可见。
   private volatile List<String> list = new ArrayList<>();
 
   public void add(String value) {
@@ -17,7 +21,7 @@ public class DemoThread {
   }
 
   public static void main(String[] args) {
-    final DemoThread demo = new DemoThread();
+    final DemoVolatileThread demo = new DemoVolatileThread();
     Thread thread1 = new Thread() {
       @Override
       public void run() {

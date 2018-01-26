@@ -1,11 +1,14 @@
 package com.xplus.commons.thread.senior.synchronize;
 
+/**
+ * 多个线程一个锁。
+ */
 public class SynchronizedThread extends Thread {
 
   private int count = 5;
   
   @Override
-  public synchronized void run() {
+  public synchronized void run() {//多个线程一个锁的竞争，此处是线程安全的。
     count --;
     System.out.println("当前线程：" + Thread.currentThread().getName() + ",count值：" + count);
   }

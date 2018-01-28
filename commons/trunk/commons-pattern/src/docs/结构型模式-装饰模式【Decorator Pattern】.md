@@ -26,7 +26,7 @@
  * 设计模式之 装饰模式<br/>
  * 角色：抽象构件<br/>
  * 被装饰的对象抽象类<br/>
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public abstract class Component {
@@ -42,7 +42,7 @@ public abstract class Component {
  * 设计模式之 装饰模式<br/>
  * 角色：具体构件类<br/>
  * 抽象构件类的子类，定义具体的构件对象，也就是具体的被装饰对象<br/>
- * @author  lvzb.software@qq.com
+ * @author  
  *
  */
 public class ConcreteComponent extends Component {
@@ -63,7 +63,7 @@ public class ConcreteComponent extends Component {
  * 角色：抽象装饰类<br/>
  * 也是抽象构件类的子类，目的是能够进行多次装饰<br/>
  * 作用：引入抽象构件类， 给具体构件类增加职责，但是具体职责在其子类中实现<br/>
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public class Decorator extends Component {
@@ -92,7 +92,7 @@ public class Decorator extends Component {
  * 设计模式之 装饰模式<br/>
  * 角色：具体装饰类<br/>
  * 向构件添加新的具体的职责、扩充原有对象的行为
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public class ConcreteDecoratorA extends Decorator {
@@ -122,7 +122,7 @@ public class ConcreteDecoratorA extends Decorator {
  * 设计模式之 装饰模式<br/>
  * 角色：具体装饰类<br/>
  * 向构件添加新的具体的职责、扩充原有对象的行为
- * @author  lvzb.software@qq.com
+ * @author  
  *
  */
 public class ConcreteDecoratorB extends Decorator {

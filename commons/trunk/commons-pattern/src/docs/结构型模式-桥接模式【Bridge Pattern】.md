@@ -33,7 +33,7 @@
 ```java
 /**
  * JDBC 驱动连接管理类
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public class JdbcDriverManager {
@@ -68,7 +68,7 @@ public class JdbcDriverManager {
 ```java
 /**
  * 获取文件内容、连接数据库来源接口
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public interface FileExportImpl {
@@ -86,7 +86,7 @@ public interface FileExportImpl {
 ```java
 /**
  * 从Oracle数据库获取内容
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public class FileExportFromOracle implements FileExportImpl {
@@ -105,7 +105,7 @@ public class FileExportFromOracle implements FileExportImpl {
 ```java
 /**
  * 从MySql数据库获取内容
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public class FileExportFromMySql implements FileExportImpl {
@@ -124,7 +124,7 @@ public class FileExportFromMySql implements FileExportImpl {
 ```java
 /**
  * 从Sql Server数据库获取内容
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public class FileExportFromSqlServer implements FileExportImpl {
@@ -143,7 +143,7 @@ public class FileExportFromSqlServer implements FileExportImpl {
 ```java
 /**
  * 文件格式导出 抽象类
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public abstract class FileExportAbstraction {
@@ -164,7 +164,7 @@ public abstract class FileExportAbstraction {
 ```java
 /**
  * Txt文件格式导出具体类
- * @author lvzb.software@qq.com
+ * @author 
  *
  */
 public class TxtFileExport extends FileExportAbstraction {
@@ -182,7 +182,7 @@ public class TxtFileExport extends FileExportAbstraction {
 ```java
 /**
  * xml文件格式导出具体类
- * @author  lvzb.software@qq.com
+ * @author  
  *
  */
 public class XmlFileExport extends FileExportAbstraction {
@@ -200,7 +200,7 @@ public class XmlFileExport extends FileExportAbstraction {
 ```java
 /**
  * pdf文件格式导出具体类
- * @author  lvzb.software@qq.com
+ * @author  
  *
  */
 public class PdfFileExport extends FileExportAbstraction {
@@ -278,7 +278,7 @@ public class Client {
 
 ### 概念
 
-桥接模式(Bridge)： 把事物和其具体实现分开(抽象化与实现化解耦)，使他们可以各自独立的变化。假设你的电脑是双系统(WinXP、Win7)，而且都安装了mysql、oracle、sqlserver、DB2这4种数据库,那么你有2*4种选择去连接数据库。按平常的写法，咱要写2*4个类，但是使用了桥接模式，你只需写2+4个类,可以看出桥接模式其实就是一种将N*M转化成N+M组合的思想。
+桥接模式(Bridge)： 把事物和其具体实现分开(抽象化与实现化解耦)，使他们可以各自独立的变化。假设你的电脑是双系统(WinXP、Win7)，而且都安装了mysql、oracle、sqlserver、DB2这4种数据库,那么你有2*4种选择去连接数据库。按平常的写法，要写2*4个类，但是使用了桥接模式，你只需写2+4个类,可以看出桥接模式其实就是一种将N*M转化成N+M组合的思想。
 
 ```java
 /** 
@@ -286,7 +286,7 @@ public class Client {
  *  
  * 假设你的电脑是双系统(WinXP、Win7)，而且都安装了mysql、oracle、sqlserver、DB2这4种数据库 
  *  
- * 那么你有2*4种选择去连接数据库。按平常的写法，咱要写2*4个类，但是使用了桥接模式，你只需写2+4个类 
+ * 那么你有2*4种选择去连接数据库。按平常的写法，要写2*4个类，但是使用了桥接模式，你只需写2+4个类 
  *  
  * 可以看出桥接模式其实就是一种将N*M转化成N+M组合的思想。 
  */  

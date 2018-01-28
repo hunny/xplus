@@ -30,7 +30,7 @@
 ```java
 /** 
  * 接口类 
- * @author lvzb.software@qq.com 
+ * @author  
  * 
  */  
 public interface Subject {  
@@ -44,7 +44,7 @@ public interface Subject {
 ```java
 /** 
  * 接口实现类，真实访问对象/委托对象 
- * @author lvzb.software@qq.com 
+ * @author  
  * 
  */  
 public class RealSubject implements Subject {  
@@ -62,7 +62,7 @@ public class RealSubject implements Subject {
 ```java
 /** 
  * 接口实现类，代理对象 
- * @author lvzb.software@qq.com 
+ * @author  
  * 
  */  
 public class ProxySubject implements Subject {  
@@ -86,7 +86,7 @@ public class ProxySubject implements Subject {
 ```java
 /** 
  * 客户类 
- * @author  lvzb.software@qq.com 
+ * @author   
  * 
  */  
 public class Client {  
@@ -121,7 +121,7 @@ public class Client {
 
 ## 其它参考概念
 
-代理模式(Proxy)：代理模式其实就是多一个代理类出来，替原对象进行一些操作。比如咱有的时候打官司需要请律师，因为律师在法律方面有专长，可以替咱进行操作表达咱的想法，这就是代理的意思。代理模式分为两类：1、静态代理(不使用jdk里面的方法)；2、动态代理(使用jdk里面的InvocationHandler和Proxy)。
+代理模式(Proxy)：代理模式其实就是多一个代理类出来，替原对象进行一些操作。比如有的时候打官司需要请律师，因为律师在法律方面有专长，可以替进行操作表达的想法，这就是代理的意思。代理模式分为两类：1、静态代理(不使用jdk里面的方法)；2、动态代理(使用jdk里面的InvocationHandler和Proxy)。
 
 ### 静态代理
 

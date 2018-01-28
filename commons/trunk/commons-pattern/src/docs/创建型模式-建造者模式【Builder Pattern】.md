@@ -37,7 +37,7 @@
 ```java
 /** 
  * 被建造的对象：产品 
- * @author  lvzb.software@qq.com 
+ * @author   
  * 
  */  
 public class Product {  
@@ -80,7 +80,7 @@ public class Product {
 ```java
 /** 
  * 抽象建造者 
- * @author  lvzb.software@qq.com 
+ * @author   
  * 
  */  
 public abstract class Builder {  
@@ -105,7 +105,7 @@ public abstract class Builder {
 /** 
  * 具体的建造者对象<br> 
  * 建造复杂产品的各个组成部件、最后由指挥者类<Director>进行组装成完整的产品对象 
- * @author lvzb.software@qq.com 
+ * @author  
  * 
  */  
 public class ConcreteBuilder extends Builder {  
@@ -137,7 +137,7 @@ public class ConcreteBuilder extends Builder {
 /** 
  * 指挥者<br> 
  * 负责 安排/组装 复杂对象的建造次序 
- * @author  lvzb.software@qq.com 
+ * @author   
  * 
  */  
 public class Director {  

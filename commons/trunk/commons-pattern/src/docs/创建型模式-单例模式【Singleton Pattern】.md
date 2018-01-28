@@ -1,5 +1,84 @@
 # 创建型模式-单例模式【Singleton Pattern】
 
+## 一、概述
+
+确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例，这个类称为单例类，它提供全局访问的方法。单例模式是一种对象创建型模式。
+
+## 二、适用场景
+
+系统/应用只需要一个实例对象，确保对象的唯一性。
+
+## 四、参与者
+
+Singleton（单例类）：在单例类的内部实现只生成一个实例，同时它提供一个静态的getInstance()工厂方法，让客户可以访问它的唯一实例；为了防止在外部对其实例化，将其构造函数设计为私有；在单例类内部定义了一个Singleton类型的静态对象，作为外部共享的唯一实例。
+
+## 用例学习
+
+单例模式两种不同的实现方式：
+
+### 饿汉式单例模式：
+
+```java
+/** 
+ * 单例类：饿汉式单例模式 
+ * @author   
+ * 
+ */  
+public class EagerSingleton {  
+    /** 定义私有静态变量  类加载的时候就已经创建了单例对象 */  
+    private static final EagerSingleton instance = new EagerSingleton();  
+      
+    /** 
+     * 私有构造函数  只能被自身调用实例化 
+     */  
+    private EagerSingleton(){  
+          
+    }  
+      
+    /** 
+     * 获取单例实例对象 
+     * @return 
+     */  
+    public static EagerSingleton getInstance(){  
+        return instance;  
+    }  
+  
+}  
+```
+
+### 懒汉式单例模式：
+
+```java
+/** 
+ * 单例模式一：懒汉式单例模式 
+ * @author   
+ * 
+ */  
+public class LazySingleton {  
+    /** 私有静态成员变量 存储唯一实例  */  
+    private static LazySingleton instance;  
+      
+    /** 
+     * 私有构造函数 只能被自身调用实例化 
+     */  
+    private LazySingleton() {   
+          
+    }  
+      
+    /** 
+     * 获取单例实例对象 
+     * @return 
+     */  
+    public synchronized static LazySingleton getInstance(){  
+        if (instance == null){  
+            instance = new LazySingleton();  
+        }  
+        return instance;  
+    }  
+  
+}  
+```
+
 ## 懒汉式
 
 ```java

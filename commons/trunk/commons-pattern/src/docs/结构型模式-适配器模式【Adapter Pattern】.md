@@ -140,7 +140,7 @@ public class Test {
 /** 
  * 示例(三)：接口的适配器模式 
  *  
- * 这次咱们直接将原类做成一个接口 --> 原始接口 
+ * 这次们直接将原类做成一个接口 --> 原始接口 
  */  
 interface Originable {  
     public void originMethod1();  
@@ -153,7 +153,7 @@ interface Originable {
  *  
  * 空实现即可，具体实现靠子类，子类只需实现自身需要的方法即可。 
  *  
- * 以后咱们就不用跟原始的接口打交道，只和该抽象类取得联系即可。 
+ * 以后们就不用跟原始的接口打交道，只和该抽象类取得联系即可。 
  */  
 abstract class Adapter implements Originable {  
     public void originMethod1() {  

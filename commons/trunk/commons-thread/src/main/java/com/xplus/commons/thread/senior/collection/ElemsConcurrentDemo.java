@@ -71,7 +71,7 @@ public class ElemsConcurrentDemo {
         elems.remove(20);
       }
     } catch (ConcurrentModificationException e) {
-      System.out.println("期望中的冲突异常：");
+      System.err.println("期望中的冲突异常：");
       e.printStackTrace();
     }
   }
@@ -83,7 +83,7 @@ public class ElemsConcurrentDemo {
         elems.remove(20);
       }
     } catch (ConcurrentModificationException e) {
-      System.out.println("期望中的冲突异常：");
+      System.err.println("期望中的冲突异常：");
       e.printStackTrace();
     }
   }

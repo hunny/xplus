@@ -5,18 +5,20 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 
 public class UseQueue {
 
   public static void main(String[] args) {
-//    useConcurrentLinkedQueue();
-//    useArrayBlockingQueue();
+    // useConcurrentLinkedQueue();
+    // useArrayBlockingQueue();
     useLinkedBlockingQueue();
     useSynchronousQueue();
+    usePriorityBlockingQueue();
   }
-  
+
   public static void useConcurrentLinkedQueue() {
     System.out.println("===============useConcurrentLinkedQueue");
     // 高性能无阻塞无界队列
@@ -29,7 +31,7 @@ public class UseQueue {
     System.out.println(q.peek());
     System.out.println(q.size());
   }
-  
+
   public static void useArrayBlockingQueue() {
     System.out.println("===============useArrayBlockingQueue");
     final ArrayBlockingQueue<String> q = new ArrayBlockingQueue<>(5);
@@ -66,7 +68,7 @@ public class UseQueue {
       }
     }).start();
     try {
-      //准备放入元素
+      // 准备放入元素
       System.err.println("准备放入元素。");
       q.put("g");// wait for space to become available if the queue is full.
       System.err.println("放入元素完成。");
@@ -80,7 +82,7 @@ public class UseQueue {
     }
     System.out.println("变动后元素为Queue中的元素为：" + q);
   }
-  
+
   public static void useLinkedBlockingQueue() {
     System.out.println("===============useLinkedBlockingQueue");
     LinkedBlockingQueue<String> q = new LinkedBlockingQueue<>(2);
@@ -104,7 +106,7 @@ public class UseQueue {
       System.out.println("元素：" + str);
     }
   }
-  
+
   public static void useSynchronousQueue() {
     System.out.println("===============useSynchronousQueue");
     SynchronousQueue<String> q = new SynchronousQueue<>();
@@ -113,6 +115,66 @@ public class UseQueue {
     } catch (Exception e) {
       System.out.println("可预见的异常：" + e.getMessage());
     }
+  }
+
+  public static void usePriorityBlockingQueue() {
+    System.out.println("===============usePriorityBlockingQueue");
+
+    PriorityBlockingQueue<Task> q = new PriorityBlockingQueue<Task>();
+    q.add(new Task(3, "任务3"));
+    q.put(new Task(9, "任务9"));
+    q.add(new Task(0, "任务0"));
+    q.add(new Task(2, "任务7"));
+    q.add(new Task(14, "任务14"));
+    q.offer(new Task(8, "任务8"));
+    Task task = null;
+    while ((task = q.poll()) != null) {
+      System.out.println(task);
+    }
+  }
+
+  public static class Task implements Comparable<Task> {
+    private int id;
+    private String name;
+
+    public Task(int id, String name) {
+      super();
+      this.id = id;
+      this.name = name;
+    }
+
+    public int getId() {
+      return id;
+    }
+
+    public void setId(int id) {
+      this.id = id;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder builder = new StringBuilder();
+      builder.append("Task [id=");
+      builder.append(id);
+      builder.append(", name=");
+      builder.append(name);
+      builder.append("]");
+      return builder.toString();
+    }
+
+    @Override
+    public int compareTo(Task task) {
+      return this.getId() > task.getId() ? 1 : (this.getId() < task.getId() ? -1 : 0);
+    }
+
   }
 
 }

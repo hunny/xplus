@@ -14,9 +14,9 @@ public class UseQueue {
   public static void main(String[] args) {
     // useConcurrentLinkedQueue();
     // useArrayBlockingQueue();
-    useLinkedBlockingQueue();
+//    useLinkedBlockingQueue();
     useSynchronousQueue();
-    usePriorityBlockingQueue();
+//    usePriorityBlockingQueue();
   }
 
   public static void useConcurrentLinkedQueue() {
@@ -109,12 +109,40 @@ public class UseQueue {
 
   public static void useSynchronousQueue() {
     System.out.println("===============useSynchronousQueue");
-    SynchronousQueue<String> q = new SynchronousQueue<>();
+    final SynchronousQueue<String> q = new SynchronousQueue<>();
     try {
       q.add("12345");
     } catch (Exception e) {
       System.out.println("可预见的异常：" + e.getMessage());
     }
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    Thread t1 = new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          System.out.println(q.take());
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+    t1.start();
+    try {
+      Thread.sleep(500);//延迟执行t2的线程，确保t2在t1后执行。
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    Thread t2 = new Thread(new Runnable() {
+      @Override
+      public void run() {
+        q.add("ABC");
+      }
+    });
+    t2.start();
   }
 
   public static void usePriorityBlockingQueue() {

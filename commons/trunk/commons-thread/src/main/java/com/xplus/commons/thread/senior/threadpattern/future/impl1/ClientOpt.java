@@ -1,5 +1,8 @@
 package com.xplus.commons.thread.senior.threadpattern.future.impl1;
 
+/**
+ * 集成异步请求和长耗时的请求操作。
+ */
 public class ClientOpt {
 
   public Req get(final String str) {

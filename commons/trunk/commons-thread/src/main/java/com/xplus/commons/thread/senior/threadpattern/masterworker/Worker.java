@@ -10,10 +10,9 @@ public class Worker implements Runnable {
   
   @Override
   public void run() {
-
     while (true) {
       MyData mData = this.dataQueue.poll();//从队列中取出第一个元素并从队列中移除。
-      if (null == mData) {
+      if (null == mData) {// 队列中如果没有元素，则处理完成。
         break;
       }
       // 业务逻辑处理方法

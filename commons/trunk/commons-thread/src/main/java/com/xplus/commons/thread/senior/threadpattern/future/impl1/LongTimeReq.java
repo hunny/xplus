@@ -1,5 +1,8 @@
 package com.xplus.commons.thread.senior.threadpattern.future.impl1;
 
+/**
+ * 模拟一个耗时长的请求操作。
+ */
 public class LongTimeReq implements Req {
 
   private String result;

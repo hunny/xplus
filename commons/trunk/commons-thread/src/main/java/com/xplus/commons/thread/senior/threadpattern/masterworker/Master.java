@@ -39,6 +39,7 @@ public class Master {
     }
   }
 
+  // 7. 是否已经完成。
   public boolean isComplete() {
     for (Map.Entry<String, Thread> map : this.workMap.entrySet()) {
       if (map.getValue().getState() != Thread.State.TERMINATED) {// 只要有线程还没有终止，就没有完成。
@@ -48,6 +49,7 @@ public class Master {
     return true;
   }
 
+  // 8. 返回结果。
   public Integer getResult() {
     Integer result = 0;
     for (Map.Entry<String, Integer> map : this.resultMap.entrySet()) {

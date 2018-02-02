@@ -1,5 +1,8 @@
 package com.xplus.commons.thread.senior.threadpattern.future.impl1;
 
+/**
+ * 模拟一个异步请求。
+ */
 public class AsyncReq implements Req {
 
   private LongTimeReq realData;

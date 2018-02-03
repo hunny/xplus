@@ -1,0 +1,36 @@
+package com.xplus.commons.thread.senior.concurrent.util;
+
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
+public class CyclicBarrierInterruptTest {
+
+  static CyclicBarrier c = new CyclicBarrier(2);
+
+  public static void main(String[] args) //
+      throws InterruptedException, //
+      BrokenBarrierException {
+
+    Thread thread = new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          c.await();
+        } catch (Exception e) {
+          e.printStackTrace();
+          System.out.println("1" + Thread.currentThread().getName());
+        }
+      }
+    });
+    thread.start();
+    thread.interrupt();
+    try {
+      c.await();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("2" + Thread.currentThread().getName());
+      System.out.println(c.isBroken());
+    }
+  }
+
+}

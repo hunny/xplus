@@ -41,7 +41,7 @@ public class UseFuture implements Callable<String> {
     start = System.currentTimeMillis();
     System.out.println("操作结果：" + future.get());
     System.out.println("耗时：" + (System.currentTimeMillis() - start) + "ms");
-    
+    System.out.println("主线程执行。");
     executor.shutdown();
   }
 }

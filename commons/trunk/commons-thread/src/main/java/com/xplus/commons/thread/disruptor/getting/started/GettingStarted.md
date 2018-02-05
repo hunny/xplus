@@ -1,5 +1,7 @@
 # Getting Started
 
+http://ifeve.com/disruptor-getting-started/
+
 Disruptor是一个高性能的异步处理框架，或者可以认为是最快的消息框架（轻量的JMS），也可以认为是一个观察者模式的实现，或者事件监听模式的实现。 
 
 ## Hello World

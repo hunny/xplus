@@ -1,18 +1,16 @@
 package com.xplus.commons.thread.disruptor.getting.started;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.ProducerType;
 
 public class LongEventMain {
 
   public static void main(String[] args) throws InterruptedException {
-
-    // Executor that will be used to construct new threads for consumers
-    Executor executor = Executors.newCachedThreadPool();
 
     // The factory for the event
     LongEventFactory factory = new LongEventFactory();
@@ -23,10 +21,13 @@ public class LongEventMain {
     // Construct the Disruptor
     Disruptor<LongEvent> disruptor = new Disruptor<LongEvent>(factory, //
         bufferSize, //
-        executor);
+        Executors.defaultThreadFactory(), //
+        ProducerType.SINGLE, new YieldingWaitStrategy());
 
     // Connect the handler
-    disruptor.handleEventsWith(new LongEventHandler());
+    disruptor.handleEventsWith(new LongEventHandler[] { //
+        new LongEventHandler() //
+    });
 
     // Start the Disruptor, starts all threads running
     disruptor.start();
@@ -42,7 +43,7 @@ public class LongEventMain {
       producer.onData(bb);
       Thread.sleep(1000);
     }
-    
+
   }
-  
+
 }

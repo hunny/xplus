@@ -34,6 +34,10 @@ Disruptor使用Sequence来表示一个特殊组件处理的序号。和Disruptor
 
 决定一个消费者将如何等待生产者将Event置入Disruptor。
 
+- BlockingWaitStrategy 是最代效的策略，但其对CPU的消耗最小并且在各种不同部署环境中能提供更加一致的性能表现。
+- SleepingWaitStrategy 性能表现跟BlockingWaitStrategy差不多，对CPU的消耗也类似，但其对生产者线程的影响较小，适合用于异步日志类似。
+- YieldingWaitStrategy 性能是最好的，适合于低延迟的系统。在要求极高性能且事件处理线数小于CPU逻辑核心的场景中，推荐使用此策略。
+
 ### Event：
 
 从生产者到消费者过程中所处理的数据单元。Disruptor中没有代码表示Event，因为它完全是由用户定义的。

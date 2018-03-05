@@ -179,6 +179,7 @@
     <validation-api.version>2.0.0.Final</validation-api.version>
     <junit.version>4.12</junit.version>
     <hibernate-validator.version>6.0.2.Final</hibernate-validator.version>
+    <disruptor.version>3.3.7</disruptor.version>
     <log4j.version>1.2.17</log4j.version>
     <mockito.version>1.10.19</mockito.version>
     <mockito.version>2.0.2-beta</mockito.version>
@@ -225,6 +226,11 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
         <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.lmax</groupId>
+        <artifactId>disruptor</artifactId>
+        <version>${disruptor.version}</version>
       </dependency>
       <dependency>
         <groupId>com.jgoodies</groupId>

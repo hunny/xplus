@@ -30,7 +30,7 @@ CREATE TABLE freess (
 id bigint NOT NULL AUTO_INCREMENT, 
 ip varchar(16) NOT NULL, 
 port varchar(10) NOT NULL, 
-method varchar(20) NOT NULL, 
+method varchar(100) NOT NULL, 
 password varchar(250) NOT NULL, 
 vtm varchar(10) NOT NULL, -- V表示Vultr US线路，T表示China Telecom线路，M表示China Mobile线路。
 country varchar(10) NOT NULL,

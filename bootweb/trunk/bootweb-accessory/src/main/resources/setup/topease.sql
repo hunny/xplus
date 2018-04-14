@@ -41,3 +41,16 @@ UNIQUE KEY uk_1(ip, port),
 PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- DROP TABLE video;
+CREATE TABLE video (
+  uuid varchar(38) NOT NULL, 
+  url varchar(254) NOT NULL, 
+  downloaded varchar(100), 
+  type varchar(250), 
+  dateCreated datetime NOT NULL,
+  lastUpdated datetime NOT NULL,
+  INDEX index_1(downloaded),
+  UNIQUE KEY uk_1(url),
+  PRIMARY KEY (uuid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
